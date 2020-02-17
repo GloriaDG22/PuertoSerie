@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1581505402 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\prácticas\sesión1\puertoserie\puertoserie.cpp
+	"PuertoSerie.h"
+	<stdio.h>
+	<iostream>
+
+1581505402 c:\users\gloria\documents\aauniversidad\semestre6\frc\prácticas\sesión1\puertoserie\puertoserie.h
+	<windows.h>
+
+1581800765 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\prácticas\sesión1\puertoserie\sesion1.cpp
+	"Enviar.h"
+
+1581800340 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\prácticas\sesión1\puertoserie\enviar.cpp
+	"Enviar.h"
+
+1581800767 c:\users\gloria\documents\aauniversidad\semestre6\frc\prácticas\sesión1\puertoserie\enviar.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	"PuertoSerie.h"
+
