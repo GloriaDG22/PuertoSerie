@@ -7,7 +7,7 @@
 #include <string.h>
 #include "PuertoSerie.h"
 
-const int MAX = 10;
+const int MAX = 800;
 
 class Enviar
 {

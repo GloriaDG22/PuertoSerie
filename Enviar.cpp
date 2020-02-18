@@ -29,7 +29,7 @@ void Enviar::enviarCaracter(HANDLE PuertoCOM, char carE){
 void Enviar::enviarCadena (char carE){
     switch (carE){
     case 8:
-        if(cadena[cont]!='\n'){
+        if(cadena[cont-1]!='\n'){
             //printf("\b \b");
             printf("%c", carE);
             printf(" ");
@@ -54,8 +54,8 @@ void Enviar::enviarCadena (char carE){
     }
 }
 
-    void Enviar::addChar(char carE){
+void Enviar::addChar(char carE){
         cadena[cont]=carE;
         cont++;
-    }
+}
 
