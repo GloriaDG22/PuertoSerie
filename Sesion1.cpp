@@ -6,6 +6,7 @@
 
 
 #include "Enviar.h"
+#include "Recibir.h"
 
 using namespace std;
 
@@ -98,6 +99,9 @@ int main()
 {
     char carE, carR = 0;
     Enviar envio;
+    Recibir recibo;
+    int campoT=1;
+    Trama aux=Trama();
 
     //Encabezado
     printf("============================================================================\n");
@@ -117,21 +121,16 @@ int main()
 
     // Lectura y escritura simultánea de caracteres:
     while(carE != 27){
+
         carR = RecibirCaracter(PuertoCOM);
-        if (carR)
-            printf("%c", carR);       //Recepción
-        if (kbhit()){  //solo modificar esto
+        recibo.recibir(carR, campoT, aux);
+
+        if (kbhit()){
             carE = getch();
             if (carE != 27){
                 if(carE == '\0'){
                     carE = getch();
-                    if (carE==59){
-                        printf("\n");
-                        envio.addChar('\n');
-                        envio.addChar('\0');
-                        EnviarCadena(PuertoCOM, envio.getCadena(), envio.getCont());
-                        envio.setCont(0);
-                    }
+                    envio.comprobarTeclaFuncion(carE, PuertoCOM);
                 }
                 else{
                     envio.enviarCadena(carE);

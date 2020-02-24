@@ -6,8 +6,14 @@
 #include <iostream>
 #include <string.h>
 #include "PuertoSerie.h"
+#include "Trama.h"
 
 const int MAX = 800;
+
+//Campo 1: Sincronismo (SYN): en codigo ASCII=22
+//Campo 2: dirección ('T' o 'R'): por ahora solo vamos a usar el valor 'T'
+//Campo 3: control (ENQ, EOT, ACK, NACK): en codigo ASCII: ENQ=05, EOT=05, ACK=06, NACK=21
+//Campo 4: número de trama ('0' ó '1'): siempre como carácter (entre ' '): por ahora siempre vamos a usar el '0'
 
 class Enviar
 {
@@ -20,9 +26,13 @@ class Enviar
         Enviar();
         virtual ~Enviar();
 
+        void comprobarTeclaFuncion (char carE, HANDLE PuertoCOM);
+
         void enviarCaracter(HANDLE PuertoCOM, char carE);
 
         void enviarCadena(char carE);
+
+        void crearTrama (HANDLE PuertoCOM);
 
         void addChar(char carE);
 
@@ -31,6 +41,8 @@ class Enviar
         void setCont(int valor);
 
         char* getCadena();
+
+        void enviarTrama(Trama t, HANDLE PuertoCOM);
 };
 
 #endif // ENVIAR_H
