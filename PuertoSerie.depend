@@ -43,3 +43,98 @@
 1582023376 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.cpp
 	"Enviar.h"
 
+1582390666 source:c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\enviar.cpp
+	"Enviar.h"
+
+1582564307 c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\enviar.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	"PuertoSerie.h"
+	"Trama.h"
+
+1582564307 c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\puertoserie.h
+	<windows.h>
+
+1582564307 source:c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\puertoserie.cpp
+	"PuertoSerie.h"
+	<stdio.h>
+	<iostream>
+
+1582390736 source:c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\recibir.cpp
+	"Recibir.h"
+
+1582564308 c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\recibir.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	"PuertoSerie.h"
+	"Trama.h"
+
+1582564308 c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\trama.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	"PuertoSerie.h"
+
+1582564308 source:c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\sesion1.cpp
+	"Enviar.h"
+	"Recibir.h"
+
+1582548475 source:c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\trama.cpp
+	"Trama.h"
+
+1582564307 source:c:\users\glori\desktop\puertoserie\puertoserie.cpp
+	"PuertoSerie.h"
+	<stdio.h>
+	<iostream>
+
+1582564307 c:\users\glori\desktop\puertoserie\puertoserie.h
+	<windows.h>
+
+1583596956 source:c:\users\glori\desktop\puertoserie\enviar.cpp
+	"Enviar.h"
+
+1583587339 c:\users\glori\desktop\puertoserie\enviar.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	"PuertoSerie.h"
+	"Trama.h"
+	"Recibir.h"
+
+1583588548 c:\users\glori\desktop\puertoserie\trama.h
+	<conio.h>
+	<windows.h>
+	<string.h>
+	<stdio.h>
+	<iostream>
+	"PuertoSerie.h"
+
+1583597913 source:c:\users\glori\desktop\puertoserie\recibir.cpp
+	"Recibir.h"
+
+1583587308 c:\users\glori\desktop\puertoserie\recibir.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	"PuertoSerie.h"
+	"Trama.h"
+
+1583587435 source:c:\users\glori\desktop\puertoserie\sesion1.cpp
+	"Enviar.h"
+	"Recibir.h"
+
+1583596514 source:c:\users\glori\desktop\puertoserie\trama.cpp
+	"Trama.h"
+

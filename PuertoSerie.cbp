@@ -13,6 +13,8 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
+					<Add directory="../PuertoSerie" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -22,6 +24,8 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
+					<Add directory="../PuertoSerie" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -35,7 +39,11 @@
 		<Unit filename="Enviar.h" />
 		<Unit filename="PuertoSerie.cpp" />
 		<Unit filename="PuertoSerie.h" />
+		<Unit filename="Recibir.cpp" />
+		<Unit filename="Recibir.h" />
 		<Unit filename="Sesion1.cpp" />
+		<Unit filename="Trama.cpp" />
+		<Unit filename="Trama.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

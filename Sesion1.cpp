@@ -6,16 +6,17 @@
 
 
 #include "Enviar.h"
+#include "Recibir.h"
 
 using namespace std;
 
 HANDLE PuertoCOM;
+HANDLE Pantalla;
 
 
 void abrirPuerto(){
-    char PSerie[5];
+    char PSerie[5] = {'C', 'O', 'M', ' ', '\0'};
     char opcion;
-    const char *puerto;
     bool errorOpcion=true;
 
     int velocidad;
@@ -23,23 +24,23 @@ void abrirPuerto(){
     printf("Seleccione que puerto quiere abrir: \n 1. COM1 \n 2. COM2 \n 3. COM3 \n 4. COM4 \n");
 
     while(errorOpcion){
-    opcion = getch();
+    printf ("Has seleccionado la tecla %c \n", opcion = getche());
 
     switch(opcion){
     case '1':
-        puerto = "COM1";
+        PSerie[3] = '1';
         errorOpcion = false;
         break;
     case '2':
-        puerto = "COM2";
+        PSerie[3] = '2';
         errorOpcion = false;
         break;
     case '3':
-        puerto = "COM3";
+        PSerie[3] = '3';
         errorOpcion = false;
         break;
     case '4':
-        puerto = "COM4";
+        PSerie[3] = '4';
         errorOpcion = false;
         break;
     default:
@@ -48,11 +49,12 @@ void abrirPuerto(){
         }
    }
 
+
    printf("Seleccione la velocidad de transmision: \n 1. 1200 \n 2. 2400 \n 3. 4800 \n 4. 9600 \n 5. 19200 \n");
    errorOpcion = true;
 
     while(errorOpcion){
-    opcion = getch();
+    opcion = getche();
 
     switch(opcion){
     case '1':
@@ -81,23 +83,31 @@ void abrirPuerto(){
         }
    }
 
-    strcpy (PSerie, puerto);
     PuertoCOM = AbrirPuerto(PSerie, velocidad, 8, 0, 0);
     //Abrimos el puerto COM1 (en la sala siempre abrimos el COM1)
     if(PuertoCOM == NULL)
     {
-        printf("Error al abrir el puerto %s\n",PSerie);
+        printf("Error al abrir el puerto %s con velocidad %d \n", PSerie, velocidad);
         getch();
         exit(1);
     }
     else
-        printf("Puerto %s abierto correctamente\n",PSerie);
+        printf("Puerto %s abierto correctamente con velocidad %d \n", PSerie, velocidad);
 }
+
+void ponerColor (int &color, int colorTexto, int colorFondo){
+    color=colorTexto+colorFondo*16;
+}
+
 
 int main()
 {
     char carE, carR = 0;
     Enviar envio;
+    Recibir recibo;
+    int campoT=1, colorEnvio, colorRecibo;
+    Trama aux;
+    Pantalla = GetStdHandle(STD_OUTPUT_HANDLE);
 
     //Encabezado
     printf("============================================================================\n");
@@ -115,23 +125,26 @@ int main()
 
     abrirPuerto();
 
+    //Envio: letra azul verdoso(3) y fondo negro (0)
+    ponerColor(colorEnvio, 3, 0);
+
+    //Recibo: letra azul electrico(9) y fondo blanco (15)
+    ponerColor(colorRecibo, 9, 15);
+
     // Lectura y escritura simultánea de caracteres:
     while(carE != 27){
+
         carR = RecibirCaracter(PuertoCOM);
-        if (carR)
-            printf("%c", carR);       //Recepción
-        if (kbhit()){  //solo modificar esto
+        SetConsoleTextAttribute(Pantalla, colorRecibo);
+        recibo.recibir(carR, campoT, aux, PuertoCOM);
+
+        if (kbhit()){
             carE = getch();
             if (carE != 27){
+                SetConsoleTextAttribute(Pantalla, colorEnvio);
                 if(carE == '\0'){
                     carE = getch();
-                    if (carE==59){
-                        printf("\n");
-                        envio.addChar('\n');
-                        envio.addChar('\0');
-                        EnviarCadena(PuertoCOM, envio.getCadena(), envio.getCont());
-                        envio.setCont(0);
-                    }
+                    envio.comprobarTeclaFuncion(carE, PuertoCOM);
                 }
                 else{
                     envio.enviarCadena(carE);
@@ -142,7 +155,8 @@ int main()
 
 
 // Cerramos el puerto:
-   CerrarPuerto(PuertoCOM);
+    if (PuertoCOM!=NULL)
+        CerrarPuerto(PuertoCOM);
 
    return 0;
 }
