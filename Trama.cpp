@@ -59,11 +59,7 @@ char* Trama::getDatos(){
 }
 
 void Trama::setDatos (char cadena[]){
-    int i=0;
-    while (unsigned(i)<strlen(cadena)){
-        Datos[i]=cadena[i];
-        i++;
-    }
+   strcpy(Datos, cadena);
 }
 
 unsigned char Trama::getBCE(){
@@ -94,7 +90,6 @@ void Trama::imprimirTipoTrama (){
 // y hay que mostrar el bce tanto al enviarlo como al recibirlo
 unsigned char Trama::calcularBce (){
     int i=1;
-    printf("Va a calcular %s ", Datos );
     unsigned char total=Datos[0];
     while (Datos[i]!='\0'){
         total=total^Datos[i];

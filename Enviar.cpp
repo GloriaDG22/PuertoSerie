@@ -16,10 +16,6 @@ void Enviar::setCont(int valor){
     cont=valor;
 }
 
-/*char* Enviar::getCadena(){
-    return cadena;
-}*/
-
 void Enviar::comprobarTeclaFuncion(char carE, HANDLE PuertoCOM){
     switch (carE){
         case 59:
@@ -160,7 +156,6 @@ void Enviar::crearTramaDatos(HANDLE PuertoCOM){
         t.setDatos(cadenaEnvio);
         t.setBCE(t.calcularBce());
         enviarTrama(t, PuertoCOM);
-        printf("Se ha enviado una trama con longitud %d, cadena %s y BCE %d", t.getLong(), t.getDatos(), t.getBCE());
         carR = RecibirCaracter(PuertoCOM);
         recibo.recibir(carR, campoT, aux, PuertoCOM);
     }
@@ -174,15 +169,12 @@ void Enviar::dividirCadena(int cont, int &numTramas){
 }
 
 void Enviar::copiarCadena (const char* cadenaFuente, char* cadenaDestino, int offset, int longit){
-    int i = 1;
+    int i = 0;
     char actual;
-    actual = cadenaFuente [offset];
-    cadenaDestino [0] = actual;
-    while ((actual!='\0')&&(i<longit)){
+    do{
         actual = cadenaFuente [i+offset];
         cadenaDestino[i] = actual;
         i++;
-    }
-    if (actual!='\0')
-        cadenaDestino[i]='\0';
+    } while ((actual!='\0')&&(i<longit));
+    cadenaDestino[i]='\0';
 }

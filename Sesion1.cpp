@@ -129,7 +129,7 @@ int main()
     ponerColor(colorEnvio, 3, 0);
 
     //Recibo: letra azul electrico(9) y fondo blanco (15)
-    ponerColor(colorRecibo, 9, 15);
+    ponerColor(colorRecibo, 5, 7);
 
     // Lectura y escritura simultánea de caracteres:
     while(carE != 27){
