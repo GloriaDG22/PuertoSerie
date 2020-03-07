@@ -7,6 +7,7 @@
 #include <string.h>
 #include "PuertoSerie.h"
 #include "Trama.h"
+#include "Recibir.h"
 
 const int MAX = 800;
 
@@ -21,6 +22,7 @@ class Enviar
         char caracter;
         char cadena[MAX+2];
         int cont;
+        Recibir recibo;
 
     public:
         Enviar();
@@ -32,7 +34,7 @@ class Enviar
 
         void enviarCadena(char carE);
 
-        void crearTrama (HANDLE PuertoCOM);
+        void crearTramaControl (HANDLE PuertoCOM);
 
         void addChar(char carE);
 
@@ -40,9 +42,13 @@ class Enviar
 
         void setCont(int valor);
 
-        char* getCadena();
+        void crearTramaDatos(HANDLE PuertoCOM);
 
         void enviarTrama(Trama t, HANDLE PuertoCOM);
+
+        void dividirCadena(int cont, int &numTramas);
+
+        void copiarCadena (const char* cadenaFuente, char* cadenaDestino, int offset, int longit);
 };
 
 #endif // ENVIAR_H

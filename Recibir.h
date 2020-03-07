@@ -13,7 +13,7 @@ class Recibir
     private:
 
     public:
-        void recibir(char carR, int &campoT, Trama &aux);
+        void recibir(char carR, int &campoT, Trama &aux, HANDLE PuertoCOM);
 };
 
 #endif // RECIBIR_H

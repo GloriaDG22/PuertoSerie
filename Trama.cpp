@@ -1,10 +1,13 @@
 #include "Trama.h"
 
 Trama::Trama(){
-    sincr=' ';
-    dir=' ';
-    control=' ';
-    numTrama=' ';
+    sincr=22;
+    dir='T';
+    control=0;
+    numTrama='0';
+    longit=0;
+    Datos[0]='\0';
+    BCE=0;
 }
 
 void Trama::setSincr (unsigned char Csincr){
@@ -23,6 +26,14 @@ void Trama::setNumTrama (unsigned char CnumTrama){
     numTrama=CnumTrama;
 }
 
+void Trama::setLong (unsigned char Clongit){
+    longit=Clongit;
+}
+
+void Trama::setBCE (unsigned char Cbce){
+    BCE=Cbce;
+}
+
 unsigned char Trama::getSincr(){
     return sincr;
 }
@@ -39,8 +50,27 @@ unsigned char Trama::getNumTrama(){
     return numTrama;
 }
 
+unsigned char Trama::getLong(){
+    return longit;
+}
+
+char* Trama::getDatos(){
+    return Datos;
+}
+
+void Trama::setDatos (char cadena[]){
+    int i=0;
+    while (unsigned(i)<strlen(cadena)){
+        Datos[i]=cadena[i];
+        i++;
+    }
+}
+
+unsigned char Trama::getBCE(){
+    return BCE;
+}
+
 void Trama::imprimirTipoTrama (){
-    printf ("Se ha recibido una trama de tipo ");
     switch (control){
     case 05:
         printf ("ENQ \n");
@@ -58,4 +88,27 @@ void Trama::imprimirTipoTrama (){
         printf("Ha habido un problema \n");
         break;
     }
+}
+
+// hay que probar el bce con vocales acentuadas
+// y hay que mostrar el bce tanto al enviarlo como al recibirlo
+unsigned char Trama::calcularBce (){
+    int i=1;
+    printf("Va a calcular %s ", Datos );
+    unsigned char total=Datos[0];
+    while (Datos[i]!='\0'){
+        total=total^Datos[i];
+        i++;
+    }
+    if (total==0||total==255)
+        total=1;
+    return total;
+}
+
+void Trama::addChar (char carR, int i){
+    Datos[i]=carR;
+}
+
+void Trama::mostrarTrama(){
+    printf(Datos);
 }
