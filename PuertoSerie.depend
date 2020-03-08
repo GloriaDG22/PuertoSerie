@@ -21,26 +21,29 @@
 	<string.h>
 	"PuertoSerie.h"
 
-1581505402 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\puertoserie.cpp
+1583599407 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\puertoserie.cpp
 	"PuertoSerie.h"
 	<stdio.h>
 	<iostream>
 
-1581505402 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\puertoserie.h
+1583599407 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\puertoserie.h
 	<windows.h>
 
-1581800765 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\sesion1.cpp
+1583684254 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\sesion1.cpp
 	"Enviar.h"
+	"Recibir.h"
 
-1582025501 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.h
+1583688321 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
 	<iostream>
 	<string.h>
 	"PuertoSerie.h"
+	"Trama.h"
+	"Recibir.h"
 
-1582023376 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.cpp
+1583688984 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.cpp
 	"Enviar.h"
 
 1582390666 source:c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\enviar.cpp
@@ -232,5 +235,28 @@
 	"Enviar.h"
 
 1583606471 source:c:\users\glori\documents\puertoserie\trama.cpp
+	"Trama.h"
+
+1583683235 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.cpp
+	"Recibir.h"
+
+1583688321 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	"PuertoSerie.h"
+	"Trama.h"
+
+1583688321 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\trama.h
+	<conio.h>
+	<windows.h>
+	<string.h>
+	<stdio.h>
+	<iostream>
+	"PuertoSerie.h"
+
+1583688321 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\trama.cpp
 	"Trama.h"
 

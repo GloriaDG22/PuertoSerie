@@ -1,3 +1,7 @@
+//============================================================================
+// ------------ Gloria Méndez Sánchez y Gloria Díaz González------------------
+//============================================================================
+
 #include "Enviar.h"
 
 Enviar::Enviar(){
@@ -16,32 +20,21 @@ void Enviar::setCont(int valor){
     cont=valor;
 }
 
+void Enviar::addChar(char carE){
+    cadena[cont]=carE;
+    cont++;
+}
+
 void Enviar::comprobarTeclaFuncion(char carE, HANDLE PuertoCOM){
     switch (carE){
-        case 59:
+        case 59: //F1
             printf("\n");
             addChar('\n');
             addChar('\0');
             crearTramaDatos(PuertoCOM);
-                //dividirCadena(cont, numTramas);
-                //enviarTrama(PuertoCOM);
-            // a continuacion, metemos en el vector Datos los caracteres
-            // que hemos escrito y añadimos un nuevo \0 para marcar el final de la cadena. si el resultado del bce es 0 o 255,
-            // como esos valores no pueden enviarse ppor el puerto, le ponemos manualmente un 1.
-            // para enviar la trama tenemos que ir enviando los campos por separado: enviarCaracter para todos los campos unsigned char excepto
-            // para el char datos que usaremos el enviarCadena
-            // para fragmentar el mensaje (si es de mas de 254 caracteres) tendremos que calcular el numero de tramas que vamos a enviar:
-            // numero de caracteres que ha escrito el usuario / 254
-            // y con el valor resultamente hacemos un bucle que envie esas x tramas
-            // for (i=0; i< numTramas; i++){
-            //      construirTrama() : construimos la trama metiendole los valores correspondientes en cada trama y calculamos el bce con el campo de datos correspondiente
-            //      enviarTrama() : enviamos la trama que acabamos de construir
-            // }
-            //si enviamos un mensaje vacio tenemos que enviar una trama de datos de longitud 1 que tendria solo un \ng
-            //EnviarCadena(PuertoCOM, cadena, cont);
             cont=0;
             break;
-        case 60:
+        case 60: //F2
             crearTramaControl(PuertoCOM);
     }
 }
@@ -53,23 +46,22 @@ void Enviar::enviarCaracter(HANDLE PuertoCOM, char carE){
 
 void Enviar::enviarCadena (char carE){
     switch (carE){
-    case 8:
+    case 8: //Borrar
         if(cadena[cont-1]!='\n'){
-            //printf("\b \b");
             printf("%c", carE);
             printf(" ");
             printf("%c", carE);
             cont--;
         }
         break;
-    case 13:
+    case 13: //Enter
         if(cont < MAX){
             printf("\n");
             cadena[cont] = '\n';
             cont++;
         }
         break;
-    default:
+    default: //Cualquier otra tecla
         if(cont < MAX){
             printf("%c", carE);
             cadena[cont]=carE;
@@ -77,11 +69,6 @@ void Enviar::enviarCadena (char carE){
         }
         break;
     }
-}
-
-void Enviar::addChar(char carE){
-    cadena[cont]=carE;
-    cont++;
 }
 
 void Enviar::crearTramaControl(HANDLE PuertoCOM){
@@ -109,7 +96,7 @@ void Enviar::crearTramaControl(HANDLE PuertoCOM){
                 control = 21;
                 valorCorrecto = true;
                 break;
-            case 27:
+            case 27: //escape
                 printf ("Se ha cancelado el envio de la trama \n");
                 valorCorrecto = true;
                 envio = false;
@@ -118,27 +105,11 @@ void Enviar::crearTramaControl(HANDLE PuertoCOM){
                  printf("Ha introducido un valor erroneo, intentelo de nuevo \n");
                 break;
         }
-    }
+    } //Creamos con los valores por defecto y solo añadimos el carácter de control
     if (envio==true){
         Trama t=Trama();
         t.setControl(control);
         enviarTrama(t, PuertoCOM);
-    }
-}
-
-void Enviar::enviarTrama(Trama t, HANDLE PuertoCOM){
-    EnviarCaracter(PuertoCOM, t.getSincr());
-    EnviarCaracter(PuertoCOM, t.getDir());
-    EnviarCaracter(PuertoCOM, t.getControl());
-    EnviarCaracter(PuertoCOM, t.getNumTrama());
-    if (t.getControl()==2){
-        EnviarCaracter(PuertoCOM, t.getLong());
-        EnviarCadena(PuertoCOM, t.getDatos(), t.getLong());
-        EnviarCaracter(PuertoCOM, t.getBCE());
-    }
-    else{
-        printf ("Se ha enviado una trama de tipo ");
-        t.imprimirTipoTrama();
     }
 }
 
@@ -147,7 +118,7 @@ void Enviar::crearTramaDatos(HANDLE PuertoCOM){
     int offset;
     char cadenaEnvio [255], carR;
     int numTramas, campoT=1;
-    dividirCadena(cont, numTramas);
+    dividirCadena(cont, numTramas); //calculamos en número de tramas que tenemos que enviar
     for (int i=0; i<numTramas; i++){
         t.setControl(2);
         offset = 254 * (i);
@@ -156,8 +127,26 @@ void Enviar::crearTramaDatos(HANDLE PuertoCOM){
         t.setDatos(cadenaEnvio);
         t.setBCE(t.calcularBce());
         enviarTrama(t, PuertoCOM);
+        //Recibir para no excluirlo en el envío
         carR = RecibirCaracter(PuertoCOM);
         recibo.recibir(carR, campoT, aux, PuertoCOM);
+    }
+    printf("MENSAJE ENVIADO.\n");
+}
+
+void Enviar::enviarTrama(Trama t, HANDLE PuertoCOM){
+    EnviarCaracter(PuertoCOM, t.getSincr());
+    EnviarCaracter(PuertoCOM, t.getDir());
+    EnviarCaracter(PuertoCOM, t.getControl());
+    EnviarCaracter(PuertoCOM, t.getNumTrama());
+    if (t.getControl()==2){ //si es trama de datos
+        EnviarCaracter(PuertoCOM, t.getLong());
+        EnviarCadena(PuertoCOM, t.getDatos(), t.getLong());
+        EnviarCaracter(PuertoCOM, t.getBCE());
+    }
+    else{ //si es trama de control
+        printf ("Se ha enviado una trama de tipo ");
+        t.imprimirTipoTrama();
     }
 }
 

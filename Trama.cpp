@@ -1,3 +1,7 @@
+//============================================================================
+// ------------ Gloria Méndez Sánchez y Gloria Díaz González------------------
+//============================================================================
+
 #include "Trama.h"
 
 Trama::Trama(){
@@ -30,6 +34,10 @@ void Trama::setLong (unsigned char Clongit){
     longit=Clongit;
 }
 
+void Trama::setDatos (char cadena[]){
+   strcpy(Datos, cadena);
+}
+
 void Trama::setBCE (unsigned char Cbce){
     BCE=Cbce;
 }
@@ -58,10 +66,6 @@ char* Trama::getDatos(){
     return Datos;
 }
 
-void Trama::setDatos (char cadena[]){
-   strcpy(Datos, cadena);
-}
-
 unsigned char Trama::getBCE(){
     return BCE;
 }
@@ -86,8 +90,6 @@ void Trama::imprimirTipoTrama (){
     }
 }
 
-// hay que probar el bce con vocales acentuadas
-// y hay que mostrar el bce tanto al enviarlo como al recibirlo
 unsigned char Trama::calcularBce (){
     int i=1;
     unsigned char total=Datos[0];
@@ -98,10 +100,6 @@ unsigned char Trama::calcularBce (){
     if (total==0||total==255)
         total=1;
     return total;
-}
-
-void Trama::addChar (char carR, int i){
-    Datos[i]=carR;
 }
 
 void Trama::mostrarTrama(){

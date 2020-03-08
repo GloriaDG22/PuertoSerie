@@ -1,3 +1,7 @@
+//============================================================================
+// ------------ Gloria Méndez Sánchez y Gloria Díaz González------------------
+//============================================================================
+
 #ifndef ENVIAR_H
 #define ENVIAR_H
 #include <stdio.h>
@@ -19,35 +23,82 @@ const int MAX = 800;
 class Enviar
 {
     private:
+        ///caracter que se envía
         char caracter;
+        ///cadena de texto que se escribe en el terminal
         char cadena[MAX+2];
+        ///número de carácter que hay en la cadena
         int cont;
+        ///Clase recibir para no excluir la recepción
         Recibir recibo;
 
     public:
+        ///constructor
         Enviar();
+
+        ///destructor
         virtual ~Enviar();
 
-        void comprobarTeclaFuncion (char carE, HANDLE PuertoCOM);
-
-        void enviarCaracter(HANDLE PuertoCOM, char carE);
-
-        void enviarCadena(char carE);
-
-        void crearTramaControl (HANDLE PuertoCOM);
-
-        void addChar(char carE);
-
+        ///Devuelve el valor del contador
         int getCont();
 
+        /** Cambia el valor del contador
+        *   \param valor Nuevo valor de contador
+        */
         void setCont(int valor);
 
+        /** Añade un valor a la cadena a enviar
+        *   \param carE Caracter que queremos añadir
+        */
+        void addChar(char carE);
+
+        /**  Comprueba qué tecla hemos accionado para ver como actuar
+        *   \param carE Caracter que se pulsa
+        *   \param PuertoCOM Puerto por el que enviamos
+        */
+        void comprobarTeclaFuncion (char carE, HANDLE PuertoCOM);
+
+        /** Envía el caracter que se le pase por el puerto
+        *   \param PuertoCOM Puerto por el que enviamos
+        *   \param CarE Caracter que queremos enviar
+        */
+        void enviarCaracter(HANDLE PuertoCOM, char carE);
+
+        /** Construye la cadena que vamos a enviar
+        *   \param carE Caracter que vamos a guardar en la cadena
+        *   \note Si es tecla normal guarda en la cadena por defecto y si es borrar o enter entra en casos especiales
+        */
+        void enviarCadena(char carE);
+
+        /** Crea la trama de control en función de lo deseado por el usuario y la envía
+        *   \param PuertoCOM Puerto por el que enviamos
+        */
+        void crearTramaControl (HANDLE PuertoCOM);
+
+        /** Divide el texto que queremos enviar en distintas tramas de datos
+        *   \param PuertoCOM Puerto por el que enviamos
+        *   \note no excluímos la recepcion de mensajes
+        */
         void crearTramaDatos(HANDLE PuertoCOM);
 
+        /** Envía caracter a caracter diferenciando si es de control o de datos
+        *   \param t Trama a enviar
+        *   \param PuertoCOM Puerto por el que enviamos
+        */
         void enviarTrama(Trama t, HANDLE PuertoCOM);
 
+        /** Devuelve el numero de tramas que se van a enviar
+        *   \param cont Numero de carácteres que el usuario quiere enviar
+        *   \param numTramas Parámetro de entrada salida que guarda el número de tramas
+        */
         void dividirCadena(int cont, int &numTramas);
 
+        /** Copia la cadena fuene en la destino desde la posición deseada hasta el tamaño indicado
+        *   \param cadenaFuente Cadena a copiar
+        *   \param cadenaDestino Cadena de destino
+        *   \param offset Desplazamiento para empezar a copiar
+        *   \param longit Número de carácteres que se quieren copia
+        */
         void copiarCadena (const char* cadenaFuente, char* cadenaDestino, int offset, int longit);
 };
 
