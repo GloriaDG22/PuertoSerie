@@ -25,62 +25,63 @@ void abrirPuerto(){
     printf("Seleccione que puerto quiere abrir: \n 1. COM1 \n 2. COM2 \n 3. COM3 \n 4. COM4 \n");
 
     while(errorOpcion){
-    printf ("Has seleccionado la tecla %c \n", opcion = getche());
+        opcion = getch();
+        printf ("Has seleccionado la tecla %c \n", opcion);
 
-    switch(opcion){
-    case '1':
-        PSerie[3] = '1';
-        errorOpcion = false;
-        break;
-    case '2':
-        PSerie[3] = '2';
-        errorOpcion = false;
-        break;
-    case '3':
-        PSerie[3] = '3';
-        errorOpcion = false;
-        break;
-    case '4':
-        PSerie[3] = '4';
-        errorOpcion = false;
-        break;
-    default:
-        printf("Introduzca un valor correcto.\n");
-        break;
+        switch(opcion){
+        case '1':
+            PSerie[3] = '1';
+            errorOpcion = false;
+            break;
+        case '2':
+            PSerie[3] = '2';
+            errorOpcion = false;
+            break;
+        case '3':
+            PSerie[3] = '3';
+            errorOpcion = false;
+            break;
+        case '4':
+            PSerie[3] = '4';
+            errorOpcion = false;
+            break;
+        default:
+            printf("Introduzca un valor correcto.\n");
+            break;
         }
-   }
+    }
 
 
    printf("Seleccione la velocidad de transmision: \n 1. 1200 \n 2. 2400 \n 3. 4800 \n 4. 9600 \n 5. 19200 \n");
    errorOpcion = true;
 
     while(errorOpcion){
-    opcion = getche();
-
-    switch(opcion){
-    case '1':
-        velocidad = 1200;
-        errorOpcion = false;
-        break;
-    case '2':
-        velocidad = 2400;
-        errorOpcion = false;
-        break;
-    case '3':
-        velocidad = 4800;
-        errorOpcion = false;
-        break;
-    case '4':
-        velocidad = 9600;
-        errorOpcion = false;
-        break;
-    case '5':
-        velocidad = 19200;
-        errorOpcion = false;
-        break;
-    default:
-        printf("Introduzca un valor correcto.\n");
-        break;
+        opcion = getch();
+        printf ("Has seleccionado la tecla %c \n", opcion);
+        switch(opcion){
+        case '1':
+            velocidad = 1200;
+            errorOpcion = false;
+            break;
+        case '2':
+            velocidad = 2400;
+            errorOpcion = false;
+            break;
+        case '3':
+            velocidad = 4800;
+            errorOpcion = false;
+            break;
+        case '4':
+            velocidad = 9600;
+            errorOpcion = false;
+            break;
+        case '5':
+            velocidad = 19200;
+            errorOpcion = false;
+            break;
+        default:
+            printf("Introduzca un valor correcto.\n");
+            break;
         }
    }
 

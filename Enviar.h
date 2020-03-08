@@ -100,6 +100,7 @@ class Enviar
         *   \param longit Número de carácteres que se quieren copia
         */
         void copiarCadena (const char* cadenaFuente, char* cadenaDestino, int offset, int longit);
+
 };
 
 #endif // ENVIAR_H

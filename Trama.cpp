@@ -5,13 +5,24 @@
 #include "Trama.h"
 
 Trama::Trama(){
-    sincr=22;
-    dir='T';
+    sincr=0;
+    dir=' ';
     control=0;
-    numTrama='0';
+    numTrama=' ';
     longit=0;
     Datos[0]='\0';
     BCE=0;
+}
+
+Trama::Trama(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol, unsigned char CnumTrama,
+             unsigned char Clongit, char Cdatos[], unsigned char Cbce){
+    sincr=Csincr;
+    dir=Cdir;
+    control=Ccontrol;
+    numTrama=CnumTrama;
+    longit=Clongit;
+    strcpy(Datos, Cdatos);
+    BCE=Cbce;
 }
 
 void Trama::setSincr (unsigned char Csincr){

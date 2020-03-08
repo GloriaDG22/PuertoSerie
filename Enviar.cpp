@@ -107,24 +107,22 @@ void Enviar::crearTramaControl(HANDLE PuertoCOM){
         }
     } //Creamos con los valores por defecto y solo añadimos el carácter de control
     if (envio==true){
-        Trama t=Trama();
-        t.setControl(control);
+        //los ultimos 3 campos se inicializan vacios porque es una trama de control
+        Trama t=Trama(22, 'T', control, '0', 0, " ", 0);
         enviarTrama(t, PuertoCOM);
     }
 }
 
 void Enviar::crearTramaDatos(HANDLE PuertoCOM){
-    Trama t=Trama(), aux;
+    Trama t, aux;
     int offset;
     char cadenaEnvio [255], carR;
     int numTramas, campoT=1;
     dividirCadena(cont, numTramas); //calculamos en número de tramas que tenemos que enviar
     for (int i=0; i<numTramas; i++){
-        t.setControl(2);
         offset = 254 * (i);
         copiarCadena (cadena, cadenaEnvio, offset, 254);
-        t.setLong(strlen(cadenaEnvio));
-        t.setDatos(cadenaEnvio);
+        t=Trama(22, 'T', 2, '0', strlen(cadenaEnvio), cadenaEnvio, 0);
         t.setBCE(t.calcularBce());
         enviarTrama(t, PuertoCOM);
         //Recibir para no excluirlo en el envío

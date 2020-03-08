@@ -10,10 +10,12 @@ void Recibir::recibir(char carR, int &campoT, Trama &aux, HANDLE PuertoCOM){
         case 1: //sincronización (22)
             if (carR==22){ //es una trama
                 aux=Trama();
+                aux.setSincr(carR);
                 campoT++;
             }
             break;
         case 2: //dirección ('T')
+            aux.setDir(carR);
             campoT ++;
             break;
         case 3: //control ENQ-5  EOT-4  ACK-6  NACK-21 / DATOS-2
@@ -21,6 +23,7 @@ void Recibir::recibir(char carR, int &campoT, Trama &aux, HANDLE PuertoCOM){
             campoT++;
             break;
         case 4: //numero de trama (0)
+            aux.setNumTrama(carR);
             if (aux.getControl()!=2){
                 campoT=1;
                 printf ("Se ha recibido una trama de tipo ");
@@ -41,10 +44,8 @@ void Recibir::recibir(char carR, int &campoT, Trama &aux, HANDLE PuertoCOM){
         case 7: //BCE
             campoT=1;
             aux.setBCE((unsigned char)carR);
-            if(aux.calcularBce()==(unsigned char)carR){
+            if(aux.calcularBce()==(unsigned char)carR)
                 aux.mostrarTrama();
-                printf("MENSAJE RECIBIDO.\n");
-            }
             else
                 printf ("Error: la cadena recibida es incorrecta \n");
         }

@@ -31,8 +31,10 @@ class Trama{
         unsigned char BCE;
 
     public:
-        ///constructor
+        ///constructores
         Trama();
+        Trama(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol,
+              unsigned char CnumTrama, unsigned char Clongit, char Cdatos[], unsigned char Cbce);
         ///Setters
         void setSincr (unsigned char sincr);
         void setDir (unsigned char dir);
