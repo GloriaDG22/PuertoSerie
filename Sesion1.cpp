@@ -14,8 +14,35 @@ using namespace std;
 HANDLE PuertoCOM;
 HANDLE Pantalla;
 
+void ponerColor (int &color, int colorTexto, int colorFondo){
+    color=colorTexto+colorFondo*16;
+}
 
-void abrirPuerto(){
+
+int main()
+{
+    char carE, carR = 0;
+    Enviar envio=Enviar();
+    Recibir* recibo=recibo.getInstance();//=Recibir.getInstance();
+    int campoT=1, colorEnvio, colorRecibo;
+    Trama aux;
+    Pantalla = GetStdHandle(STD_OUTPUT_HANDLE);
+
+
+    //Encabezado
+    printf("============================================================================\n");
+    printf("----------- PRACTICAS DE FUNDAMENTOS DE REDES DE COMUNICACIONES ------------\n");
+    printf("---------------------------- CURSO 2019/20 ---------------------------------\n");
+    printf("----------------------------- SESION1.CPP ----------------------------------\n");
+    printf("============================================================================\n\n");
+
+    //Abrimos el puerto. Para ello necesitamos indicar los siguientes parámetros:
+    // - Nombre del puerto a abrir: ("COM1", "COM2", "COM3", ...).
+    // - Velocidad: (1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200).
+    // - Número de bits en cada byte enviado o recibido: (4, 5, 6, 7, 8).
+    // - Paridad: (0=sin paridad, 1=impar, 2=par, 3=marca, 4=espacio).
+    // - Bits de stop: (0=1 bit, 1=1.5 bits, 2=2 bits).
+
     char PSerie[5] = {'C', 'O', 'M', ' ', '\0'};
     char opcion;
     bool errorOpcion=true;
@@ -95,50 +122,19 @@ void abrirPuerto(){
     }
     else
         printf("Puerto %s abierto correctamente con velocidad %d \n", PSerie, velocidad);
-}
 
-void ponerColor (int &color, int colorTexto, int colorFondo){
-    color=colorTexto+colorFondo*16;
-}
+    //Envio: letra azul verdoso (3) y fondo negro (0)
+    colorEnvio=3+0*16;
 
-
-int main()
-{
-    char carE, carR = 0;
-    Enviar envio;
-    Recibir recibo;
-    int campoT=1, colorEnvio, colorRecibo;
-    Trama aux;
-    Pantalla = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    //Encabezado
-    printf("============================================================================\n");
-    printf("----------- PRACTICAS DE FUNDAMENTOS DE REDES DE COMUNICACIONES ------------\n");
-    printf("---------------------------- CURSO 2019/20 ---------------------------------\n");
-    printf("----------------------------- SESION1.CPP ----------------------------------\n");
-    printf("============================================================================\n\n");
-
-    //Abrimos el puerto. Para ello necesitamos indicar los siguientes parámetros:
-    // - Nombre del puerto a abrir: ("COM1", "COM2", "COM3", ...).
-    // - Velocidad: (1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200).
-    // - Número de bits en cada byte enviado o recibido: (4, 5, 6, 7, 8).
-    // - Paridad: (0=sin paridad, 1=impar, 2=par, 3=marca, 4=espacio).
-    // - Bits de stop: (0=1 bit, 1=1.5 bits, 2=2 bits).
-
-    abrirPuerto();
-
-    //Envio: letra azul verdoso(3) y fondo negro (0)
-    ponerColor(colorEnvio, 3, 0);
-
-    //Recibo: letra azul electrico(9) y fondo blanco (15)
-    ponerColor(colorRecibo, 5, 7);
+    //Recibo: letra morado (5) y gris claro (7)
+    colorEnvio=5+7*16;
 
     // Lectura y escritura simultánea de caracteres:
     while(carE != 27){
 
         carR = RecibirCaracter(PuertoCOM);
         SetConsoleTextAttribute(Pantalla, colorRecibo);
-        recibo.recibir(carR, campoT, aux, PuertoCOM);
+        recibo->recibir(carR, campoT, aux, PuertoCOM);
 
         if (kbhit()){
             carE = getch();
@@ -146,7 +142,7 @@ int main()
                 SetConsoleTextAttribute(Pantalla, colorEnvio);
                 if(carE == '\0'){
                     carE = getch();
-                    envio.comprobarTeclaFuncion(carE, PuertoCOM);
+                    envio.comprobarTeclaFuncion(carE, PuertoCOM, campoT, aux);
                 }
                 else{
                     envio.enviarCadena(carE);

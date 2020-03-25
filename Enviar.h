@@ -9,11 +9,15 @@
 #include <windows.h>
 #include <iostream>
 #include <string.h>
+#include <fstream>
 #include "PuertoSerie.h"
 #include "Trama.h"
 #include "Recibir.h"
 
+#define FICHERO "fichero-e.txt"
+
 const int MAX = 800;
+const int LINCABECERA = 3;
 
 //Campo 1: Sincronismo (SYN): en codigo ASCII=22
 //Campo 2: dirección ('T' o 'R'): por ahora solo vamos a usar el valor 'T'
@@ -30,7 +34,7 @@ class Enviar
         ///número de carácter que hay en la cadena
         int cont;
         ///Clase recibir para no excluir la recepción
-        Recibir recibo;
+        Recibir* recibo=recibo->getInstance();
 
     public:
         ///constructor
@@ -56,7 +60,7 @@ class Enviar
         *   \param carE Caracter que se pulsa
         *   \param PuertoCOM Puerto por el que enviamos
         */
-        void comprobarTeclaFuncion (char carE, HANDLE PuertoCOM);
+        void comprobarTeclaFuncion (char carE, HANDLE PuertoCOM, int &campoT, Trama &aux, HANDLE Pantalla);
 
         /** Envía el caracter que se le pase por el puerto
         *   \param PuertoCOM Puerto por el que enviamos
@@ -73,19 +77,19 @@ class Enviar
         /** Crea la trama de control en función de lo deseado por el usuario y la envía
         *   \param PuertoCOM Puerto por el que enviamos
         */
-        void crearTramaControl (HANDLE PuertoCOM);
+        void crearTramaControl (HANDLE PuertoCOM, int &campoT, Trama &aux, HANDLE Pantalla);
 
         /** Divide el texto que queremos enviar en distintas tramas de datos
         *   \param PuertoCOM Puerto por el que enviamos
         *   \note no excluímos la recepcion de mensajes
         */
-        void crearTramaDatos(HANDLE PuertoCOM);
+        void crearTramaDatos(HANDLE PuertoCOM, int &campoT, Trama &aux, HANDLE Pantalla);
 
         /** Envía caracter a caracter diferenciando si es de control o de datos
         *   \param t Trama a enviar
         *   \param PuertoCOM Puerto por el que enviamos
         */
-        void enviarTrama(Trama t, HANDLE PuertoCOM);
+        void enviarTrama(Trama t, HANDLE PuertoCOM, int &campoT, Trama &aux, HANDLE Pantalla);
 
         /** Devuelve el numero de tramas que se van a enviar
         *   \param cont Numero de carácteres que el usuario quiere enviar
@@ -100,6 +104,8 @@ class Enviar
         *   \param longit Número de carácteres que se quieren copia
         */
         void copiarCadena (const char* cadenaFuente, char* cadenaDestino, int offset, int longit);
+
+        void enviarFichero (HANDLE PuertoCOM, int &campoT, Trama &aux, HANDLE Pantalla);
 
 };
 
