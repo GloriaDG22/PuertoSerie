@@ -37,11 +37,11 @@
 		</Compiler>
 		<Unit filename="Enviar.cpp" />
 		<Unit filename="Enviar.h" />
+		<Unit filename="Main.cpp" />
 		<Unit filename="PuertoSerie.cpp" />
 		<Unit filename="PuertoSerie.h" />
 		<Unit filename="Recibir.cpp" />
 		<Unit filename="Recibir.h" />
-		<Unit filename="Sesion1.cpp" />
 		<Unit filename="Trama.cpp" />
 		<Unit filename="Trama.h" />
 		<Extensions>

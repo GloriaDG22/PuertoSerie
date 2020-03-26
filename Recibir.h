@@ -12,21 +12,27 @@
 #include <fstream>
 #include "PuertoSerie.h"
 #include "Trama.h"
-using namespace std;
+//using namespace std;
 
 class Recibir{
 
     private:
+        static Recibir* obj;
+        Trama tRecibida;
+        int campoT;
+
         char autores [50];
-        char color [2];
+        char *color;
         char nomFichero [40];
         int lineaFichero;
-        int colorTexto;
+        int colorFichero; ///color para recibir fichero
+        int colorRecibo; ///color de recibo por defecto
         bool esFichero;
         bool finFichero;
-        static Recibir* obj;
-        Recibir ();
+
         ofstream fSal;
+
+        Recibir ();
 
         static void createInstance();
 
@@ -39,9 +45,9 @@ class Recibir{
         *   \param aux Trama que va construyendo como parámetro de entrada salida
         *   \param PuertoCOM Puerto por el que recibimos
         */
-        void recibir(char carR, int &campoT, Trama &aux, HANDLE PuertoCOM, HANDLE Pantalla);
+        void recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla);
 
-        void procesarFichero (HANDLE Pantalla, Trama t, ofstream fSal);
+        void procesarFichero (HANDLE Pantalla);
 };
 
 #endif // RECIBIR_H

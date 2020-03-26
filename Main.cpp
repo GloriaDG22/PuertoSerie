@@ -1,11 +1,9 @@
 //============================================================================
 // ----------- PRÁCTICAS DE FUNDAMENTOS DE REDES DE COMUNICACIONES -----------
 // ---------------------------- CURSO 2019/20 --------------------------------
-// ----------------------------- SESION1.CPP ---------------------------------
+// ----------------------------- MAIN.CPP ---------------------------------
 // ------------ Gloria Méndez Sánchez y Gloria Díaz González------------------
 //============================================================================
-
-
 #include "Enviar.h"
 #include "Recibir.h"
 
@@ -14,19 +12,13 @@ using namespace std;
 HANDLE PuertoCOM;
 HANDLE Pantalla;
 
-void ponerColor (int &color, int colorTexto, int colorFondo){
-    color=colorTexto+colorFondo*16;
-}
-
-
 int main()
 {
     char carE, carR = 0;
-    Enviar envio=Enviar();
-    Recibir* recibo=recibo.getInstance();//=Recibir.getInstance();
-    int campoT=1, colorEnvio, colorRecibo;
-    Trama aux;
     Pantalla = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    Enviar envio=Enviar();
+    Recibir* recibo=recibo->getInstance();
 
 
     //Encabezado
@@ -113,7 +105,7 @@ int main()
    }
 
     PuertoCOM = AbrirPuerto(PSerie, velocidad, 8, 0, 0);
-    //Abrimos el puerto COM1 (en la sala siempre abrimos el COM1)
+    ///Abrimos el puerto COM1 (en la sala siempre abrimos el COM1)
     if(PuertoCOM == NULL)
     {
         printf("Error al abrir el puerto %s con velocidad %d \n", PSerie, velocidad);
@@ -123,29 +115,21 @@ int main()
     else
         printf("Puerto %s abierto correctamente con velocidad %d \n", PSerie, velocidad);
 
-    //Envio: letra azul verdoso (3) y fondo negro (0)
-    colorEnvio=3+0*16;
-
-    //Recibo: letra morado (5) y gris claro (7)
-    colorEnvio=5+7*16;
-
-    // Lectura y escritura simultánea de caracteres:
+    /// Lectura y escritura simultánea de caracteres:
     while(carE != 27){
 
         carR = RecibirCaracter(PuertoCOM);
-        SetConsoleTextAttribute(Pantalla, colorRecibo);
-        recibo->recibir(carR, campoT, aux, PuertoCOM);
+        recibo->recibir(carR, PuertoCOM, Pantalla);
 
         if (kbhit()){
             carE = getch();
             if (carE != 27){
-                SetConsoleTextAttribute(Pantalla, colorEnvio);
                 if(carE == '\0'){
                     carE = getch();
-                    envio.comprobarTeclaFuncion(carE, PuertoCOM, campoT, aux);
+                    envio.comprobarTeclaFuncion(carE, PuertoCOM, Pantalla);
                 }
                 else{
-                    envio.enviarCadena(carE);
+                    envio.enviarCadena(carE, Pantalla);
                 }
             }
         }

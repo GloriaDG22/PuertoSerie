@@ -7,11 +7,14 @@
 Recibir* Recibir::obj=0;
 
 Recibir::Recibir (){
+    campoT=1;
+    tRecibida= Trama();
     autores[0]='\0';
-    color[0]='\0';
+    color=new char;
     nomFichero[0]='\0';
     lineaFichero=1;
-    int colorTexto=0;
+    colorFichero=3;
+    colorRecibo = 5+7*16; ///Recibo: letra morado (5) y fondo gris claro (7)
     esFichero=false;
     finFichero=false;
 }
@@ -26,13 +29,12 @@ Recibir* Recibir::getInstance (){
     return obj;
 }
 
-void Recibir::recibir(char carR, int &campoT, Trama &aux, HANDLE PuertoCOM, HANDLE Pantalla){
+void Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
     if (carR){
         switch (campoT){
         case 1: //sincronización (22)
             if (carR==22){ //es una trama
-                aux=Trama();
-                aux.setSincr(carR);
+                tRecibida.setSincr(carR);
                 campoT++;
             }
             else{
@@ -50,86 +52,90 @@ void Recibir::recibir(char carR, int &campoT, Trama &aux, HANDLE PuertoCOM, HAND
             }
             break;
         case 2: //dirección ('T')
-            aux.setDir(carR);
+            tRecibida.setDir(carR);
             campoT ++;
             break;
         case 3: //control ENQ-5  EOT-4  ACK-6  NACK-21 / DATOS-2
-            aux.setControl(carR);
+            tRecibida.setControl(carR);
             campoT++;
             break;
         case 4: //numero de trama (0)
-            aux.setNumTrama(carR);
-            if (aux.getControl()!=2){
+            tRecibida.setNumTrama(carR);
+            if (tRecibida.getControl()!=2){
+                SetConsoleTextAttribute(Pantalla, colorRecibo);
                 campoT=1;
                 printf ("Se ha recibido una trama de tipo ");
-                aux.imprimirTipoTrama();
+                tRecibida.imprimirTipoTrama();
             }
             else
                 campoT++;
             break;
         case 5: //longitud
-            aux.setLong((unsigned char)carR);
+            tRecibida.setLong((unsigned char)carR);
             campoT++;
         case 6: //datos
             char cadenaRecibida [254];
-            RecibirCadena(PuertoCOM, cadenaRecibida, aux.getLong());
-            aux.setDatos(cadenaRecibida);
+            RecibirCadena(PuertoCOM, cadenaRecibida, tRecibida.getLong());
+            tRecibida.setDatos(cadenaRecibida);
             campoT++;
             break;
         case 7: //BCE
             campoT=1;
-            SetConsoleTextAttribute(Pantalla, colorTexto);
-            aux.setBCE((unsigned char)carR);
-            if(aux.calcularBce()==(unsigned char)carR){
-                if (esFichero)
-                    procesarFichero(Pantalla, aux, fSal);
+            tRecibida.setBCE((unsigned char)carR);
+            SetConsoleTextAttribute(Pantalla, colorFichero);
+            if(tRecibida.calcularBce()==(unsigned char)carR){
+                if (esFichero){
+                    procesarFichero(Pantalla);
+                }
                 else{
                     if (finFichero){
-                        printf ("Fichero recibido.\n");
-                        printf ("El fichero recibido tiene un tamaño de %s bytes.\n", aux.getDatos());
+                        printf ("El fichero recibido tiene un tamaño de %s bytes.\n", tRecibida.getDatos());
                         finFichero=false;
                     }
-                    else
-                        aux.mostrarTrama();
+                    else{
+                        SetConsoleTextAttribute(Pantalla, colorRecibo);
+                        tRecibida.mostrarTrama();
+                    }
                 }
             }
             else{
                 if (esFichero)
                     printf ("Error en la recepción de la trama del fichero.\n");
-                else
+                else{
+                    SetConsoleTextAttribute(Pantalla, colorRecibo);
                     printf ("Error en la trama recibida.\n");
+                }
             }
             break;
         }
     }
 }
 
-void Recibir::procesarFichero(HANDLE Pantalla, Trama t, ofstream fSal){
+void Recibir::procesarFichero(HANDLE Pantalla){
     switch (lineaFichero){
     case 1:
-        strcpy(autores, t.getDatos());
+        strcpy(autores, tRecibida.getDatos());
         lineaFichero++;
         break;
     case 2:
-        strcpy(color, t.getDatos());
-        int texto=color[0]-'0', fondo=color[1]-'0';
-        colorTexto=texto+fondo*16;
+        strcpy(color, tRecibida.getDatos());
+        colorFichero=atoi(color);
         lineaFichero++;
         break;
     case 3:
-        strcpy(nomFichero, t.getDatos());
+        strcpy(nomFichero, tRecibida.getDatos());
         fSal.open(nomFichero);
         if(!fSal.is_open())
             printf("Error al abrir el fichero de escritura.\n");
         else{
             printf("Recibiendo fichero por %s.\n", autores);
-            SetConsoleTextAttribute(Pantalla, colorTexto);
+
         }
         lineaFichero++;
         break;
     default:
         if(fSal.is_open()){
-            fSal.write(t.getDatos(), t.getLong());
+            fSal.write(tRecibida.getDatos(), tRecibida.getLong());
         }
         break;
     }

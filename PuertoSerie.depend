@@ -29,21 +29,22 @@
 1583599407 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\puertoserie.h
 	<windows.h>
 
-1583684254 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\sesion1.cpp
+1585224207 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\sesion1.cpp
 	"Enviar.h"
 	"Recibir.h"
 
-1583688321 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.h
+1585224270 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
 	<iostream>
 	<string.h>
+	<fstream>
 	"PuertoSerie.h"
 	"Trama.h"
 	"Recibir.h"
 
-1583688984 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.cpp
+1585224282 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.cpp
 	"Enviar.h"
 
 1582390666 source:c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\enviar.cpp
@@ -239,19 +240,20 @@
 1584723595 source:c:\users\glori\documents\puertoserie\trama.cpp
 	"Trama.h"
 
-1583683235 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.cpp
+1585226747 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.cpp
 	"Recibir.h"
 
-1583688321 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.h
+1585227128 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
 	<iostream>
 	<string.h>
+	<fstream>
 	"PuertoSerie.h"
 	"Trama.h"
 
-1583688321 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\trama.h
+1585224223 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\trama.h
 	<conio.h>
 	<windows.h>
 	<string.h>
@@ -259,7 +261,7 @@
 	<iostream>
 	"PuertoSerie.h"
 
-1583688321 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\trama.cpp
+1585223125 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\trama.cpp
 	"Trama.h"
 
 1585152757 c:\users\glori\documents\puertoserie\include\rec.h
@@ -271,4 +273,8 @@
 	<fstream>
 	"PuertoSerie.h"
 	"Trama.h"
+
+1585227138 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\main.cpp
+	"Enviar.h"
+	"Recibir.h"
 
