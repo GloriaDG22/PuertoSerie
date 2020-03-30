@@ -12,7 +12,7 @@
 #include <fstream>
 #include "PuertoSerie.h"
 #include "Trama.h"
-//using namespace std;
+#include "Funciones.h"
 
 class Recibir{
 
@@ -29,6 +29,7 @@ class Recibir{
         int colorRecibo; ///color de recibo por defecto
         bool esFichero;
         bool finFichero;
+        Funciones* fRecibo;
 
         ofstream fSal;
 

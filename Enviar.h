@@ -13,6 +13,7 @@
 #include "PuertoSerie.h"
 #include "Trama.h"
 #include "Recibir.h"
+#include "Funciones.h"
 
 #define FICHERO "fichero-e.txt"
 
@@ -38,7 +39,9 @@ class Enviar
         ///Trama que se va a enviar
         Trama tEnvio;
         ///Clase recibir para no excluir la recepción
-        Recibir* recibo=recibo->getInstance();
+        Recibir* recibo;
+        ///
+        Funciones* fEnvio;
 
     public:
         ///constructor
@@ -65,12 +68,6 @@ class Enviar
         *   \param PuertoCOM Puerto por el que enviamos
         */
         void comprobarTeclaFuncion (char carE, HANDLE &PuertoCOM, HANDLE &Pantalla);
-
-        /** Envía el caracter que se le pase por el puerto
-        *   \param PuertoCOM Puerto por el que enviamos
-        *   \param CarE Caracter que queremos enviar
-        */
-        void enviarCaracter(HANDLE &PuertoCOM, char carE);
 
         /** Construye la cadena que vamos a enviar
         *   \param carE Caracter que vamos a guardar en la cadena

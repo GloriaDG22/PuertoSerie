@@ -12,6 +12,7 @@ Trama::Trama(){
     longit=0;
     Datos[0]='\0';
     BCE=0;
+    fTrama=fTrama->getInstance();
 }
 
 Trama::Trama(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol, unsigned char CnumTrama,
@@ -23,6 +24,7 @@ Trama::Trama(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol, u
     longit=Clongit;
     strcpy(Datos, Cdatos);
     BCE=Cbce;
+    fTrama=fTrama->getInstance();
 }
 
 void Trama::setSincr (unsigned char Csincr){
@@ -84,19 +86,19 @@ unsigned char Trama::getBCE(){
 void Trama::imprimirTipoTrama (){
     switch (control){
     case 05:
-        printf ("ENQ \n");
+        fTrama->escribirCadena ("ENQ \n");
         break;
     case 04:
-        printf ("EOT \n");
+        fTrama->escribirCadena ("EOT \n");
         break;
     case 06:
-        printf ("ACK \n");
+        fTrama->escribirCadena ("ACK \n");
         break;
     case 21:
-        printf ("NACK \n");
+        fTrama->escribirCadena ("NACK \n");
         break;
     default:
-        printf("Ha habido un problema \n");
+        fTrama->escribirCadena("Ha habido un problema \n");
         break;
     }
 }
@@ -114,5 +116,5 @@ unsigned char Trama::calcularBce (){
 }
 
 void Trama::mostrarTrama(){
-    printf(Datos);
+    fTrama->escribirCadena(Datos);
 }

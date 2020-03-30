@@ -1,0 +1,28 @@
+Contador gratuito de caracteres / contar letras
+Contar caracteresétil para tus comentarios en Twitter, as¡ como para muchas otras aplicaciones, esta es una calculadora gratuita en l¡nea que cuenta el n£mero de caracteres o letras de un texto. Periodistas que escriben un art¡culo, estudiantes que trabajan en su tarea, escritores independientes, investigadores, solicitantes de empleo que preparan su curr¡culum: por favor, si‚ntete libre de utilizar esta herramienta para contar el n£mero de letras o caracteres en tus documentos. Tambi‚n ser  £til en mercadotecnia, publicidad, dise¤o web, creaci¢n de folletos, escritura de tesis, etc.
+
+Para comenzar, simplemente escribe o pega el texto en el  rea de texto indicada. Cuando hayas terminado, haz clic en Contar caracteres (contar letras) hola mi a
+MENSAJE ENVIADO.
+Se ha recibido una trama de tipo ENQ 
+
+Elija el tipo de trama que quiere enviar:
+ 1: Trama ENQ 
+ 2: Trama EOT 
+ 3: Trama ACK 
+ 4: Trama NACK 
+Ha introducido un valor erroneo, intentelo de nuevo 
+Se ha enviado una trama de tipo EOT 
+Contador gratuito de caracteres / contar letras
+Contar caracteresétil para tus comentarios en Twitter, as¡ como para muchas otras aplicaciones, esta es una calculadora gratuita en l¡nea que cuenta el n£mero de caracteres o letras de un texto. Periodistas que escriben un art¡culo, estudiantes que trabajan en su tarea, escritores independientes, investigadores, solicitantes de empleo que preparan su curr¡culum: por favor, si‚ntete libre de utilizar esta herramienta para contar el n£mero de letras o caracteres en tus documentos. Tambi‚n ser  £til en mercadotecnia, publicidad, dise¤o web, creaci¢n de folletos, escritura de tesis, etc.
+
+Para comenzar, simplemente escribe o pega el texto en el  rea de texto indicada. Cuando hayas terminado, haz clic en Contar caracteres (contar letras) hola mi a
+Recibiendo fichero por Clara Santos & Olivia Becerra.
+Fichero recibido.
+El fichero recibido tiene un tamaño de 100000 bytes.
+Enviando fichero por Clara Santos & Olivia Becerra. 
+Fichero enviado. 
+hola
+MENSAJE ENVIADO.
+‡‡‡hola
+MENSAJE ENVIADO.
+hola‡‡hola

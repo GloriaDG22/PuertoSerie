@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "PuertoSerie.h"
-using namespace std;
+#include "Funciones.h"
 
 
 class Trama{
@@ -29,6 +29,8 @@ class Trama{
         char Datos [255];
         ///Carácter BCE (convalores entre 1 y 254)
         unsigned char BCE;
+        ///
+        Funciones* fTrama;
 
     public:
         ///constructores

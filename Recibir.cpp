@@ -17,6 +17,7 @@ Recibir::Recibir (){
     colorRecibo = 5+7*16; ///Recibo: letra morado (5) y fondo gris claro (7)
     esFichero=false;
     finFichero=false;
+    fRecibo=fRecibo->getInstance();
 }
 
 void Recibir::createInstance (){
@@ -38,9 +39,8 @@ void Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
                 campoT++;
             }
             else{
-                if (carR == '{'){
+                if (carR == '{')
                     esFichero=true;
-                }
                 else{
                     if(carR == '}'){
                         fSal.close();
@@ -64,7 +64,7 @@ void Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
             if (tRecibida.getControl()!=2){
                 SetConsoleTextAttribute(Pantalla, colorRecibo);
                 campoT=1;
-                printf ("Se ha recibido una trama de tipo ");
+                fRecibo->escribirCadena ("Se ha recibido una trama de tipo ");
                 tRecibida.imprimirTipoTrama();
             }
             else
@@ -89,7 +89,9 @@ void Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
                 }
                 else{
                     if (finFichero){
-                        printf ("El fichero recibido tiene un tamaño de %s bytes.\n", tRecibida.getDatos());
+                        fRecibo->escribirCadena("Fichero recibido.\n");
+                        string cadena = "El fichero recibido tiene un tamaño de " + (string)tRecibida.getDatos() + " bytes.\n";
+                        fRecibo->escribirCadena(cadena);
                         finFichero=false;
                     }
                     else{
@@ -100,10 +102,10 @@ void Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
             }
             else{
                 if (esFichero)
-                    printf ("Error en la recepción de la trama del fichero.\n");
+                    fRecibo->escribirCadena ("Error en la recepción de la trama del fichero.\n");
                 else{
                     SetConsoleTextAttribute(Pantalla, colorRecibo);
-                    printf ("Error en la trama recibida.\n");
+                    fRecibo->escribirCadena ("Error en la trama recibida.\n");
                 }
             }
             break;
@@ -126,10 +128,10 @@ void Recibir::procesarFichero(HANDLE Pantalla){
         strcpy(nomFichero, tRecibida.getDatos());
         fSal.open(nomFichero);
         if(!fSal.is_open())
-            printf("Error al abrir el fichero de escritura.\n");
+            fRecibo->escribirCadena("Error al abrir el fichero de escritura.\n");
         else{
-            printf("Recibiendo fichero por %s.\n", autores);
-
+            string cadena = "Recibiendo fichero por " + (string)autores + ".\n";
+            fRecibo->escribirCadena(cadena);
         }
         lineaFichero++;
         break;

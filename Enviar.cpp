@@ -9,6 +9,8 @@ Enviar::Enviar(){
     cont = 0;
     colorEnvio=3+0*16;
     tEnvio=Trama();
+    recibo=recibo->getInstance();
+    fEnvio=fEnvio->getInstance();
 }
 
 Enviar::~Enviar(){
@@ -31,7 +33,7 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
     SetConsoleTextAttribute(Pantalla, colorEnvio);
     switch (carE){
         case 59: //F1
-            printf("\n");
+            fEnvio->escribirCaracter('\n');
             addChar('\n');
             addChar('\0');
             crearTramaDatos(PuertoCOM, Pantalla);
@@ -43,12 +45,11 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
         case 61: //F3
             enviarFichero(PuertoCOM, Pantalla);
             break;
+        case 63:
+            fEnvio->abrirFlujo();
+            fEnvio->setEscribir(true);
+            break;
     }
-}
-
-void Enviar::enviarCaracter(HANDLE &PuertoCOM, char carE){
-    printf("%c", carE);   //Envío
-    EnviarCaracter(PuertoCOM,caracter);
 }
 
 void Enviar::enviarCadena (char carE, HANDLE &Pantalla){
@@ -56,23 +57,22 @@ void Enviar::enviarCadena (char carE, HANDLE &Pantalla){
     switch (carE){
     case 8: //Borrar
         if(cadena[cont-1]!='\n'){
-            printf("%c", carE);
-            printf(" ");
-            printf("%c", carE);
+            fEnvio->escribirCaracter(carE);
+            fEnvio->escribirCaracter(' ');
+            fEnvio->escribirCaracter(carE);
             cont--;
         }
         break;
     case 13: //Enter
         if(cont < MAX){
-            printf("\n");
+            fEnvio->escribirCaracter('\n');
             cadena[cont] = '\n';
             cont++;
         }
         break;
     default: //Cualquier otra tecla
         if(cont < MAX){
-
-            printf("%c", carE);
+            fEnvio->escribirCaracter(carE);
             cadena[cont]=carE;
             cont++;
         }
@@ -81,7 +81,7 @@ void Enviar::enviarCadena (char carE, HANDLE &Pantalla){
 }
 
 void Enviar::crearTramaControl(HANDLE &PuertoCOM, HANDLE &Pantalla){
-    printf ("\nElija el tipo de trama que quiere enviar \n 1: Trama ENQ \n 2: Trama EOT \n 3: Trama ACK \n 4: Trama NACK \n");
+    fEnvio->escribirCadena("\nElija el tipo de trama que quiere enviar:\n 1: Trama ENQ \n 2: Trama EOT \n 3: Trama ACK \n 4: Trama NACK \n");
     int opcionT;
     unsigned char control;
     bool valorCorrecto=false;
@@ -106,12 +106,12 @@ void Enviar::crearTramaControl(HANDLE &PuertoCOM, HANDLE &Pantalla){
                 valorCorrecto = true;
                 break;
             case 27: //escape
-                printf ("Se ha cancelado el envio de la trama \n");
+                fEnvio->escribirCadena("Se ha cancelado el envio de la trama \n");
                 valorCorrecto = true;
                 envio = false;
                 break;
             default:
-                 printf("Ha introducido un valor erroneo, intentelo de nuevo \n");
+                fEnvio->escribirCadena("Ha introducido un valor erroneo, intentelo de nuevo \n");
                 break;
         }
     } //Creamos con los valores por defecto y solo añadimos el carácter de control
@@ -130,12 +130,11 @@ void Enviar::crearTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla){
     for (int i=0; i<numTramas; i++){
         offset = 254 * (i);
         copiarCadena (cadena, cadenaEnvio, offset, 254);
-        printf("la cadena a enviar es: %s", cadenaEnvio);
         tEnvio=Trama(22, 'T', 2, '0', strlen(cadenaEnvio), cadenaEnvio, 0);
         tEnvio.setBCE(tEnvio.calcularBce());
         enviarTrama(PuertoCOM, Pantalla);
     }
-    printf("MENSAJE ENVIADO.\n");
+    fEnvio->escribirCadena("MENSAJE ENVIADO.\n");
 }
 
 void Enviar::enviarTrama(HANDLE &PuertoCOM, HANDLE &Pantalla){
@@ -149,7 +148,7 @@ void Enviar::enviarTrama(HANDLE &PuertoCOM, HANDLE &Pantalla){
         EnviarCaracter(PuertoCOM, tEnvio.getBCE());
     }
     else{ //si es trama de control
-        printf ("Se ha enviado una trama de tipo ");
+        fEnvio->escribirCadena("Se ha enviado una trama de tipo ");
         tEnvio.imprimirTipoTrama();
     }
     //Recibir para no excluirlo en el envío
@@ -178,12 +177,13 @@ void Enviar::copiarCadena (const char* cadenaFuente, char* cadenaDestino, int of
 
 void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
     int cont=0;
+    bool teclaESC = false;
     ifstream fEnt;
     char autores[50], texto[255];
     fEnt.open(FICHERO);
-    if(fEnt.is_open()){
+    if(!fEnvio->comprobarESC(teclaESC) && fEnt.is_open()){
         EnviarCaracter(PuertoCOM, '{'); //caracter que indica que se va a enviar un fichero
-        for(int i=0;i<LINCABECERA;i++){
+        for(int i=0;i<LINCABECERA && !fEnvio->comprobarESC(teclaESC);i++){
             fEnt.getline(texto, 50);
             if (i==0)
                 strcpy(autores, texto);
@@ -191,8 +191,11 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
             tEnvio.setBCE(tEnvio.calcularBce());
             enviarTrama(PuertoCOM, Pantalla);
         }
-        printf("Enviando fichero por %s. \n", autores);
-        while(!fEnt.eof()){
+        if(!teclaESC){
+            string cad = "Enviando fichero por " + (string)autores + ". \n";
+            fEnvio->escribirCadena(cad);
+        }
+        while(!fEnt.eof() && !fEnvio->comprobarESC(teclaESC)){
             fEnt.read(texto, 254);
             texto[fEnt.gcount()]='\0';
             tEnvio=Trama(22, 'T', 2, '0', strlen(texto), texto, 0);
@@ -206,10 +209,17 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
         tEnvio=Trama(22, 'T', 2, '0', strlen(texto), texto, 0);
         tEnvio.setBCE(tEnvio.calcularBce());
         enviarTrama(PuertoCOM, Pantalla);
-        printf("Fichero enviado. \n");
+        if (!teclaESC)
+            fEnvio->escribirCadena("Fichero enviado. \n");
+        else
+            fEnvio->escribirCadena("Se ha cancelado el envio del fichero.\n");
     }
-    else
-        printf("ERROR: el fichero no existe");
+    else{
+        if(!teclaESC)
+            fEnvio->escribirCadena("ERROR: el fichero no existe.\n");
+        else
+            fEnvio->escribirCadena("Se ha cancelado el envio del fichero.\n");
+    }
 }
 
 
