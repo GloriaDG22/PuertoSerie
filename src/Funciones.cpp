@@ -21,6 +21,24 @@ Funciones* Funciones::getInstance (){
     return obj;
 }
 
+void Funciones::dividirCadena(int cont, int &numTramas){
+    if (cont%254==0)
+        numTramas=cont/254;
+    else
+        numTramas=(cont/254)+1;
+}
+
+void Funciones::copiarCadena (const char* cadenaFuente, char* cadenaDestino, int offset, int longit){
+    int i = 0;
+    char actual;
+    do{
+        actual = cadenaFuente [i+offset];
+        cadenaDestino[i] = actual;
+        i++;
+    } while ((actual!='\0')&&(i<longit));
+    cadenaDestino[i]='\0';
+}
+
 void Funciones::abrirFlujo(){
     fSal = fopen(NOMFICHEROF5, "wt");
 }

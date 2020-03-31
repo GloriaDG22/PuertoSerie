@@ -66,22 +66,26 @@ class Enviar
         /**  Comprueba qué tecla hemos accionado para ver como actuar
         *   \param carE Caracter que se pulsa
         *   \param PuertoCOM Puerto por el que enviamos
+        *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
         */
         void comprobarTeclaFuncion (char carE, HANDLE &PuertoCOM, HANDLE &Pantalla);
 
         /** Construye la cadena que vamos a enviar
         *   \param carE Caracter que vamos a guardar en la cadena
+        *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
         *   \note Si es tecla normal guarda en la cadena por defecto y si es borrar o enter entra en casos especiales
         */
         void enviarCadena(char carE, HANDLE &Pantalla);
 
         /** Crea la trama de control en función de lo deseado por el usuario y la envía
         *   \param PuertoCOM Puerto por el que enviamos
+        *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
         */
         void crearTramaControl (HANDLE &PuertoCOM, HANDLE &Pantalla);
 
         /** Divide el texto que queremos enviar en distintas tramas de datos
         *   \param PuertoCOM Puerto por el que enviamos
+        *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
         *   \note no excluímos la recepcion de mensajes
         */
         void crearTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla);
@@ -89,23 +93,14 @@ class Enviar
         /** Envía caracter a caracter diferenciando si es de control o de datos
         *   \param t Trama a enviar
         *   \param PuertoCOM Puerto por el que enviamos
+        *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
         */
         void enviarTrama(HANDLE &PuertoCOM, HANDLE &Pantalla);
 
-        /** Devuelve el numero de tramas que se van a enviar
-        *   \param cont Numero de carácteres que el usuario quiere enviar
-        *   \param numTramas Parámetro de entrada salida que guarda el número de tramas
+        /** Lee las líneas del fichero y las envía
+        *   \param PuertoCOM Puerto por el que enviamos
+        *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
         */
-        void dividirCadena(int cont, int &numTramas);
-
-        /** Copia la cadena fuene en la destino desde la posición deseada hasta el tamaño indicado
-        *   \param cadenaFuente Cadena a copiar
-        *   \param cadenaDestino Cadena de destino
-        *   \param offset Desplazamiento para empezar a copiar
-        *   \param longit Número de carácteres que se quieren copia
-        */
-        void copiarCadena (const char* cadenaFuente, char* cadenaDestino, int offset, int longit);
-
         void enviarFichero (HANDLE &PuertoCOM, HANDLE &Pantalla);
 
 };

@@ -126,10 +126,10 @@ void Enviar::crearTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla){
     int offset;
     char cadenaEnvio [255];
     int numTramas;
-    dividirCadena(cont, numTramas); //calculamos en número de tramas que tenemos que enviar
+    fEnvio->dividirCadena(cont, numTramas); //calculamos en número de tramas que tenemos que enviar
     for (int i=0; i<numTramas; i++){
         offset = 254 * (i);
-        copiarCadena (cadena, cadenaEnvio, offset, 254);
+        fEnvio->copiarCadena (cadena, cadenaEnvio, offset, 254);
         tEnvio=Trama(22, 'T', 2, '0', strlen(cadenaEnvio), cadenaEnvio, 0);
         tEnvio.setBCE(tEnvio.calcularBce());
         enviarTrama(PuertoCOM, Pantalla);
@@ -157,23 +157,6 @@ void Enviar::enviarTrama(HANDLE &PuertoCOM, HANDLE &Pantalla){
     SetConsoleTextAttribute(Pantalla, colorEnvio);
 }
 
-void Enviar::dividirCadena(int cont, int &numTramas){
-    if (cont%254==0)
-        numTramas=cont/254;
-    else
-        numTramas=(cont/254)+1;
-}
-
-void Enviar::copiarCadena (const char* cadenaFuente, char* cadenaDestino, int offset, int longit){
-    int i = 0;
-    char actual;
-    do{
-        actual = cadenaFuente [i+offset];
-        cadenaDestino[i] = actual;
-        i++;
-    } while ((actual!='\0')&&(i<longit));
-    cadenaDestino[i]='\0';
-}
 
 void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
     int cont=0;

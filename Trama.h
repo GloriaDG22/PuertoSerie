@@ -62,6 +62,7 @@ class Trama{
 
         ///Muestra la inforamación que le interesa al usuario
         void mostrarTrama ();
+
 };
 
 #endif // TRAMA_H

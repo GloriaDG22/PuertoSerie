@@ -191,18 +191,18 @@
 1583599407 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion3\puertoserie3.0\recibir.cpp
 	"Recibir.h"
 
-1582564307 source:c:\users\glori\documents\puertoserie\puertoserie.cpp
+1582567907 source:c:\users\glori\documents\puertoserie\puertoserie.cpp
 	"PuertoSerie.h"
 	<stdio.h>
 	<iostream>
 
-1582564307 c:\users\glori\documents\puertoserie\puertoserie.h
+1582567907 c:\users\glori\documents\puertoserie\puertoserie.h
 	<windows.h>
 
-1585152641 source:c:\users\glori\documents\puertoserie\recibir.cpp
+1585657715 source:c:\users\glori\documents\puertoserie\recibir.cpp
 	"Recibir.h"
 
-1585159627 c:\users\glori\documents\puertoserie\recibir.h
+1585659589 c:\users\glori\documents\puertoserie\recibir.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
@@ -211,20 +211,22 @@
 	<fstream>
 	"PuertoSerie.h"
 	"Trama.h"
+	"Funciones.h"
 
-1584723595 c:\users\glori\documents\puertoserie\trama.h
+1585659589 c:\users\glori\documents\puertoserie\trama.h
 	<conio.h>
 	<windows.h>
 	<string.h>
 	<stdio.h>
 	<iostream>
 	"PuertoSerie.h"
+	"Funciones.h"
 
 1585153089 source:c:\users\glori\documents\puertoserie\sesion1.cpp
 	"Enviar.h"
 	"Recibir.h"
 
-1585157113 c:\users\glori\documents\puertoserie\enviar.h
+1585659589 c:\users\glori\documents\puertoserie\enviar.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
@@ -234,11 +236,12 @@
 	"PuertoSerie.h"
 	"Trama.h"
 	"Recibir.h"
+	"Funciones.h"
 
-1585157159 source:c:\users\glori\documents\puertoserie\enviar.cpp
+1585658347 source:c:\users\glori\documents\puertoserie\enviar.cpp
 	"Enviar.h"
 
-1584723595 source:c:\users\glori\documents\puertoserie\trama.cpp
+1585659589 source:c:\users\glori\documents\puertoserie\trama.cpp
 	"Trama.h"
 
 1585584421 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.cpp
@@ -291,5 +294,21 @@
 	"PuertoSerie.h"
 
 1585588127 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\src\funciones.cpp
+	"Funciones.h"
+
+1585659587 c:\users\glori\documents\puertoserie\include\funciones.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	<fstream>
+	"PuertoSerie.h"
+
+1585657714 source:c:\users\glori\documents\puertoserie\main.cpp
+	"Enviar.h"
+	"Recibir.h"
+
+1585659589 source:c:\users\glori\documents\puertoserie\src\funciones.cpp
 	"Funciones.h"
 

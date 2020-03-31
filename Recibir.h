@@ -45,9 +45,14 @@ class Recibir{
         *   \param campoT Controla por que caracter de la trama ha leido
         *   \param aux Trama que va construyendo como parámetro de entrada salida
         *   \param PuertoCOM Puerto por el que recibimos
+        *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
         */
         void recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla);
 
+        /** Se procesan las tramas de datos correspondientes a un fichero: las 3 primeras lineas (cabecera) se
+        *   guardan pero no se muestran por pantalla y el cuerpo del fichero se escribe en un fichero de salida
+        *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
+        */
         void procesarFichero (HANDLE Pantalla);
 };
 
