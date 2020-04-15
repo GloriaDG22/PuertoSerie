@@ -33,7 +33,7 @@
 	"Enviar.h"
 	"Recibir.h"
 
-1585590706 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.h
+1585674266 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
@@ -45,7 +45,7 @@
 	"Recibir.h"
 	"Funciones.h"
 
-1585588773 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.cpp
+1585674266 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.cpp
 	"Enviar.h"
 
 1582390666 source:c:\users\glori\desktop\puertoserie (2)\puertoserie\puertoserie\enviar.cpp
@@ -247,7 +247,7 @@
 1585584421 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.cpp
 	"Recibir.h"
 
-1585581935 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.h
+1585674266 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
@@ -258,7 +258,7 @@
 	"Trama.h"
 	"Funciones.h"
 
-1585582036 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\trama.h
+1585674266 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\trama.h
 	<conio.h>
 	<windows.h>
 	<string.h>
@@ -310,5 +310,17 @@
 	"Recibir.h"
 
 1585659589 source:c:\users\glori\documents\puertoserie\src\funciones.cpp
+	"Funciones.h"
+
+1585674266 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\funciones.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	<fstream>
+	"PuertoSerie.h"
+
+1585674266 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\funciones.cpp
 	"Funciones.h"
 

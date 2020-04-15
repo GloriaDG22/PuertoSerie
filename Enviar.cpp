@@ -45,9 +45,20 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
         case 61: //F3
             enviarFichero(PuertoCOM, Pantalla);
             break;
-        case 63:
+        case 63: //F5
             fEnvio->abrirFlujo();
             fEnvio->setEscribir(true);
+            break;
+        case 64: //F6
+            fEnvio->cerrarFlujo();
+            printf("Seleccione maestro o esclavo: \n 1.Maestro\n 2.Esclavo\n");
+            char seleccion = getch();
+            if(seleccion=='1'){
+                EnviarCaracter(PuertoCOM, 'E');
+                printf("Has seleccionado MAESTRO, seleccione la operación a realizar")
+            }
+
+            //se imprime mensaje de eleccion de estacion
             break;
     }
 }

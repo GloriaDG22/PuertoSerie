@@ -44,7 +44,10 @@ void Funciones::abrirFlujo(){
 }
 
 void Funciones::cerrarFlujo(){
-    fclose(fSal);
+    if(fSal!=NULL){
+        fclose(fSal);
+        escribir = false;
+    }
 }
 
 void Funciones::setEscribir(bool _escribir){
