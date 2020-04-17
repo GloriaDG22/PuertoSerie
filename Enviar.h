@@ -14,6 +14,7 @@
 #include "Trama.h"
 #include "Recibir.h"
 #include "Funciones.h"
+#include "Protocolo.h"
 
 #define FICHERO "fichero-e.txt"
 

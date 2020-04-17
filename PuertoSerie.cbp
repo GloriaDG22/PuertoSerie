@@ -40,14 +40,14 @@
 		<Unit filename="Funciones.cpp" />
 		<Unit filename="Funciones.h" />
 		<Unit filename="Main.cpp" />
+		<Unit filename="Protocolo.cpp" />
+		<Unit filename="Protocolo.h" />
 		<Unit filename="PuertoSerie.cpp" />
 		<Unit filename="PuertoSerie.h" />
 		<Unit filename="Recibir.cpp" />
 		<Unit filename="Recibir.h" />
 		<Unit filename="Trama.cpp" />
 		<Unit filename="Trama.h" />
-		<Unit filename="include/Protocolo.h" />
-		<Unit filename="src/Protocolo.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

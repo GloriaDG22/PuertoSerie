@@ -50,15 +50,35 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
             fEnvio->setEscribir(true);
             break;
         case 64: //F6
+            prot = Protocolo();
             fEnvio->cerrarFlujo();
+            bool correcto=false;
             printf("Seleccione maestro o esclavo: \n 1.Maestro\n 2.Esclavo\n");
             char seleccion = getch();
-            if(seleccion=='1'){
-                EnviarCaracter(PuertoCOM, 'E');
-                printf("Has seleccionado MAESTRO, seleccione la operación a realizar")
+            while (!correcto){
+                switch(seleccion){
+                case '1': //eleccion de maestro
+                    EnviarCaracter(PuertoCOM, 'E'); //se envia a la otra estacion el rol de esclavo
+                    ProtMaestro prot = Protocolo();
+                    prot.iniciarProtocolo();
+                    correcto = true;
+                    break;
+                case '2': //elección de esclavo
+                    EnviarCaracter(PuertoCOM, 'M'); //se envia a la otra estacion el rol de maestro
+                    ProtEsclavo prot = Protocolo ();
+                    prot.iniciarProtocolo();
+                    correcto = true;
+                    break;
+                case 27: //escape
+                    printf("Se ha cancelado el protocolo \n");
+                    correcto = true;
+                    break;
+                default:
+                    printf("Ha introducido un valor erroneo, intentelo de nuevo \n");
+                    break;
+                }
             }
-
-            //se imprime mensaje de eleccion de estacion
+            prot.iniciarProtocolo();
             break;
     }
 }
@@ -128,7 +148,7 @@ void Enviar::crearTramaControl(HANDLE &PuertoCOM, HANDLE &Pantalla){
     } //Creamos con los valores por defecto y solo añadimos el carácter de control
     if (envio==true){
         //los ultimos 3 campos se inicializan vacios porque es una trama de control
-        tEnvio=Trama(22, 'T', control, '0', 0, " ", 0);
+        tEnvio=Trama(22, 'T', control, '0', 0, ' ', 0);
         enviarTrama(PuertoCOM, Pantalla);
     }
 }
@@ -214,6 +234,11 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
         else
             fEnvio->escribirCadena("Se ha cancelado el envio del fichero.\n");
     }
+}
+
+void Enviar::crearTramaC(HANDLE &PuertoCOM, HANDLE &Pantalla, unsigned char direccion, unsigned char control, unsigned char numTrama){
+    tEnvio= Trama(22, direccion, control, numTrama, '0', "0", 0);
+    tEnvio.enviarTrama(PuertoCOM, Pantalla);
 }
 
 

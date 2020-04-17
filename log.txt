@@ -1,0 +1,9 @@
+akdjhfak
+MENSAJE ENVIADO.
+
+Elija el tipo de trama que quiere enviar:
+ 1: Trama ENQ 
+ 2: Trama EOT 
+ 3: Trama ACK 
+ 4: Trama NACK 
+Se ha enviado una trama de tipo ACK 

@@ -118,3 +118,5 @@ unsigned char Trama::calcularBce (){
 void Trama::mostrarTrama(){
     fTrama->escribirCadena(Datos);
 }
+
+

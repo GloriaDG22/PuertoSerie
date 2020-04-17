@@ -12,8 +12,14 @@
 #include <fstream>
 #include "PuertoSerie.h"
 
+
 #define NOMFICHEROF5 "log.txt"
 
+#define colorEstablecimiento 9 //si no es este es el 1
+#define colorCabecera 12
+#define colorCuerpo 2
+#define colorTamanio 7
+#define colorCierre 11
 
 class Funciones
 {
@@ -73,6 +79,8 @@ class Funciones
         *   cualquier otro caso
         */
         bool comprobarESC(bool &teclaESC);
+
+        void imprimirTrama(HANDLE &Pantalla, Trama aux, int campoProt, unsigned char RE, int cont);
 };
 
 #endif // FUNCIONES_H
