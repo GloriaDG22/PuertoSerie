@@ -9,7 +9,13 @@
 
 #ifndef __PUERTOSERIE_H_
 #define __PUERTOSERIE_H_
+#include <conio.h>
 #include <windows.h>
+#include <string.h>
+#include <stdio.h>
+#include <fstream>
+#include <iostream>
+
 using namespace std;
 
 

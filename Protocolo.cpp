@@ -5,60 +5,67 @@
 #include "Protocolo.h"
 
 Protocolo::Protocolo(){
-    cont=0;
-    envio = envio->getInstance();
-    recibo = recibo->getInstance();
-}
-///05:ENQ 04:EOT 06:ACK 21:NACK 02:STX
-void Protocolo::reiniciarCont(){
-    cont=0;
+    cerrar = false;
 }
 
-/*void Protocolo::iniciarProtocolo(){
-}*/
-
-/*void Protocolo::faseEstablecimiento(){
-    if(estacion=='M'){
-        envio->crearTramaC(PuertoCOM, Pantalla, tipoOper, 4, (unsigned char)cont%2);
-        recibirTrama();
+void Protocolo::faseTransferenciaEnvio(){
+    while(!finFichero){
+        ///troceamos fichero: metodo en enviar que cree una trama con los parametros
+        ///dados y la envie e imprima
+        numTrama++;
+        esperarTramaAceptacion();
+        imprimirTrama();
+        numTrama++;
     }
-    else{
-        if(estacion=='E')
-            confirmacionDeRecibo();
+}
+
+void Protocolo::faseTransferenciaRecibo(){
+    while(){
+        recibirTramaDatos();
+        imprimirTrama();
+        enviarTramaAceptacion();
+        numTrama++;
+        imprimirTrama();
     }
-    faseTransferencia();
 }
 
-void Protocolo::faseCierre (){
-
-    recibo.setEsProt(false);
+void Protocolo::faseCierre(){
+    enviarTramaCierre();
+    numTrama++;
+    imprimirTrama();
+    esperarRespuesta();
+    imprimirTrama();
 }
 
-void Protocolo::esperarRespuesta (){
-    while(recibirTrama()!=06 || recibirTrama()!=21)
-}*/
-
-void Protocolo::enviarRespuesta(unsigned char tipoTrama, unsigned char direccion){
-    if(recibirTrama()==tipoTrama) ///enviamos una ACK porque hemos recibido correctamente la trama
-        envio->crearTramaC(PuertoCOM, Pantalla, direccion, 06, (unsigned char)cont%2);
-    else ///enviamos una NACK ya que no se ha recibido correctamente la trama
-        envio->crearTramaC(PuertoCOM, Pantalla, direccion, 21, (unsigned char)cont%2);
+void Protocolo::reiniciarNumTrama{
+    numTrama=0;
 }
 
 ///MÉTODOS DEL MAESTRO
 
-void ProtMaestro::IniciarProtocolo(){
-     printf("Has seleccionado MAESTRO, seleccione la operación a realizar: \n 1.Seleccion\n 2.Sondeo\n");
+ProtMaestro::ProtMaestro(){
+    Protocolo();
+}
+
+void ProtMaestro::iniciarProtocolo(HANDLE &PuertoCOM){
+    printf("Has seleccionado MAESTRO, seleccione la operacion a realizar: \n 1.Seleccion\n 2.Sondeo\n");
     char sel = getch();
+    bool correcto = false;
     while (!correcto){///seleccion
         switch(sel){
         case '1':
+            printf("Ha elegido seleccion \n");
             seleccion();
-            EnviarCaracter(PuertoCOM, 'R');
+            tipoOper='R';
+            EnviarCaracter(PuertoCOM, tipoOper);
+            correcto=true;
             break;
         case '2':///sondeo
+            printf("Ha elegido sondeo \n");
             sondeo();
-            EnviarCaracter(PuertoCOM, 'T');
+            tipoOper='T';
+            EnviarCaracter(PuertoCOM, tipoOper);
+            correcto=true;
             break;
         default:
             printf("Ha introducido un valor erroneo, intentelo de nuevo \n");
@@ -67,29 +74,119 @@ void ProtMaestro::IniciarProtocolo(){
     }
 }
 
-void ProtMaestro::seleccion(){
-
+void ProtMaestro::seleccion(){ ///SELECCION MAESTRO
+    reiniciarNumTrama();
+    ///empieza fase establecimiento
+    faseEstablecimiento();
+    reiniciarNumTrama();
+    ///empieza fase transferencia
+    faseTransferenciaEnvio();
+    reiniciarNumTrama();
+    ///empieza fase cierre
+    faseCierre(); ///solicita cierre de la comunicacion y recibe la respuesta
 }
 
-void ProtMaestro::sondeo (){
+void ProtMaestro::sondeo(){ ///SONDEO MAESTRO
+    reiniciarNumTrama();
+    ///empieza fase establecimiento
+    faseEstablecimiento();
+    reiniciarNumTrama();
+    ///empieza fase transferencia
+    faseTransferenciaRecibo();
+    reiniciarNumTrama();
+    ///empieza fase cierre
+    aceptarCierreComunicacion(); ///pregunta por pantalla si se desea cerrar o no la comunicacion
 }
 
-void ProtMaetro::
+void ProtMaestro::faseEstablecimiento(){
+    ///poner color establecimiento: azul
+    enviarTramaEstablecimiento();
+    numTrama++;
+    imprimirTrama();
+    esperarRespuesta();
+    imprimirTrama();
+}
+
+void ProtMaestro::aceptarCierreComunicacion(){
+    while (!cerrar){
+        esperarTramaCierre();
+        imprimirTrama();
+        printf("El esclavo ha solicitado cerrar la comunicacion, ¿quiere cerrarla?\n 1. Si\n 2. No\n");
+        char carR = getch();
+        bool correcto=false;
+        while(!correcto){
+            if(carR=='1'){
+                enviarTramaAceptacion();
+                imprimirTrama();
+                correcto = true;
+                cerrar = true;
+            }
+            else{
+                if (carR=='2'){
+                    enviarTramaNegacion();
+                    imprimirTrama();
+                    correcto=true;
+                }
+                else
+                    printf("Introduzca un valor correcto\n");
+            }
+        }
+        numTrama++;
+    }
+}
 
 ///METODOS DEL ESCLAVO
 
-void ProtEsclavo::iniciarProtocolo (){
+ProtEsclavo::ProtEsclavo(){
+    Protocolo();
+}
+
+void ProtEsclavo::iniciarProtocolo (HANDLE &PuertoCOM){
     printf("Has seleccionado ESCLAVO\n");
     char carR = RecibirCaracter(PuertoCOM);
-    ///esperar llamada del maestro
+    tipoOper=carR;
     if(carR=='R')
         seleccion();
     else
         sondeo();
 }
 
-void ProtEsclavo::seleccion(){
-
+void ProtEsclavo::seleccion(){ ///SELECCION ESCLAVO
+    reiniciarNumTrama();
+    ///empieza fase establecimiento
+    faseEstablecimiento();
+    reiniciarNumTrama();
+    ///empieza fase transferencia
+    faseTransferenciaRecibo();
+    reiniciarNumTrama();
+    ///empieza fase cierre
+    esperarTramaCierre();
+    imprimirTrama();
+    enviarRespuesta();
+    imprimirTrama();
 }
-void ProtEsclavo::sondeo (){
+
+void ProtEsclavo::sondeo (){ ///SONDEO ESCLAVO
+    reiniciarNumTrama();
+    ///empieza fase establecimiento
+    faseEstablecimiento();
+    reiniciarNumTrama();
+    ///empieza fase transferencia
+    faseTransferenciaEnvio();
+    reiniciarNumTrama();
+    ///empieza fase cierre
+    while (!cerrar){
+        faseCierre();
+    }
+    esperarRespuesta();
+    imprimirTrama();
+}
+
+void ProtEsclavo::faseEstablecimiento(){
+    ///poner color establecimiento: azul
+    ///esperar llamada del maestro
+    imprimirTrama();
+    enviarTramaAceptacion();
+    numTrama++;
+    imprimirTrama();
 }

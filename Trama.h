@@ -4,11 +4,6 @@
 
 #ifndef TRAMA_H
 #define TRAMA_H
-#include <conio.h>
-#include <windows.h>
-#include <string.h>
-#include <stdio.h>
-#include <iostream>
 #include "PuertoSerie.h"
 #include "Funciones.h"
 

@@ -4,15 +4,7 @@
 
 #ifndef RECIBIR_H
 #define RECIBIR_H
-#include <stdio.h>
-#include <conio.h>
-#include <windows.h>
-#include <iostream>
-#include <string.h>
-#include <fstream>
-#include "PuertoSerie.h"
 #include "Trama.h"
-#include "Funciones.h"
 
 class Recibir{
 
@@ -29,7 +21,6 @@ class Recibir{
         int colorRecibo; ///color de recibo por defecto
         bool esFichero;
         bool finFichero;
-        bool esProt;
         Funciones* fRecibo;
 
         ofstream fSal;
@@ -55,10 +46,6 @@ class Recibir{
         *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
         */
         void procesarFichero (HANDLE Pantalla);
-
-        /** Se utiliza para poner a falso la variable esProt cuando el protocolo acaba
-        */
-        void setEsProt (bool _esProt);
 };
 
 #endif // RECIBIR_H

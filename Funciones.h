@@ -4,22 +4,11 @@
 
 #ifndef FUNCIONES_H
 #define FUNCIONES_H
-#include <stdio.h>
-#include <conio.h>
-#include <windows.h>
-#include <iostream>
-#include <string.h>
-#include <fstream>
 #include "PuertoSerie.h"
-
+#include "Protocolo.h"
 
 #define NOMFICHEROF5 "log.txt"
 
-#define colorEstablecimiento 9 //si no es este es el 1
-#define colorCabecera 12
-#define colorCuerpo 2
-#define colorTamanio 7
-#define colorCierre 11
 
 class Funciones
 {
@@ -80,7 +69,9 @@ class Funciones
         */
         bool comprobarESC(bool &teclaESC);
 
-        void imprimirTrama(HANDLE &Pantalla, Trama aux, int campoProt, unsigned char RE, int cont);
+        void iniciarProtMaestro(HANDLE &PuertoCOM);
+
+        void iniciarProtEsclavo(HANDLE &PuertoCOM);
 };
 
 #endif // FUNCIONES_H

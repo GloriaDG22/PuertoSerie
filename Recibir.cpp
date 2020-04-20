@@ -17,7 +17,6 @@ Recibir::Recibir (){
     colorRecibo = 5+7*16; ///Recibo: letra morado (5) y fondo gris claro (7)
     esFichero=false;
     finFichero=false;
-    esProt=false;
     fRecibo=fRecibo->getInstance();
 }
 
@@ -32,13 +31,12 @@ Recibir* Recibir::getInstance (){
 }
 
 unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
+    unsigned char tipoTrama=0;
     if (carR){
         switch (campoT){
-        unsigned char tipoTrama;
-        case 1: ///sincronización (22)
+        case 1: //sincronización (22)
             switch (carR){
             case 22: ///es una trama
-                tipoTrama=0;
                 tRecibida.setSincr(carR);
                 campoT++;
                 break;
@@ -52,14 +50,12 @@ unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
                 lineaFichero=1;
                 break;
             case 'M':
-                ProtMaestro prot = Protocolo();
-                prot.iniciarProtocolo();
-                esProt=true;
+                SetConsoleTextAttribute(Pantalla, colorRecibo);
+                fRecibo->iniciarProtMaestro(PuertoCOM);
                 break;
             case 'E':
-                ProtEsclavo prot = Protocolo();
-                prot.iniciarProtocolo();
-                esProt=true;
+                SetConsoleTextAttribute(Pantalla, colorRecibo);
+                fRecibo->iniciarProtEsclavo(PuertoCOM);
                 break;
             }
             break;
@@ -75,8 +71,8 @@ unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
             tRecibida.setNumTrama(carR);
             if (tRecibida.getControl()!=2){
                 tipoTrama=tRecibida.getControl();
-                campoT=1;
                 SetConsoleTextAttribute(Pantalla, colorRecibo);
+                campoT=1;
                 fRecibo->escribirCadena ("Se ha recibido una trama de tipo ");
                 tRecibida.imprimirTipoTrama();
             }
@@ -96,9 +92,8 @@ unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
             campoT=1;
             tRecibida.setBCE((unsigned char)carR);
             SetConsoleTextAttribute(Pantalla, colorFichero);
-            prot.setFinRecibo (true);
             if(tRecibida.calcularBce()==(unsigned char)carR){
-                tipoTrama = tRecibida.getControl();
+                tipoTrama=tRecibida.getControl();
                 if (esFichero){
                     procesarFichero(Pantalla);
                 }
@@ -159,7 +154,4 @@ void Recibir::procesarFichero(HANDLE Pantalla){
     }
 }
 
-void Recibir::setEsPRot (bool _esProt){
-    esProt = _esProt;
-}
 

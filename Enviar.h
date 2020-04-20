@@ -4,17 +4,8 @@
 
 #ifndef ENVIAR_H
 #define ENVIAR_H
-#include <stdio.h>
-#include <conio.h>
-#include <windows.h>
-#include <iostream>
-#include <string.h>
-#include <fstream>
-#include "PuertoSerie.h"
 #include "Trama.h"
 #include "Recibir.h"
-#include "Funciones.h"
-#include "Protocolo.h"
 
 #define FICHERO "fichero-e.txt"
 

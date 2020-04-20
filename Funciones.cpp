@@ -75,45 +75,12 @@ bool Funciones::comprobarESC(bool &teclaESC){
     return teclaESC;
 }
 
-void Funciones::imprimirTrama(HANDLE &Pantalla, Trama aux, int campoProt, unsigned char RE, int cont){ ///RE: R si es Recibo o E si es Envio
-    int color;
-    switch(campoProt){
-    case 1:
-        color=colorEstablecimiento;
-        break;
-    case 2:
-        color=colorCabecera;
-        break;
-    case 3:
-        color=colorCuerpo;
-        break;
-    case 4:
-        color=colorTamanio;
-        break;
-    case 5:
-        color=colorCierre;
-        break;
-    }
-    /*string tipoTrama;
-    switch(aux.getControl()){
-    case 02:
-        tipoTrama="STX";
-        break;
-    case 04:
-        tipoTrama="EOT";
-        break;
-    case 05:
-        tipoTrama="ENQ";
-        break;
-    case 06:
-        tipoTrama="ACK";
-        break;
-    case 21:
-        tipoTrama="NACK";
-        break;
-    }
-    SetConsoleTextAttribute(Pantalla, color);
-    printf("\n %c %c %s %d", RE, aux.getDir(), tipoTrama, cont);
-    if(aux.getControl()==2)
-        printf("%d", (int)aux.getBCE());*/
+void Funciones::iniciarProtMaestro (HANDLE &PuertoCOM){
+    ProtMaestro prot = ProtMaestro ();
+    prot.iniciarProtocolo(PuertoCOM);
+}
+
+void Funciones::iniciarProtEsclavo (HANDLE &PuertoCOM){
+    ProtEsclavo prot = ProtEsclavo ();
+    prot.iniciarProtocolo(PuertoCOM);
 }

@@ -5,56 +5,44 @@
 #ifndef PROTOCOLO_H
 #define PROTOCOLO_H
 
-#include <stdio.h>
-#include <conio.h>
-#include <windows.h>
-#include <iostream>
-#include <string.h>
-#include <fstream>
 #include "PuertoSerie.h"
-#include "Enviar.h"
-#include "Recibir.h"
 
 #define PROTMAESTRO "Prolog-m.txt"
 #define PROTESCLAVO "Prolog-e.txt"
 
 class Protocolo
 {
-
-    protected:
-        char tipoOper; ///R: seleccion, T: sondeo
-        FILE *ficheroProt;
-        int cont;
-        Enviar* envio;
-        Recibir* recibo;
-
     public:
+        char tipoOper; ///R:seleccion, T:sondeo
+        bool cerrar; ///es false mientras el maestro no quiera cerrar la comunicacion
+        int numTrama;
+
         Protocolo();
-        void setEstacion(char _estacion);
-        void reiniciarCont();
-        void iniciarProtocolo();
-        void recibirTrama();
-        void confirmacionDeRecibo();
-        void seleccion();
-        void sondeo();
-        void enviarRespuesta();
-        void esperarRespuesta();
+        void iniciarProtocolo(HANDLE &PuertoCOM);
+        void faseEstablecimiento();
+        void faseTransferenciaEnvio();
+        void faseTransferenciaRecibo();
+        void faseCierre();
+        void reiniciarNumTrama();
 };
 
 class ProtMaestro: public Protocolo {
     public:
         ProtMaestro();
-        void iniciarProtocolo();
+        void iniciarProtocolo(HANDLE &PuertoCOM);
         void seleccion();
         void sondeo();
+        void faseEstablecimiento();
+        void aceptarCierreComunicacion();
 };
 
 class ProtEsclavo: public Protocolo {
     public:
         ProtEsclavo();
-        void iniciarProtocolo();
+        void iniciarProtocolo(HANDLE &PuertoCOM);
         void seleccion();
         void sondeo();
+        void faseEstablecimiento();
 };
 
 #endif // PROTOCOLO_H
