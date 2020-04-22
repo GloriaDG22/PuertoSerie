@@ -4,8 +4,19 @@
 
 #ifndef ENVIAR_H
 #define ENVIAR_H
+
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
+#include <iostream>
+#include <string.h>
+#include <fstream>
+#include "PuertoSerie.h"
 #include "Trama.h"
 #include "Recibir.h"
+#include "Funciones.h"
+
+//#include "Recibir.h"
 
 #define FICHERO "fichero-e.txt"
 
@@ -17,22 +28,27 @@ const int LINCABECERA = 3;
 //Campo 3: control (ENQ, EOT, ACK, NACK): en codigo ASCII: ENQ=05, EOT=05, ACK=06, NACK=21
 //Campo 4: número de trama ('0' ó '1'): siempre como carácter (entre ' '): por ahora siempre vamos a usar el '0'
 
+class Trama;
+class Recibir;
+class Funciones;
+
 class Enviar
 {
     private:
-        ///caracter que se envía
-        char caracter;
-        ///cadena de texto que se escribe en el terminal
-        char cadena[MAX+2];
-        ///número de carácter que hay en la cadena
-        int cont;
-        ///Envio: letra azul verdoso (3) y fondo negro (0)
-        int colorEnvio;
-        ///Trama que se va a enviar
-        Trama tEnvio;
-        ///Clase recibir para no excluir la recepción
-        Recibir* recibo;
-        ///
+
+        char caracter; ///caracter que se envía
+        char cadena[MAX+2]; ///cadena de texto que se escribe en el terminal
+        int cont; ///número de caracteres que hay en la cadena
+        int colorEnvio; ///Envio: letra azul verdoso (3) y fondo negro (0)
+
+        ///variables para recibir en protocolo
+        bool esMaestro; ///true si se opera en modo maestro, false si es en modo esclavo
+        char numTrama; ///0 o 1 ciclicamente, se va reiniciando en cada fase
+        char direccion; ///T: sondeo, R: seleccion
+
+
+        Trama* tEnvio; ///Trama que se va a enviar
+        Recibir* recibo; ///Clase recibir para no excluir la recepción
         Funciones* fEnvio;
 
     public:

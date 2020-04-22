@@ -4,15 +4,19 @@
 
 #ifndef RECIBIR_H
 #define RECIBIR_H
+
 #include "Trama.h"
+class Trama;
+class Funciones;
 
 class Recibir{
 
     private:
         static Recibir* obj;
-        Trama tRecibida;
+        Trama* tRecibida;
         int campoT;
 
+        ///variables para recibir fichero
         char autores [50];
         char *color;
         char nomFichero [40];
@@ -21,9 +25,15 @@ class Recibir{
         int colorRecibo; ///color de recibo por defecto
         bool esFichero;
         bool finFichero;
-        Funciones* fRecibo;
-
         ofstream fSal;
+
+
+        ///variables para recibir en protocolo
+        bool esMaestro; ///true si se opera en modo maestro, false si es en modo esclavo
+        char numTrama; ///0 o 1 ciclicamente, se va reiniciando en cada fase
+        char direccion; ///T: sondeo, R: seleccion
+
+        Funciones* fRecibo;
 
         Recibir ();
 

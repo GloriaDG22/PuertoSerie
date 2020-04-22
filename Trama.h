@@ -4,9 +4,10 @@
 
 #ifndef TRAMA_H
 #define TRAMA_H
-#include "PuertoSerie.h"
-#include "Funciones.h"
 
+#include "PuertoSerie.h"
+
+class Funciones;
 
 class Trama{
     private:

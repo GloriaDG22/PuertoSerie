@@ -8,7 +8,7 @@ Enviar::Enviar(){
     caracter = ' ';
     cont = 0;
     colorEnvio=3+0*16;
-    tEnvio=Trama();
+    tEnvio= new Trama();
     recibo=recibo->getInstance();
     fEnvio=fEnvio->getInstance();
 }

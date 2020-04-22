@@ -4,11 +4,14 @@
 
 #ifndef FUNCIONES_H
 #define FUNCIONES_H
+
 #include "PuertoSerie.h"
 #include "Protocolo.h"
 
 #define NOMFICHEROF5 "log.txt"
 
+//class Protocolo;
+//class Funciones;
 
 class Funciones
 {

@@ -6,9 +6,14 @@
 #define PROTOCOLO_H
 
 #include "PuertoSerie.h"
+#include "Enviar.h"
+#include "Recibir.h"
 
 #define PROTMAESTRO "Prolog-m.txt"
 #define PROTESCLAVO "Prolog-e.txt"
+
+class Enviar;
+class Recibir;
 
 class Protocolo
 {
@@ -16,6 +21,9 @@ class Protocolo
         char tipoOper; ///R:seleccion, T:sondeo
         bool cerrar; ///es false mientras el maestro no quiera cerrar la comunicacion
         int numTrama;
+        FILE *ficheroProt;
+        Enviar* envio;
+        Recibir* recibo;
 
         Protocolo();
         void iniciarProtocolo(HANDLE &PuertoCOM);

@@ -21,7 +21,6 @@ int main()
     Enviar envio=Enviar();
     Recibir* recibo=recibo->getInstance();
 
-
     //Encabezado
     printf("============================================================================\n");
     printf("----------- PRACTICAS DE FUNDAMENTOS DE REDES DE COMUNICACIONES ------------\n");

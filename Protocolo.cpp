@@ -6,6 +6,8 @@
 
 Protocolo::Protocolo(){
     cerrar = false;
+    envio = new Enviar();
+    recibo = recibo->getInstance();
 }
 
 void Protocolo::faseTransferenciaEnvio(){
