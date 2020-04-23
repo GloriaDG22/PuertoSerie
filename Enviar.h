@@ -41,22 +41,20 @@ class Enviar
         int cont; ///número de caracteres que hay en la cadena
         int colorEnvio; ///Envio: letra azul verdoso (3) y fondo negro (0)
 
-        ///variables para recibir en protocolo
-        bool esMaestro; ///true si se opera en modo maestro, false si es en modo esclavo
-        char numTrama; ///0 o 1 ciclicamente, se va reiniciando en cada fase
-        char direccion; ///T: sondeo, R: seleccion
-
-
         Trama* tEnvio; ///Trama que se va a enviar
         Recibir* recibo; ///Clase recibir para no excluir la recepción
-        Funciones* fEnvio;
+        Funciones* fEnvio; ///Instancia de la clase funciones
+
+        ///metodos para el Singleton
+        static Enviar* obj;
+        Enviar ();
+        static void createInstance();
 
     public:
-        ///constructor
-        Enviar();
+        static Enviar* getInstance();
 
         ///destructor
-        virtual ~Enviar();
+        ~Enviar();
 
         ///Devuelve el valor del contador
         int getCont();

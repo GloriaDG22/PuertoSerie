@@ -12,8 +12,9 @@ class Funciones;
 class Recibir{
 
     private:
-        static Recibir* obj;
+
         Trama* tRecibida;
+        Funciones* fRecibo;
         int campoT;
 
         ///variables para recibir fichero
@@ -27,20 +28,16 @@ class Recibir{
         bool finFichero;
         ofstream fSal;
 
-
-        ///variables para recibir en protocolo
-        bool esMaestro; ///true si se opera en modo maestro, false si es en modo esclavo
-        char numTrama; ///0 o 1 ciclicamente, se va reiniciando en cada fase
-        char direccion; ///T: sondeo, R: seleccion
-
-        Funciones* fRecibo;
-
+        ///metodos para el Singleton
+        static Recibir* obj;
         Recibir ();
-
         static void createInstance();
 
     public:
         static Recibir* getInstance();
+
+        ///destructor
+        ~Recibir();
 
         /** Crea la trama con los datos que le llegan e imprime en pantalla el tipo de trama qu eha recibido.
         *   \param carR Caracter recibido

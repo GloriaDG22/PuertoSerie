@@ -199,37 +199,28 @@
 	<stdio.h>
 	<iostream>
 
-1582567907 c:\users\glori\documents\puertoserie\puertoserie.h
+1587590359 c:\users\glori\documents\puertoserie\puertoserie.h
+	<conio.h>
 	<windows.h>
+	<string.h>
+	<stdio.h>
+	<fstream>
+	<iostream>
 
 1585657715 source:c:\users\glori\documents\puertoserie\recibir.cpp
 	"Recibir.h"
 
-1585659589 c:\users\glori\documents\puertoserie\recibir.h
-	<stdio.h>
-	<conio.h>
-	<windows.h>
-	<iostream>
-	<string.h>
-	<fstream>
-	"PuertoSerie.h"
+1587592620 c:\users\glori\documents\puertoserie\recibir.h
 	"Trama.h"
-	"Funciones.h"
 
-1585659589 c:\users\glori\documents\puertoserie\trama.h
-	<conio.h>
-	<windows.h>
-	<string.h>
-	<stdio.h>
-	<iostream>
+1587592620 c:\users\glori\documents\puertoserie\trama.h
 	"PuertoSerie.h"
-	"Funciones.h"
 
 1585153089 source:c:\users\glori\documents\puertoserie\sesion1.cpp
 	"Enviar.h"
 	"Recibir.h"
 
-1585659589 c:\users\glori\documents\puertoserie\enviar.h
+1587593507 c:\users\glori\documents\puertoserie\enviar.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
@@ -241,7 +232,7 @@
 	"Recibir.h"
 	"Funciones.h"
 
-1585658347 source:c:\users\glori\documents\puertoserie\enviar.cpp
+1587593386 source:c:\users\glori\documents\puertoserie\enviar.cpp
 	"Enviar.h"
 
 1585659589 source:c:\users\glori\documents\puertoserie\trama.cpp
@@ -294,7 +285,7 @@
 	<fstream>
 	"PuertoSerie.h"
 
-1585657714 source:c:\users\glori\documents\puertoserie\main.cpp
+1587594150 source:c:\users\glori\documents\puertoserie\main.cpp
 	"Enviar.h"
 	"Recibir.h"
 
@@ -360,4 +351,16 @@
 	"PuertoSerie.h"
 	"Enviar.h"
 	"Recibir.h"
+
+1587593930 c:\users\glori\documents\puertoserie\funciones.h
+	"PuertoSerie.h"
+	"Protocolo.h"
+
+1587593758 c:\users\glori\documents\puertoserie\protocolo.h
+	"PuertoSerie.h"
+	"Enviar.h"
+	"Recibir.h"
+
+1587593932 source:c:\users\glori\documents\puertoserie\funciones.cpp
+	"Funciones.h"
 

@@ -7,17 +7,17 @@
 Recibir* Recibir::obj=0;
 
 Recibir::Recibir (){
-    campoT=1;
-    tRecibida= Trama();
-    autores[0]='\0';
-    color=new char;
-    nomFichero[0]='\0';
-    lineaFichero=1;
-    colorFichero=3;
+    campoT = 1;
+    tRecibida = tRecibida->getInstance();
+    autores[0] = '\0';
+    color = new char;
+    nomFichero[0] = '\0';
+    lineaFichero = 1;
+    colorFichero = 3;
     colorRecibo = 5+7*16; ///Recibo: letra morado (5) y fondo gris claro (7)
-    esFichero=false;
-    finFichero=false;
-    fRecibo=fRecibo->getInstance();
+    esFichero = false;
+    finFichero = false;
+    fRecibo = fRecibo->getInstance();
 }
 
 void Recibir::createInstance (){
@@ -152,6 +152,13 @@ void Recibir::procesarFichero(HANDLE Pantalla){
         }
         break;
     }
+}
+
+Recibir::~Recibir(){
+    if (tRecibida!=NULL)
+        delete tRecibida;
+    if (color!=NULL)
+        delete color;
 }
 
 

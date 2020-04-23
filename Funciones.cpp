@@ -76,11 +76,13 @@ bool Funciones::comprobarESC(bool &teclaESC){
 }
 
 void Funciones::iniciarProtMaestro (HANDLE &PuertoCOM){
-    ProtMaestro prot = ProtMaestro ();
+    ProtMaestro prot = ProtMaestro();
     prot.iniciarProtocolo(PuertoCOM);
+    prot.~Protocolo();
 }
 
 void Funciones::iniciarProtEsclavo (HANDLE &PuertoCOM){
-    ProtEsclavo prot = ProtEsclavo ();
+    ProtEsclavo prot = ProtEsclavo();
     prot.iniciarProtocolo(PuertoCOM);
+    prot.~Protocolo();
 }

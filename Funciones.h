@@ -11,16 +11,17 @@
 #define NOMFICHEROF5 "log.txt"
 
 //class Protocolo;
-//class Funciones;
 
 class Funciones
 {
     private:
-        static Funciones* obj;
-        FILE *fSal;
-        bool escribir;
-        Funciones();
 
+        FILE *fSal; ///fichero log
+        bool escribir; ///true si F5 esta activa y false en caso contrario
+
+        ///metodos para el Singleton
+        static Funciones* obj;
+        Funciones();
         static void createInstance();
 
     public:

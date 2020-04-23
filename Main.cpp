@@ -18,8 +18,8 @@ int main()
     char carE, carR = 0;
     Pantalla = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    Enviar envio=Enviar();
-    Recibir* recibo=recibo->getInstance();
+    Enviar* envio = envio->getInstance();
+    Recibir* recibo = recibo->getInstance();
 
     //Encabezado
     printf("============================================================================\n");
@@ -126,19 +126,30 @@ int main()
             if (carE != 27){
                 if(carE == '\0'){
                     carE = getch();
-                    envio.comprobarTeclaFuncion(carE, PuertoCOM, Pantalla);
+                    envio->comprobarTeclaFuncion(carE, PuertoCOM, Pantalla);
                 }
                 else{
-                    envio.enviarCadena(carE, Pantalla);
+                    envio->enviarCadena(carE, Pantalla);
                 }
             }
         }
     }
 
 
-// Cerramos el puerto:
+    /// Cerramos el puerto:
     if (PuertoCOM!=NULL)
         CerrarPuerto(PuertoCOM);
 
-   return 0;
+    /// Cerramos la Pantalla:
+    if (Pantalla!=NULL)
+        delete Pantalla;
+
+    ///destruimos los punteros
+    envio->~Enviar();
+    recibo->~Recibir();
+    if(envio!=NULL)
+        delete envio;
+    if(recibo!=NULL)
+        delete recibo;
+    return 0;
 }

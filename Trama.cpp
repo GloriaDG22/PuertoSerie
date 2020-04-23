@@ -4,6 +4,8 @@
 
 #include "Trama.h"
 
+Trama* Trama::obj=0;
+
 Trama::Trama(){
     sincr=0;
     dir=' ';
@@ -15,7 +17,17 @@ Trama::Trama(){
     fTrama=fTrama->getInstance();
 }
 
-Trama::Trama(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol, unsigned char CnumTrama,
+void Trama::createInstance (){
+    if (obj==0)
+        obj = new Trama();
+}
+
+Trama* Trama::getInstance (){
+    createInstance();
+    return obj;
+}
+
+void Trama::setAll(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol, unsigned char CnumTrama,
              unsigned char Clongit, char Cdatos[], unsigned char Cbce){
     sincr=Csincr;
     dir=Cdir;
@@ -119,4 +131,8 @@ void Trama::mostrarTrama(){
     fTrama->escribirCadena(Datos);
 }
 
+void Trama::~Trama(){
+    if (fTrama!=NULL)
+        delete fTrama;
+}
 

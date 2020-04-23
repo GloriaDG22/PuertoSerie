@@ -6,7 +6,7 @@
 
 Protocolo::Protocolo(){
     cerrar = false;
-    envio = new Enviar();
+    envio = envio->getInstance();
     recibo = recibo->getInstance();
 }
 
@@ -14,10 +14,9 @@ void Protocolo::faseTransferenciaEnvio(){
     while(!finFichero){
         ///troceamos fichero: metodo en enviar que cree una trama con los parametros
         ///dados y la envie e imprima
-        numTrama++;
+        cambiarNumTrama();
         esperarTramaAceptacion();
         imprimirTrama();
-        numTrama++;
     }
 }
 
@@ -26,14 +25,14 @@ void Protocolo::faseTransferenciaRecibo(){
         recibirTramaDatos();
         imprimirTrama();
         enviarTramaAceptacion();
-        numTrama++;
+        cambiarNumTrama();
         imprimirTrama();
     }
 }
 
 void Protocolo::faseCierre(){
     enviarTramaCierre();
-    numTrama++;
+    cambiarNumTrama();
     imprimirTrama();
     esperarRespuesta();
     imprimirTrama();
@@ -41,6 +40,11 @@ void Protocolo::faseCierre(){
 
 void Protocolo::reiniciarNumTrama{
     numTrama=0;
+}
+
+Protocolo::~Protocolo(){
+    if (ficheroProt!=NULL)
+        close(ficheroProt);
 }
 
 ///MÉTODOS DEL MAESTRO
@@ -103,7 +107,7 @@ void ProtMaestro::sondeo(){ ///SONDEO MAESTRO
 void ProtMaestro::faseEstablecimiento(){
     ///poner color establecimiento: azul
     enviarTramaEstablecimiento();
-    numTrama++;
+    cambiarNumTrama();
     imprimirTrama();
     esperarRespuesta();
     imprimirTrama();
@@ -189,6 +193,7 @@ void ProtEsclavo::faseEstablecimiento(){
     ///esperar llamada del maestro
     imprimirTrama();
     enviarTramaAceptacion();
-    numTrama++;
+    cambiarNumTrama();
     imprimirTrama();
 }
+

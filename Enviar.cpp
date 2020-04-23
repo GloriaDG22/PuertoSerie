@@ -4,16 +4,25 @@
 
 #include "Enviar.h"
 
+Enviar* Enviar::obj=0;
+
 Enviar::Enviar(){
     caracter = ' ';
     cont = 0;
-    colorEnvio=3+0*16;
-    tEnvio= new Trama();
-    recibo=recibo->getInstance();
-    fEnvio=fEnvio->getInstance();
+    colorEnvio = 3+0*16;
+    tEnvio = tEnvio->getInstance();
+    recibo = recibo->getInstance();
+    fEnvio = fEnvio->getInstance();
 }
 
-Enviar::~Enviar(){
+void Enviar::createInstance (){
+    if (obj==0)
+        obj = new Enviar();
+}
+
+Enviar* Enviar::getInstance (){
+    createInstance();
+    return obj;
 }
 
 int Enviar::getCont(){
@@ -144,7 +153,7 @@ void Enviar::crearTramaControl(HANDLE &PuertoCOM, HANDLE &Pantalla){
     } //Creamos con los valores por defecto y solo añadimos el carácter de control
     if (envio==true){
         //los ultimos 3 campos se inicializan vacios porque es una trama de control
-        tEnvio=Trama(22, 'T', control, '0', 0, " ", 0);
+        tEnvio->setAll(22, 'T', control, '0', 0, " ", 0);
         enviarTrama(PuertoCOM, Pantalla);
     }
 }
@@ -157,26 +166,26 @@ void Enviar::crearTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla){
     for (int i=0; i<numTramas; i++){
         offset = 254 * (i);
         fEnvio->copiarCadena (cadena, cadenaEnvio, offset, 254);
-        tEnvio=Trama(22, 'T', 2, '0', strlen(cadenaEnvio), cadenaEnvio, 0);
-        tEnvio.setBCE(tEnvio.calcularBce());
+        tEnvio->setAll(22, 'T', 2, '0', strlen(cadenaEnvio), cadenaEnvio, 0);
+        tEnvio->setBCE(tEnvio->calcularBce());
         enviarTrama(PuertoCOM, Pantalla);
     }
     fEnvio->escribirCadena("MENSAJE ENVIADO.\n");
 }
 
 void Enviar::enviarTrama(HANDLE &PuertoCOM, HANDLE &Pantalla){
-    EnviarCaracter(PuertoCOM, tEnvio.getSincr());
-    EnviarCaracter(PuertoCOM, tEnvio.getDir());
-    EnviarCaracter(PuertoCOM, tEnvio.getControl());
-    EnviarCaracter(PuertoCOM, tEnvio.getNumTrama());
-    if (tEnvio.getControl()==2){ //si es trama de datos
-        EnviarCaracter(PuertoCOM, tEnvio.getLong());
-        EnviarCadena(PuertoCOM, tEnvio.getDatos(), tEnvio.getLong());
-        EnviarCaracter(PuertoCOM, tEnvio.getBCE());
+    EnviarCaracter(PuertoCOM, tEnvio->getSincr());
+    EnviarCaracter(PuertoCOM, tEnvio->getDir());
+    EnviarCaracter(PuertoCOM, tEnvio->getControl());
+    EnviarCaracter(PuertoCOM, tEnvio->getNumTrama());
+    if (tEnvio->getControl()==2){ //si es trama de datos
+        EnviarCaracter(PuertoCOM, tEnvio->getLong());
+        EnviarCadena(PuertoCOM, tEnvio->getDatos(), tEnvio->getLong());
+        EnviarCaracter(PuertoCOM, tEnvio->getBCE());
     }
     else{ //si es trama de control
         fEnvio->escribirCadena("Se ha enviado una trama de tipo ");
-        tEnvio.imprimirTipoTrama();
+        tEnvio->imprimirTipoTrama();
     }
     //Recibir para no excluirlo en el envío
     char carR = RecibirCaracter(PuertoCOM);
@@ -197,8 +206,8 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
             fEnt.getline(texto, 50);
             if (i==0)
                 strcpy(autores, texto);
-            tEnvio=Trama(22, 'T', 2, '0', strlen(texto), texto, 0);
-            tEnvio.setBCE(tEnvio.calcularBce());
+            tEnvio->setAll(22, 'T', 2, '0', strlen(texto), texto, 0);
+            tEnvio->setBCE(tEnvio->calcularBce());
             enviarTrama(PuertoCOM, Pantalla);
         }
         if(!teclaESC){
@@ -208,16 +217,16 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
         while(!fEnt.eof() && !fEnvio->comprobarESC(teclaESC)){
             fEnt.read(texto, 254);
             texto[fEnt.gcount()]='\0';
-            tEnvio=Trama(22, 'T', 2, '0', strlen(texto), texto, 0);
-            tEnvio.setBCE(tEnvio.calcularBce());
+            tEnvio->setAll(22, 'T', 2, '0', strlen(texto), texto, 0);
+            tEnvio->setBCE(tEnvio->calcularBce());
             enviarTrama(PuertoCOM, Pantalla);
-            cont=cont+tEnvio.getLong();
+            cont=cont+tEnvio->getLong();
         }
         fEnt.close();
         EnviarCaracter(PuertoCOM, '}'); //caracter que indica que se ha enviado el fichero completo
         sprintf(texto, "%d", cont);
-        tEnvio=Trama(22, 'T', 2, '0', strlen(texto), texto, 0);
-        tEnvio.setBCE(tEnvio.calcularBce());
+        tEnvio->setAll(22, 'T', 2, '0', strlen(texto), texto, 0);
+        tEnvio->setBCE(tEnvio->calcularBce());
         enviarTrama(PuertoCOM, Pantalla);
         if (!teclaESC)
             fEnvio->escribirCadena("Fichero enviado. \n");
@@ -232,4 +241,9 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
     }
 }
 
-
+Enviar::~Enviar(){
+    if (tEnvio!=NULL)
+        delete tEnvio;
+    if (fEnvio!=NULL)
+        delete fEnvio;
+}
