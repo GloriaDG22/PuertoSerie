@@ -109,6 +109,10 @@ class Enviar
         */
         void enviarFichero (HANDLE &PuertoCOM, HANDLE &Pantalla);
 
+        /**
+        */
+        void enviarTramaProt(HANDLE &PuertoCOM, Trama *t);
+
 };
 
 #endif // ENVIAR_H

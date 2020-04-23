@@ -14,6 +14,7 @@
 
 class Enviar;
 class Recibir;
+class Trama;
 
 class Protocolo
 {
@@ -26,6 +27,10 @@ class Protocolo
         FILE *ficheroProt; ///fichero en el que se volcara todo lo relacionado con el protocolo
         Enviar* envio; ///Instancia de envio
         Recibir* recibo; ///Instancia de recibo
+        Trama* tProt; ///Trama en la que va a recibir y a enviar
+        bool tCorrecta;
+        HANDLE PuertoCOM;
+        HANDLE Pantalla;
 
     public:
 
@@ -37,19 +42,19 @@ class Protocolo
 
         /**
         */
-        void iniciarProtocolo(HANDLE &PuertoCOM);
+        void iniciarProtocolo(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void faseEstablecimiento();
+        void faseEstablecimiento(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void faseTransferenciaEnvio();
+        void faseTransferenciaEnvio(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void faseTransferenciaRecibo();
+        void faseTransferenciaRecibo(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void faseCierre();
+        void faseCierre(HANDLE &PuertoCOM, HANDLE &Pantalla);
 
         /** Reiniciamos numTrama a 0 porque estamos en una nueva fase
         */
@@ -62,29 +67,26 @@ class Protocolo
 
         /** Imprimimos la trama enviada o recibida
         */
-        void imprimirTrama();
+        void imprimirTrama(HANDLE &PuertoCOM, HANDLE &Pantalla);
 
         ///METODOS DE ENVIO
         /**
         */
-        void enviarTramaEstablecimiento();
+        void enviarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void enviarTramaAceptación();
-        /**
-        */
-        void enviarTramaCierre();
+        void enviarTrama(int control, HANDLE &PuertoCOM, HANDLE &Pantalla);
 
         ///METODOS DE RECIBO
         /**
         */
-        void esperarTramaAceptación();
+        void esperarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void esperarRespuesta();
+        void esperarRespuesta(int control, HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void recibirTramaDatos();
+        void recibirTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla);
 };
 
 class ProtMaestro: public Protocolo {
@@ -93,19 +95,19 @@ class ProtMaestro: public Protocolo {
         ProtMaestro();
         /**
         */
-        void iniciarProtocolo(HANDLE &PuertoCOM);
+        void iniciarProtocolo(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void seleccion();
+        void seleccion(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void sondeo();
+        void sondeo(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void faseEstablecimiento();
+        void faseEstablecimiento(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void aceptarCierreComunicacion();
+        void aceptarCierreComunicacion(HANDLE &PuertoCOM, HANDLE &Pantalla);
 };
 
 class ProtEsclavo: public Protocolo {
@@ -114,16 +116,16 @@ class ProtEsclavo: public Protocolo {
         ProtEsclavo();
         /**
         */
-        void iniciarProtocolo(HANDLE &PuertoCOM);
+        void iniciarProtocolo(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void seleccion();
+        void seleccion(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void sondeo();
+        void sondeo(HANDLE &PuertoCOM, HANDLE &Pantalla);
         /**
         */
-        void faseEstablecimiento();
+        void faseEstablecimiento(HANDLE &PuertoCOM, HANDLE &Pantalla);
 };
 
 #endif // PROTOCOLO_H

@@ -67,12 +67,12 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
                 switch(seleccion){
                 case '1': //eleccion de maestro
                     EnviarCaracter(PuertoCOM, 'E'); //se envia a la otra estacion el rol de esclavo
-                    fEnvio->iniciarProtMaestro(PuertoCOM);
+                    fEnvio->iniciarProtMaestro(PuertoCOM, Pantalla);
                     correcto = true;
                     break;
                 case '2': //elección de esclavo
                     EnviarCaracter(PuertoCOM, 'M'); //se envia a la otra estacion el rol de maestro
-                    fEnvio->iniciarProtEsclavo(PuertoCOM);
+                    fEnvio->iniciarProtEsclavo(PuertoCOM, Pantalla);
                     correcto = true;
                     break;
                 case 27: //escape
@@ -238,6 +238,18 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
             fEnvio->escribirCadena("ERROR: el fichero no existe.\n");
         else
             fEnvio->escribirCadena("Se ha cancelado el envio del fichero.\n");
+    }
+}
+
+void Enviar::enviarTramaProt(HANDLE &PuertoCOM, Trama *t){
+    EnviarCaracter(PuertoCOM, t->getSincr());
+    EnviarCaracter(PuertoCOM, t->getDir());
+    EnviarCaracter(PuertoCOM, t->getControl());
+    EnviarCaracter(PuertoCOM, t->getNumTrama());
+    if (t->getControl()==2){ //si es trama de datos
+        EnviarCaracter(PuertoCOM, t->getLong());
+        EnviarCadena(PuertoCOM, t->getDatos(), t->getLong());
+        EnviarCaracter(PuertoCOM, t->getBCE());
     }
 }
 

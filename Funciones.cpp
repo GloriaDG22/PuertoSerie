@@ -75,14 +75,14 @@ bool Funciones::comprobarESC(bool &teclaESC){
     return teclaESC;
 }
 
-void Funciones::iniciarProtMaestro (HANDLE &PuertoCOM){
+void Funciones::iniciarProtMaestro (HANDLE &PuertoCOM, HANDLE &Pantalla){
     ProtMaestro prot = ProtMaestro();
-    prot.iniciarProtocolo(PuertoCOM);
+    prot.iniciarProtocolo(PuertoCOM, Pantalla);
     prot.~Protocolo();
 }
 
-void Funciones::iniciarProtEsclavo (HANDLE &PuertoCOM){
+void Funciones::iniciarProtEsclavo (HANDLE &PuertoCOM, HANDLE &Pantalla){
     ProtEsclavo prot = ProtEsclavo();
-    prot.iniciarProtocolo(PuertoCOM);
+    prot.iniciarProtocolo(PuertoCOM, Pantalla);
     prot.~Protocolo();
 }

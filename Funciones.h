@@ -10,7 +10,7 @@
 
 #define NOMFICHEROF5 "log.txt"
 
-//class Protocolo;
+class Protocolo;
 
 class Funciones
 {
@@ -73,9 +73,9 @@ class Funciones
         */
         bool comprobarESC(bool &teclaESC);
 
-        void iniciarProtMaestro(HANDLE &PuertoCOM);
+        void iniciarProtMaestro(HANDLE& PuertoCOM, HANDLE& Pantalla);
 
-        void iniciarProtEsclavo(HANDLE &PuertoCOM);
+        void iniciarProtEsclavo(HANDLE& PuertoCOM, HANDLE& Pantalla);
 };
 
 #endif // FUNCIONES_H

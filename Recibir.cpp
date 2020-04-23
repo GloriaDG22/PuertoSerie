@@ -51,11 +51,11 @@ unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
                 break;
             case 'M':
                 SetConsoleTextAttribute(Pantalla, colorRecibo);
-                fRecibo->iniciarProtMaestro(PuertoCOM);
+                fRecibo->iniciarProtMaestro(PuertoCOM, Pantalla);
                 break;
             case 'E':
                 SetConsoleTextAttribute(Pantalla, colorRecibo);
-                fRecibo->iniciarProtEsclavo(PuertoCOM);
+                fRecibo->iniciarProtEsclavo(PuertoCOM, Pantalla);
                 break;
             }
             break;
