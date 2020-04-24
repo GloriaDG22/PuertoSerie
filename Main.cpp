@@ -6,7 +6,8 @@
 //============================================================================
 
 #include "Enviar.h"
-#include "Recibir.h"
+#include "Funciones.h"
+
 
 using namespace std;
 
@@ -18,8 +19,11 @@ int main()
     char carE, carR = 0;
     Pantalla = GetStdHandle(STD_OUTPUT_HANDLE);
 
+    Funciones* funciones = funciones->getInstance();
     Enviar* envio = envio->getInstance();
     Recibir* recibo = recibo->getInstance();
+    Trama* trama = trama->getInstance();
+
 
     //Encabezado
     printf("============================================================================\n");
@@ -145,11 +149,9 @@ int main()
         delete Pantalla;
 
     ///destruimos los punteros
-    envio->~Enviar();
-    recibo->~Recibir();
-    if(envio!=NULL)
-        delete envio;
-    if(recibo!=NULL)
-        delete recibo;
+    delete envio;
+    delete recibo;
+    delete funciones;
+    delete trama;
     return 0;
 }

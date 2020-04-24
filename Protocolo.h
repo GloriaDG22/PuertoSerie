@@ -12,9 +12,9 @@
 #define PROTMAESTRO "Prolog-m.txt"
 #define PROTESCLAVO "Prolog-e.txt"
 
+class Trama;
 class Enviar;
 class Recibir;
-class Trama;
 
 class Protocolo
 {
@@ -67,7 +67,7 @@ class Protocolo
 
         /** Imprimimos la trama enviada o recibida
         */
-        void imprimirTrama(HANDLE &PuertoCOM, HANDLE &Pantalla);
+        void imprimirTrama(HANDLE &Pantalla);
 
         ///METODOS DE ENVIO
         /**

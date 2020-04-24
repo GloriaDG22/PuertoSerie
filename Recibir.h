@@ -6,6 +6,7 @@
 #define RECIBIR_H
 
 #include "Trama.h"
+
 class Trama;
 class Funciones;
 

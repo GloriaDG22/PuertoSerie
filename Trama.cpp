@@ -131,8 +131,3 @@ void Trama::mostrarTrama(){
     fTrama->escribirCadena(Datos);
 }
 
-void Trama::~Trama(){
-    if (fTrama!=NULL)
-        delete fTrama;
-}
-

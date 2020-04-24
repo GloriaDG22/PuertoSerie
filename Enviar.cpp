@@ -252,10 +252,3 @@ void Enviar::enviarTramaProt(HANDLE &PuertoCOM, Trama *t){
         EnviarCaracter(PuertoCOM, t->getBCE());
     }
 }
-
-Enviar::~Enviar(){
-    if (tEnvio!=NULL)
-        delete tEnvio;
-    if (fEnvio!=NULL)
-        delete fEnvio;
-}
