@@ -4,10 +4,8 @@
 // ----------------------------- MAIN.CPP ---------------------------------
 // ------------ Gloria Méndez Sánchez y Gloria Díaz González------------------
 //============================================================================
-
 #include "Enviar.h"
-#include "Funciones.h"
-
+#include "Recibir.h"
 
 using namespace std;
 
@@ -19,10 +17,8 @@ int main()
     char carE, carR = 0;
     Pantalla = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    Funciones* funciones = funciones->getInstance();
-    Enviar* envio = envio->getInstance();
-    Recibir* recibo = recibo->getInstance();
-    Trama* trama = trama->getInstance();
+    Enviar envio=Enviar();
+    Recibir* recibo=recibo->getInstance();
 
 
     //Encabezado
@@ -130,28 +126,19 @@ int main()
             if (carE != 27){
                 if(carE == '\0'){
                     carE = getch();
-                    envio->comprobarTeclaFuncion(carE, PuertoCOM, Pantalla);
+                    envio.comprobarTeclaFuncion(carE, PuertoCOM, Pantalla);
                 }
                 else{
-                    envio->enviarCadena(carE, Pantalla);
+                    envio.enviarCadena(carE, Pantalla);
                 }
             }
         }
     }
 
 
-    /// Cerramos el puerto:
+// Cerramos el puerto:
     if (PuertoCOM!=NULL)
         CerrarPuerto(PuertoCOM);
 
-    /// Cerramos la Pantalla:
-    if (Pantalla!=NULL)
-        delete Pantalla;
-
-    ///destruimos los punteros
-    delete envio;
-    delete recibo;
-    delete funciones;
-    delete trama;
-    return 0;
+   return 0;
 }

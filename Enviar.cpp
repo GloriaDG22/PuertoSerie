@@ -4,25 +4,17 @@
 
 #include "Enviar.h"
 
-Enviar* Enviar::obj=0;
-
 Enviar::Enviar(){
     caracter = ' ';
     cont = 0;
-    colorEnvio = 3+0*16;
-    tEnvio = tEnvio->getInstance();
-    recibo = recibo->getInstance();
-    fEnvio = fEnvio->getInstance();
+    colorEnvio=3+0*16;
+    tEnvio=Trama();
+    recibo=recibo->getInstance();
+    fEnvio=fEnvio->getInstance();
+    pEnvio=pEnvio->getInstance();
 }
 
-void Enviar::createInstance (){
-    if (obj==0)
-        obj = new Enviar();
-}
-
-Enviar* Enviar::getInstance (){
-    createInstance();
-    return obj;
+Enviar::~Enviar(){
 }
 
 int Enviar::getCont(){
@@ -54,7 +46,7 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
         case 61: //F3
             enviarFichero(PuertoCOM, Pantalla);
             break;
-        case 63: //F5
+        case 63: //F4
             fEnvio->abrirFlujo();
             fEnvio->setEscribir(true);
             break;
@@ -67,12 +59,12 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
                 switch(seleccion){
                 case '1': //eleccion de maestro
                     EnviarCaracter(PuertoCOM, 'E'); //se envia a la otra estacion el rol de esclavo
-                    fEnvio->iniciarProtMaestro(PuertoCOM, Pantalla);
+                    pEnvio->iniciarProtMaestro(PuertoCOM, Pantalla);
                     correcto = true;
                     break;
                 case '2': //elección de esclavo
                     EnviarCaracter(PuertoCOM, 'M'); //se envia a la otra estacion el rol de maestro
-                    fEnvio->iniciarProtEsclavo(PuertoCOM, Pantalla);
+                    pEnvio->iniciarProtEsclavo(PuertoCOM, Pantalla);
                     correcto = true;
                     break;
                 case 27: //escape
@@ -153,7 +145,7 @@ void Enviar::crearTramaControl(HANDLE &PuertoCOM, HANDLE &Pantalla){
     } //Creamos con los valores por defecto y solo añadimos el carácter de control
     if (envio==true){
         //los ultimos 3 campos se inicializan vacios porque es una trama de control
-        tEnvio->setAll(22, 'T', control, '0', 0, " ", 0);
+        tEnvio=Trama(22, 'T', control, '0', 0, " ", 0);
         enviarTrama(PuertoCOM, Pantalla);
     }
 }
@@ -166,26 +158,26 @@ void Enviar::crearTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla){
     for (int i=0; i<numTramas; i++){
         offset = 254 * (i);
         fEnvio->copiarCadena (cadena, cadenaEnvio, offset, 254);
-        tEnvio->setAll(22, 'T', 2, '0', strlen(cadenaEnvio), cadenaEnvio, 0);
-        tEnvio->setBCE(tEnvio->calcularBce());
+        tEnvio=Trama(22, 'T', 2, '0', strlen(cadenaEnvio), cadenaEnvio, 0);
+        tEnvio.setBCE(tEnvio.calcularBce());
         enviarTrama(PuertoCOM, Pantalla);
     }
     fEnvio->escribirCadena("MENSAJE ENVIADO.\n");
 }
 
 void Enviar::enviarTrama(HANDLE &PuertoCOM, HANDLE &Pantalla){
-    EnviarCaracter(PuertoCOM, tEnvio->getSincr());
-    EnviarCaracter(PuertoCOM, tEnvio->getDir());
-    EnviarCaracter(PuertoCOM, tEnvio->getControl());
-    EnviarCaracter(PuertoCOM, tEnvio->getNumTrama());
-    if (tEnvio->getControl()==2){ //si es trama de datos
-        EnviarCaracter(PuertoCOM, tEnvio->getLong());
-        EnviarCadena(PuertoCOM, tEnvio->getDatos(), tEnvio->getLong());
-        EnviarCaracter(PuertoCOM, tEnvio->getBCE());
+    EnviarCaracter(PuertoCOM, tEnvio.getSincr());
+    EnviarCaracter(PuertoCOM, tEnvio.getDir());
+    EnviarCaracter(PuertoCOM, tEnvio.getControl());
+    EnviarCaracter(PuertoCOM, tEnvio.getNumTrama());
+    if (tEnvio.getControl()==2){ //si es trama de datos
+        EnviarCaracter(PuertoCOM, tEnvio.getLong());
+        EnviarCadena(PuertoCOM, tEnvio.getDatos(), tEnvio.getLong());
+        EnviarCaracter(PuertoCOM, tEnvio.getBCE());
     }
     else{ //si es trama de control
         fEnvio->escribirCadena("Se ha enviado una trama de tipo ");
-        tEnvio->imprimirTipoTrama();
+        tEnvio.imprimirTipoTrama();
     }
     //Recibir para no excluirlo en el envío
     char carR = RecibirCaracter(PuertoCOM);
@@ -206,8 +198,8 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
             fEnt.getline(texto, 50);
             if (i==0)
                 strcpy(autores, texto);
-            tEnvio->setAll(22, 'T', 2, '0', strlen(texto), texto, 0);
-            tEnvio->setBCE(tEnvio->calcularBce());
+            tEnvio=Trama(22, 'T', 2, '0', strlen(texto), texto, 0);
+            tEnvio.setBCE(tEnvio.calcularBce());
             enviarTrama(PuertoCOM, Pantalla);
         }
         if(!teclaESC){
@@ -217,16 +209,16 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
         while(!fEnt.eof() && !fEnvio->comprobarESC(teclaESC)){
             fEnt.read(texto, 254);
             texto[fEnt.gcount()]='\0';
-            tEnvio->setAll(22, 'T', 2, '0', strlen(texto), texto, 0);
-            tEnvio->setBCE(tEnvio->calcularBce());
+            tEnvio=Trama(22, 'T', 2, '0', strlen(texto), texto, 0);
+            tEnvio.setBCE(tEnvio.calcularBce());
             enviarTrama(PuertoCOM, Pantalla);
-            cont=cont+tEnvio->getLong();
+            cont=cont+tEnvio.getLong();
         }
         fEnt.close();
         EnviarCaracter(PuertoCOM, '}'); //caracter que indica que se ha enviado el fichero completo
         sprintf(texto, "%d", cont);
-        tEnvio->setAll(22, 'T', 2, '0', strlen(texto), texto, 0);
-        tEnvio->setBCE(tEnvio->calcularBce());
+        tEnvio=Trama(22, 'T', 2, '0', strlen(texto), texto, 0);
+        tEnvio.setBCE(tEnvio.calcularBce());
         enviarTrama(PuertoCOM, Pantalla);
         if (!teclaESC)
             fEnvio->escribirCadena("Fichero enviado. \n");
@@ -241,14 +233,10 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
     }
 }
 
-void Enviar::enviarTramaProt(HANDLE &PuertoCOM, Trama *t){
-    EnviarCaracter(PuertoCOM, t->getSincr());
-    EnviarCaracter(PuertoCOM, t->getDir());
-    EnviarCaracter(PuertoCOM, t->getControl());
-    EnviarCaracter(PuertoCOM, t->getNumTrama());
-    if (t->getControl()==2){ //si es trama de datos
-        EnviarCaracter(PuertoCOM, t->getLong());
-        EnviarCadena(PuertoCOM, t->getDatos(), t->getLong());
-        EnviarCaracter(PuertoCOM, t->getBCE());
-    }
-}
+///********************************************************************************************************************************
+///********************************************************************************************************************************
+///***************************************    PROTOCOLO MAESTRO/ESCLAVO    ********************************************************
+///********************************************************************************************************************************
+///********************************************************************************************************************************
+
+

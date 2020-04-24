@@ -4,37 +4,40 @@
 
 #ifndef TRAMA_H
 #define TRAMA_H
-
+#include <conio.h>
+#include <windows.h>
+#include <string.h>
+#include <stdio.h>
+#include <iostream>
 #include "PuertoSerie.h"
+#include "Funciones.h"
 
-class Funciones;
 
 class Trama{
     private:
-
-        unsigned char sincr; ///Carácter de sincronización (22)
-        unsigned char dir; ///Carácter de dirección ('T' o 'R')
-        unsigned char control; ///Carácter de control (ENQ, EOT, ACK, NACK)
-        unsigned char numTrama; ///Carácter de número de práctica ('0' o '1')
-        unsigned char longit; ///Carácter de longitud del campo dato
-        char Datos [255]; ///Cadena de texto a enviar/recibir
-        unsigned char BCE; ///Carácter BCE (convalores entre 1 y 254)
+        ///Carácter de sincronización (22)
+        unsigned char sincr;
+        ///Carácter de dirección ('T' o 'R')
+        unsigned char dir;
+        ///Carácter de control (ENQ, EOT, ACK, NACK)
+        unsigned char control;
+        ///Carácter de número de práctica ('0' o '1')
+        unsigned char numTrama;
+        ///Carácter de longitud del campo dato
+        unsigned char longit;
+        ///Cadena de texto a enviar/recibir
+        char Datos [255];
+        ///Carácter BCE (convalores entre 1 y 254)
+        unsigned char BCE;
+        ///
         Funciones* fTrama;
 
-        ///metodos para el Singleton
-        static Trama* obj;
-        Trama ();
-        static void createInstance();
-
     public:
-        static Trama* getInstance();
-
-        ///destructor
-        ~Trama();
-
+        ///constructores
+        Trama();
+        Trama(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol,
+              unsigned char CnumTrama, unsigned char Clongit, char Cdatos[], unsigned char Cbce);
         ///Setters
-        void setAll (unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol, unsigned char CnumTrama,
-             unsigned char Clongit, char Cdatos[], unsigned char Cbce);
         void setSincr (unsigned char sincr);
         void setDir (unsigned char dir);
         void setControl (unsigned char control);

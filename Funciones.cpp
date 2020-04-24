@@ -44,10 +44,7 @@ void Funciones::abrirFlujo(){
 }
 
 void Funciones::cerrarFlujo(){
-    if(fSal!=NULL){
-        fclose(fSal);
-        escribir = false;
-    }
+    fclose(fSal);
 }
 
 void Funciones::setEscribir(bool _escribir){
@@ -73,16 +70,4 @@ bool Funciones::comprobarESC(bool &teclaESC){
             teclaESC = true;
     }
     return teclaESC;
-}
-
-void Funciones::iniciarProtMaestro (HANDLE &PuertoCOM, HANDLE &Pantalla){
-    ProtMaestro prot = ProtMaestro();
-    prot.iniciarProtocolo(PuertoCOM, Pantalla);
-    prot.~Protocolo();
-}
-
-void Funciones::iniciarProtEsclavo (HANDLE &PuertoCOM, HANDLE &Pantalla){
-    ProtEsclavo prot = ProtEsclavo();
-    prot.iniciarProtocolo(PuertoCOM, Pantalla);
-    prot.~Protocolo();
 }

@@ -7,17 +7,17 @@
 Recibir* Recibir::obj=0;
 
 Recibir::Recibir (){
-    campoT = 1;
-    tRecibida = tRecibida->getInstance();
-    autores[0] = '\0';
-    color = new char;
-    nomFichero[0] = '\0';
-    lineaFichero = 1;
-    colorFichero = 3;
+    campoT=1;
+    tRecibida= Trama();
+    autores[0]='\0';
+    color=new char;
+    nomFichero[0]='\0';
+    lineaFichero=1;
     colorRecibo = 5+7*16; ///Recibo: letra morado (5) y fondo gris claro (7)
-    esFichero = false;
-    finFichero = false;
-    fRecibo = fRecibo->getInstance();
+    esFichero=false;
+    finFichero=false;
+    fRecibo=fRecibo->getInstance();
+    pRecibo=pRecibo->getInstance();
 }
 
 void Recibir::createInstance (){
@@ -30,12 +30,11 @@ Recibir* Recibir::getInstance (){
     return obj;
 }
 
-unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
-    unsigned char tipoTrama=0;
+void Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
     if (carR){
         switch (campoT){
         case 1: //sincronización (22)
-            switch (carR){
+             switch (carR){
             case 22: ///es una trama
                 tRecibida->setSincr(carR);
                 campoT++;
@@ -51,62 +50,60 @@ unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
                 break;
             case 'M':
                 SetConsoleTextAttribute(Pantalla, colorRecibo);
-                fRecibo->iniciarProtMaestro(PuertoCOM, Pantalla);
+                pRecibo->iniciarProtMaestro(PuertoCOM, Pantalla);
                 break;
             case 'E':
                 SetConsoleTextAttribute(Pantalla, colorRecibo);
-                fRecibo->iniciarProtEsclavo(PuertoCOM, Pantalla);
+                pRecibo->iniciarProtEsclavo(PuertoCOM, Pantalla);
                 break;
             }
             break;
         case 2: //dirección ('T')
-            tRecibida->setDir(carR);
+            tRecibida.setDir(carR);
             campoT ++;
             break;
         case 3: //control ENQ-5  EOT-4  ACK-6  NACK-21 / DATOS-2
-            tRecibida->setControl(carR);
+            tRecibida.setControl(carR);
             campoT++;
             break;
         case 4: //numero de trama (0)
-            tRecibida->setNumTrama(carR);
-            if (tRecibida->getControl()!=2){
-                tipoTrama=tRecibida->getControl();
+            tRecibida.setNumTrama(carR);
+            if (tRecibida.getControl()!=2){
                 SetConsoleTextAttribute(Pantalla, colorRecibo);
                 campoT=1;
                 fRecibo->escribirCadena ("Se ha recibido una trama de tipo ");
-                tRecibida->imprimirTipoTrama();
+                tRecibida.imprimirTipoTrama();
             }
             else
                 campoT++;
             break;
         case 5: //longitud
-            tRecibida->setLong((unsigned char)carR);
+            tRecibida.setLong((unsigned char)carR);
             campoT++;
         case 6: //datos
             char cadenaRecibida [254];
-            RecibirCadena(PuertoCOM, cadenaRecibida, tRecibida->getLong());
-            tRecibida->setDatos(cadenaRecibida);
+            RecibirCadena(PuertoCOM, cadenaRecibida, tRecibida.getLong());
+            tRecibida.setDatos(cadenaRecibida);
             campoT++;
             break;
         case 7: //BCE
             campoT=1;
-            tRecibida->setBCE((unsigned char)carR);
+            tRecibida.setBCE((unsigned char)carR);
             SetConsoleTextAttribute(Pantalla, colorFichero);
-            if(tRecibida->calcularBce()==(unsigned char)carR){
-                tipoTrama=tRecibida->getControl();
+            if(tRecibida.calcularBce()==(unsigned char)carR){
                 if (esFichero){
                     procesarFichero(Pantalla);
                 }
                 else{
                     if (finFichero){
                         fRecibo->escribirCadena("Fichero recibido.\n");
-                        string cadena = "El fichero recibido tiene un tamaño de " + (string)tRecibida->getDatos() + " bytes.\n";
+                        string cadena = "El fichero recibido tiene un tamaño de " + (string)tRecibida.getDatos() + " bytes.\n";
                         fRecibo->escribirCadena(cadena);
                         finFichero=false;
                     }
                     else{
                         SetConsoleTextAttribute(Pantalla, colorRecibo);
-                        tRecibida->mostrarTrama();
+                        tRecibida.mostrarTrama();
                     }
                 }
             }
@@ -121,22 +118,21 @@ unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
             break;
         }
     }
-    return tipoTrama;
 }
 
 void Recibir::procesarFichero(HANDLE Pantalla){
     switch (lineaFichero){
     case 1:
-        strcpy(autores, tRecibida->getDatos());
+        strcpy(autores, tRecibida.getDatos());
         lineaFichero++;
         break;
     case 2:
-        strcpy(color, tRecibida->getDatos());
+        strcpy(color, tRecibida.getDatos());
         colorFichero=atoi(color);
         lineaFichero++;
         break;
     case 3:
-        strcpy(nomFichero, tRecibida->getDatos());
+        strcpy(nomFichero, tRecibida.getDatos());
         fSal.open(nomFichero);
         if(!fSal.is_open())
             fRecibo->escribirCadena("Error al abrir el fichero de escritura.\n");
@@ -148,15 +144,10 @@ void Recibir::procesarFichero(HANDLE Pantalla){
         break;
     default:
         if(fSal.is_open()){
-            fSal.write(tRecibida->getDatos(), tRecibida->getLong());
+            fSal.write(tRecibida.getDatos(), tRecibida.getLong());
         }
         break;
     }
-}
-
-Recibir::~Recibir(){
-    if (color!=NULL)
-        delete color;
 }
 
 

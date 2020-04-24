@@ -10,6 +10,8 @@
 //LIBRERÍA QUE CONTROLA EL PUERTO SERIE
 
 #include "PuertoSerie.h"
+#include <stdio.h>
+#include <iostream>
 using namespace std;
 
 //Abre el puerto serie indicado en "NombrePuerto, con parámetros de configuración y timeouts por defecto.

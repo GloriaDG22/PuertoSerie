@@ -4,21 +4,24 @@
 
 #ifndef RECIBIR_H
 #define RECIBIR_H
-
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
+#include <iostream>
+#include <string.h>
+#include <fstream>
+#include "PuertoSerie.h"
 #include "Trama.h"
-
-class Trama;
-class Funciones;
+#include "Funciones.h"
+#include "Protocolo.h"
 
 class Recibir{
 
     private:
-
-        Trama* tRecibida;
-        Funciones* fRecibo;
+        static Recibir* obj;
+        Trama tRecibida;
         int campoT;
 
-        ///variables para recibir fichero
         char autores [50];
         char *color;
         char nomFichero [40];
@@ -27,18 +30,17 @@ class Recibir{
         int colorRecibo; ///color de recibo por defecto
         bool esFichero;
         bool finFichero;
+        Funciones* fRecibo;
+        Protocolo* pRecibo;
+
         ofstream fSal;
 
-        ///metodos para el Singleton
-        static Recibir* obj;
         Recibir ();
+
         static void createInstance();
 
     public:
         static Recibir* getInstance();
-
-        ///destructor
-        ~Recibir();
 
         /** Crea la trama con los datos que le llegan e imprime en pantalla el tipo de trama qu eha recibido.
         *   \param carR Caracter recibido
@@ -47,7 +49,7 @@ class Recibir{
         *   \param PuertoCOM Puerto por el que recibimos
         *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
         */
-        unsigned char recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla);
+        void recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla);
 
         /** Se procesan las tramas de datos correspondientes a un fichero: las 3 primeras lineas (cabecera) se
         *   guardan pero no se muestran por pantalla y el cuerpo del fichero se escribe en un fichero de salida

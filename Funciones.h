@@ -4,24 +4,25 @@
 
 #ifndef FUNCIONES_H
 #define FUNCIONES_H
-
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
+#include <iostream>
+#include <string.h>
+#include <fstream>
 #include "PuertoSerie.h"
-#include "Protocolo.h"
 
 #define NOMFICHEROF5 "log.txt"
 
-class Protocolo;
 
 class Funciones
 {
     private:
-
-        FILE *fSal; ///fichero log
-        bool escribir; ///true si F5 esta activa y false en caso contrario
-
-        ///metodos para el Singleton
         static Funciones* obj;
+        FILE *fSal;
+        bool escribir;
         Funciones();
+
         static void createInstance();
 
     public:
@@ -72,10 +73,6 @@ class Funciones
         *   cualquier otro caso
         */
         bool comprobarESC(bool &teclaESC);
-
-        void iniciarProtMaestro(HANDLE& PuertoCOM, HANDLE& Pantalla);
-
-        void iniciarProtEsclavo(HANDLE& PuertoCOM, HANDLE& Pantalla);
 };
 
 #endif // FUNCIONES_H

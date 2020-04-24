@@ -9,6 +9,7 @@
 
 #ifndef __PUERTOSERIE_H_
 #define __PUERTOSERIE_H_
+
 #include <conio.h>
 #include <windows.h>
 #include <string.h>
