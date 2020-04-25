@@ -105,6 +105,51 @@ class Enviar
         */
         void enviarFichero (HANDLE &PuertoCOM, HANDLE &Pantalla);
 
+        void llamaOperacion(HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        void sondeo(HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        void seleccion(HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        /**
+        */
+        void faseEstablecimiento(HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        /**
+        */
+        void faseTransferenciaEnvio(HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        /**
+        */
+        void faseTransferenciaRecibo(HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        /**
+        */
+        void faseCierre(HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        /**
+        */
+        void aceptarCierreComunicacion(HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        /**
+        */
+        void esperarRespuesta (unsigned char control, HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        /**
+        */
+        void enviarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        /**
+        */
+        void esperarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        /**
+        */
+        void crearTramaProt(unsigned char control, HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        /**
+        */
+        void recibirTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla);
 };
 
 #endif // ENVIAR_H

@@ -120,6 +120,8 @@ int main()
 
         carR = RecibirCaracter(PuertoCOM);
         recibo->recibir(carR, PuertoCOM, Pantalla);
+        if(carR=='M'||carR=='E')
+            envio.llamaOperacion(PuertoCOM, Pantalla);
 
         if (kbhit()){
             carE = getch();

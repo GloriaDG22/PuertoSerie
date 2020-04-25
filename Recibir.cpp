@@ -30,13 +30,14 @@ Recibir* Recibir::getInstance (){
     return obj;
 }
 
-void Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
+unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
+    unsigned char tipoTrama=0;
     if (carR){
         switch (campoT){
         case 1: //sincronización (22)
-             switch (carR){
+            switch (carR){
             case 22: ///es una trama
-                tRecibida->setSincr(carR);
+                tRecibida.setSincr(carR);
                 campoT++;
                 break;
             case '{':
@@ -69,6 +70,7 @@ void Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
         case 4: //numero de trama (0)
             tRecibida.setNumTrama(carR);
             if (tRecibida.getControl()!=2){
+                tipoTrama=tRecibida.getControl();
                 SetConsoleTextAttribute(Pantalla, colorRecibo);
                 campoT=1;
                 fRecibo->escribirCadena ("Se ha recibido una trama de tipo ");
@@ -91,6 +93,7 @@ void Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
             tRecibida.setBCE((unsigned char)carR);
             SetConsoleTextAttribute(Pantalla, colorFichero);
             if(tRecibida.calcularBce()==(unsigned char)carR){
+                tipoTrama=tRecibida.getControl();
                 if (esFichero){
                     procesarFichero(Pantalla);
                 }
@@ -118,6 +121,7 @@ void Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
             break;
         }
     }
+    return tipoTrama;
 }
 
 void Recibir::procesarFichero(HANDLE Pantalla){
@@ -149,5 +153,3 @@ void Recibir::procesarFichero(HANDLE Pantalla){
         break;
     }
 }
-
-

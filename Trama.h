@@ -35,8 +35,8 @@ class Trama{
     public:
         ///constructores
         Trama();
-        Trama(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol,
-              unsigned char CnumTrama, unsigned char Clongit, char Cdatos[], unsigned char Cbce);
+        /*Trama(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol,
+              unsigned char CnumTrama, unsigned char Clongit, char Cdatos[], unsigned char Cbce);*/
         ///Setters
         void setSincr (unsigned char sincr);
         void setDir (unsigned char dir);
@@ -45,6 +45,8 @@ class Trama{
         void setLong (unsigned char longit);
         void setDatos (char cadena []);
         void setBCE (unsigned char bce);
+        void setAll (unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol,
+              unsigned char CnumTrama, unsigned char Clongit, char Cdatos[], unsigned char Cbce);
         ///Getters
         unsigned char getSincr();
         unsigned char getDir();

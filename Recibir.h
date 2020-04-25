@@ -49,7 +49,7 @@ class Recibir{
         *   \param PuertoCOM Puerto por el que recibimos
         *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
         */
-        void recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla);
+        unsigned char recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla);
 
         /** Se procesan las tramas de datos correspondientes a un fichero: las 3 primeras lineas (cabecera) se
         *   guardan pero no se muestran por pantalla y el cuerpo del fichero se escribe en un fichero de salida
