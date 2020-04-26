@@ -7,6 +7,7 @@
 
 #include "PuertoSerie.h"
 
+
 #define PROTMAESTRO "Prolog-m.txt"
 #define PROTESCLAVO "Prolog-e.txt"
 
@@ -14,11 +15,12 @@ class Protocolo
 {
     private:
         bool esMaestro; ///true si se estamos en la estacion maestra, false si es estamos en la esclava
-        unsigned char tipoOper; ///R:seleccion, T:sondeo
+        char tipoOper; ///R:seleccion, T:sondeo
         bool cerrar; ///es false mientras el maestro no quiera cerrar la comunicacion
-        unsigned char numTrama; ///0 o 1 ciclicamente, se reinicia en cada nueva fase
+        char numTrama; ///0 o 1 ciclicamente, se reinicia en cada nueva fase
         FILE *ficheroProt; ///fichero en el que se volcara todo lo relacionado con el protocolo
         bool tCorrecta;
+        bool estacionQueInicia;
 
         Protocolo();
         static Protocolo* obj;
@@ -37,6 +39,11 @@ class Protocolo
         */
         void cambiarNumTrama();
 
+        void abrirFicherto();
+        void cerrarFichero();
+        void escribirCadena(string cadena);
+        void escribirEntero(int numero);
+        void escribirCaracter (char car);
         void iniciarProtMaestro(HANDLE &PuertoCOM, HANDLE &Pantalla);
         void iniciarProtEsclavo(HANDLE &PuertoCOM, HANDLE &Pantalla);
         unsigned char getTipoOper();
@@ -46,6 +53,9 @@ class Protocolo
         unsigned char getNumTrama();
         void setCerrar(bool _cerrar);
         void setTCorrecta (bool _tCorrecta);
+        void setEstacionQueInicia (bool _estacion);
+        string getTipoTrama(unsigned char control);
+        void imprimirTrama(unsigned char control, unsigned char bce, string aux);
 };
 
 #endif // PROTOCOLO_H

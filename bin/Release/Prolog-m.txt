@@ -1,0 +1,13 @@
+Seleccione maestro o esclavo: 
+ 1.Maestro
+ 2.Esclavo
+
+Has seleccionado MAESTRO, seleccione la operacion a realizar: 
+ 1.Seleccion
+ 2.Sondeo
+
+Ha elegido seleccion 
+
+E R ENQ 0
+E R ENQ 1
+E R ENQ 0

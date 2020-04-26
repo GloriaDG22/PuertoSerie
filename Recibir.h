@@ -32,6 +32,7 @@ class Recibir{
         bool finFichero;
         Funciones* fRecibo;
         Protocolo* pRecibo;
+        bool esProt;
 
         ofstream fSal;
 
@@ -56,6 +57,11 @@ class Recibir{
         *   \param Pantalla Se utiliza para cambiar el color de texto y fondo de la consola
         */
         void procesarFichero (HANDLE Pantalla);
+
+        /**
+        */
+        void setEsProt (bool _prot);
+
 };
 
 #endif // RECIBIR_H

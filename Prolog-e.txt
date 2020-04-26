@@ -1,0 +1,6 @@
+
+Has seleccionado ESCLAVO
+
+R R ENQ 0
+E R  0
+E R ACK 0

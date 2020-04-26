@@ -16,6 +16,14 @@
 #include "Funciones.h"
 
 #define FICHERO "fichero-e.txt"
+#define FICHEROPROT "EProtoc.txt"
+
+///COLORES PROTOCOLO
+#define CESTABLECIMIENTO 9 //AZUL ELECTRICO
+#define CTRANSFERENCIA1  12 //ROJO
+#define CTRANSFERENCIA2  3 //AZUL VERDOSO
+#define CTRANSFERENCIA3  8 //GRIS OSCURO
+#define CCIERRE 11 //CIAN
 
 const int MAX = 800;
 const int LINCABECERA = 3;
@@ -44,6 +52,11 @@ class Enviar
         Funciones* fEnvio;
 
         Protocolo* pEnvio;
+
+        bool esProt;
+
+        FILE* ficheroProt;
+
 
     public:
         ///constructor
@@ -150,6 +163,10 @@ class Enviar
         /**
         */
         void recibirTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        void imprimirTrama(bool envio);
+
+        void trocearFicheroProt();
 };
 
 #endif // ENVIAR_H
