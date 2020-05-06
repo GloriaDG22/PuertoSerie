@@ -1,2 +1,6 @@
 
 Has seleccionado ESCLAVO
+
+R R ENQ 0
+E R ACK 0
+R R STX 0 52 52

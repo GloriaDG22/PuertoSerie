@@ -8,11 +8,12 @@ Enviar::Enviar(){
     caracter = ' ';
     cont = 0;
     colorEnvio=3+0*16;
+    errorProt=false;
+    contError=0;
     tEnvio=Trama();
     recibo=recibo->getInstance();
     fEnvio=fEnvio->getInstance();
     pEnvio=pEnvio->getInstance();
-    ficheroProt = NULL;
 }
 
 Enviar::~Enviar(){
@@ -32,6 +33,7 @@ void Enviar::addChar(char carE){
 }
 
 void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantalla){
+    bool correcto;
     SetConsoleTextAttribute(Pantalla, colorEnvio);
     switch (carE){
         case 59: //F1
@@ -47,14 +49,19 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
         case 61: //F3
             enviarFichero(PuertoCOM, Pantalla);
             break;
-        case 63: //F4
+        case 63: //F5
             fEnvio->abrirFlujo();
             fEnvio->setEscribir(true);
+            fEnvio->escribirCadena("Se ha pulsado la tecla F5\n");
             break;
         case 64: //F6
-            fEnvio->cerrarFlujo();
-            esProt = true;
-            bool correcto=false;
+            fEnvio->cerrarFlujo(); //cerramos el fichero log de F5
+            pEnvio->setEsProt(true);
+            pEnvio->setCerrar(false);
+            errorFichero = false;
+            correcto=false;
+            pEnvio->setFinTransferencia(false);
+            SetConsoleTextAttribute(Pantalla, 5);
             printf("Seleccione maestro o esclavo: \n 1.Maestro\n 2.Esclavo\n");
             pEnvio->setEstacionQueInicia(true);
             while (!correcto){
@@ -62,12 +69,14 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
                 switch(seleccion){
                 case '1': //eleccion de maestro
                     EnviarCaracter(PuertoCOM, 'E'); //se envia a la otra estacion el rol de esclavo
+                    SetConsoleTextAttribute(Pantalla, 14);
                     pEnvio->iniciarProtMaestro(PuertoCOM, Pantalla);
                     llamaOperacion(PuertoCOM, Pantalla);
                     correcto = true;
                     break;
                 case '2': //elección de esclavo
                     EnviarCaracter(PuertoCOM, 'M'); //se envia a la otra estacion el rol de maestro
+                    SetConsoleTextAttribute(Pantalla, 14);
                     pEnvio->iniciarProtEsclavo(PuertoCOM, Pantalla);
                     llamaOperacion(PuertoCOM, Pantalla);
                     correcto = true;
@@ -81,9 +90,6 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
                     break;
                 }
             }
-            pEnvio->escribirCadena("FIN DE PROTOCOLO\n");
-            esProt=false;
-            recibo->setEsProt(false);
             break;
     }
 }
@@ -183,7 +189,7 @@ void Enviar::enviarTrama(HANDLE &PuertoCOM, HANDLE &Pantalla){
         EnviarCadena(PuertoCOM, tEnvio.getDatos(), tEnvio.getLong());
         EnviarCaracter(PuertoCOM, tEnvio.getBCE());
     }
-    if(!esProt){
+    if(!pEnvio->getEsProt()){
         if(tEnvio.getControl()!=2){ //si es trama de control
             fEnvio->escribirCadena("Se ha enviado una trama de tipo ");
             tEnvio.imprimirTipoTrama();
@@ -200,7 +206,6 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
     int cont=0;
     bool teclaESC = false;
     ifstream fEnt;
-    char autores[50], texto[255];
     fEnt.open(FICHERO);
     if(!fEnvio->comprobarESC(teclaESC) && fEnt.is_open()){
         EnviarCaracter(PuertoCOM, '{'); //caracter que indica que se va a enviar un fichero
@@ -218,11 +223,13 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
         }
         while(!fEnt.eof() && !fEnvio->comprobarESC(teclaESC)){
             fEnt.read(texto, 254);
-            texto[fEnt.gcount()]='\0';
-            tEnvio.setAll(22, 'T', 2, '0', strlen(texto), texto, 0);
-            tEnvio.setBCE(tEnvio.calcularBce());
-            enviarTrama(PuertoCOM, Pantalla);
-            cont=cont+tEnvio.getLong();
+            if(!fEnt.eof()){
+                texto[fEnt.gcount()]='\0';
+                tEnvio.setAll(22, 'T', 2, '0', strlen(texto), texto, 0);
+                tEnvio.setBCE(tEnvio.calcularBce());
+                enviarTrama(PuertoCOM, Pantalla);
+                cont=cont+tEnvio.getLong();
+            }
         }
         fEnt.close();
         EnviarCaracter(PuertoCOM, '}'); //caracter que indica que se ha enviado el fichero completo
@@ -257,137 +264,176 @@ void Enviar::llamaOperacion(HANDLE &PuertoCOM, HANDLE &Pantalla){
 }
 
 void Enviar::sondeo(HANDLE &PuertoCOM, HANDLE &Pantalla){
-    printf("Estas en la operacion de sondeo y eres");
     if(pEnvio->getEsMaestro()){
-        printf(" maestro\n");
         pEnvio->reiniciarNumTrama();
         ///empieza fase establecimiento
-        SetConsoleTextAttribute(Pantalla, CESTABLECIMIENTO);
+        pEnvio->setColor(CESTABLECIMIENTO);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
         faseEstablecimiento(PuertoCOM, Pantalla);
         pEnvio->reiniciarNumTrama();
         ///empieza fase transferencia
-        SetConsoleTextAttribute(Pantalla, CTRANSFERENCIA1);
+        pEnvio->setColor(CTRANSFERENCIA1);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
         faseTransferenciaRecibo(PuertoCOM, Pantalla);
         pEnvio->reiniciarNumTrama();
         ///empieza fase cierre
-        SetConsoleTextAttribute(Pantalla, CCIERRE);
+        pEnvio->setColor(CCIERRE);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
         aceptarCierreComunicacion(PuertoCOM, Pantalla); ///pregunta por pantalla si se desea cerrar o no la comunicacion
     }
     else{
-        printf(" esclavo\n");
         pEnvio->reiniciarNumTrama();
         ///empieza fase establecimiento
-        SetConsoleTextAttribute(Pantalla, CESTABLECIMIENTO);
+        pEnvio->setColor(CESTABLECIMIENTO);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
         faseEstablecimiento(PuertoCOM, Pantalla);
         pEnvio->reiniciarNumTrama();
         ///empieza fase transferencia
-        SetConsoleTextAttribute(Pantalla, CTRANSFERENCIA1);
+        pEnvio->setColor(CTRANSFERENCIA1);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
         faseTransferenciaEnvio(PuertoCOM, Pantalla);
         pEnvio->reiniciarNumTrama();
         ///empieza fase cierre
-        SetConsoleTextAttribute(Pantalla, CCIERRE);
+        pEnvio->setColor(CCIERRE);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
         while (!pEnvio->getCerrar()){
             faseCierre(PuertoCOM, Pantalla);
         }
     }
+    pEnvio->escribirCadena("FIN PROTOCOLO\n\n");
+    pEnvio->cerrarFichero();
+    pEnvio->setEsProt(false);
 }
 
 void Enviar::seleccion(HANDLE &PuertoCOM, HANDLE &Pantalla){
-    printf("Estas en la operacion de seleccion y eres");
     if(pEnvio->getEsMaestro()){
-        printf(" maestro\n");
         pEnvio->reiniciarNumTrama();
         ///empieza fase establecimiento
-        SetConsoleTextAttribute(Pantalla, CESTABLECIMIENTO);
+        pEnvio->setColor(CESTABLECIMIENTO);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
         faseEstablecimiento(PuertoCOM, Pantalla);
         pEnvio->reiniciarNumTrama();
         ///empieza fase transferencia
-        SetConsoleTextAttribute(Pantalla, CTRANSFERENCIA1);
+        pEnvio->setColor(CTRANSFERENCIA1);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
         faseTransferenciaEnvio(PuertoCOM, Pantalla);
         pEnvio->reiniciarNumTrama();
         ///empieza fase cierre
-        SetConsoleTextAttribute(Pantalla, CCIERRE);
+        pEnvio->setColor(CCIERRE);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
         faseCierre(PuertoCOM, Pantalla); ///solicita cierre de la comunicacion y recibe la respuesta
     }
     else{
-        printf(" esclavo\n");
         pEnvio->reiniciarNumTrama();
         ///empieza fase establecimiento
-        SetConsoleTextAttribute(Pantalla, CESTABLECIMIENTO);
+        pEnvio->setColor(CESTABLECIMIENTO);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
         faseEstablecimiento(PuertoCOM, Pantalla);
         pEnvio->reiniciarNumTrama();
         ///empieza fase transferencia
-        SetConsoleTextAttribute(Pantalla, CTRANSFERENCIA1);
+        pEnvio->setColor(CTRANSFERENCIA1);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
         faseTransferenciaRecibo(PuertoCOM, Pantalla);
         pEnvio->reiniciarNumTrama();
         ///empieza fase cierre
-        SetConsoleTextAttribute(Pantalla, CCIERRE);
-        esperarRespuesta(04, PuertoCOM, Pantalla); ///esperar trama EOT
-        imprimirTrama(false);
+        pEnvio->setColor(CCIERRE);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
+        if (!errorFichero)
+            esperarRespuesta(04, PuertoCOM, Pantalla); ///esperar trama EOT
         enviarTramaAceptacion(PuertoCOM, Pantalla); ///envia una trama ACK para cerrar la comunicacion
-        imprimirTrama(true);
+        imprimirTrama();
     }
+    pEnvio->escribirCadena("FIN PROTOCOLO\n\n");
+    pEnvio->cerrarFichero();
+    pEnvio->setEsProt(false);
 }
 
 void Enviar::faseEstablecimiento(HANDLE &PuertoCOM, HANDLE &Pantalla){
     if(pEnvio->getEsMaestro()){
         crearTramaProt(05, PuertoCOM, Pantalla); ///enviamos trama ENQ
-        imprimirTrama(true);
+        imprimirTrama();
         pEnvio->cambiarNumTrama();
         esperarTramaAceptacion(PuertoCOM, Pantalla);
-        imprimirTrama(false);
     }
     else{
         ///poner color establecimiento: azul
         esperarRespuesta(05, PuertoCOM, Pantalla); ///Esperamos una trama ENQ
-        imprimirTrama(false);
         enviarTramaAceptacion(PuertoCOM, Pantalla);
-        imprimirTrama(true);
+        imprimirTrama();
         pEnvio->cambiarNumTrama();
     }
 }
 
 void Enviar::faseTransferenciaEnvio(HANDLE &PuertoCOM, HANDLE &Pantalla){
-//    while(!finFichero){
-        ///troceamos fichero: metodo en enviar que cree una trama con los parametros
-        ///dados y la envie e imprima
-        imprimirTrama(true);
-        pEnvio->cambiarNumTrama();
-        esperarTramaAceptacion(PuertoCOM, Pantalla);
-        imprimirTrama(false);
-//    }
+    ifstream fEnt;
+    int linFichero=1, i=0, cont=0;
+    fEnt.open(FICHEROLECTURA);
+    bool teclaESC = false;
+    EnviarCaracter(PuertoCOM, '{'); //caracter que indica que se empieza a enviar el fichero
+    if(fEnt.is_open()){
+        while(!pEnvio->getFinTransferencia()&&!fEnvio->comprobarESC(teclaESC)){
+        trocearFicheroProt(fEnt, i, linFichero, cont, PuertoCOM, Pantalla);
+            imprimirTrama();
+            pEnvio->cambiarNumTrama();
+            esperarTramaAceptacion(PuertoCOM, Pantalla);
+            if(i==LINCABECERA){
+                string cad = "\nEnviando fichero por " + (string)autores + ".\n";
+                pEnvio->escribirCadena(cad);
+                i++;
+            }
+        }
+        pEnvio->setFinTransferencia(true);
+        if (!teclaESC)
+            fEnvio->escribirCadena("\nFichero enviado.");
+        else
+            fEnvio->escribirCadena("\nSe ha cancelado el envio del fichero.\n");
+        fEnt.close();
+    }
+    else{
+        pEnvio->setFinTransferencia(true);
+        if(!teclaESC)
+            fEnvio->escribirCadena("\nERROR: el fichero no existe.\n");
+        else
+            fEnvio->escribirCadena("\nSe ha cancelado el envio del fichero.\n");
+    }
 }
 
 void Enviar::faseTransferenciaRecibo(HANDLE &PuertoCOM, HANDLE &Pantalla){
-    while(true){
+    int cont=0;
+    while(!pEnvio->getFinTransferencia()){
+        if(cont>=LINCABECERA)
+            pEnvio->setColor(CTRANSFERENCIA2);
         recibirTramaDatos(PuertoCOM, Pantalla);
-        imprimirTrama(false);
-        enviarTramaAceptacion(PuertoCOM, Pantalla);
-        imprimirTrama(true);
-        pEnvio->cambiarNumTrama();
+        if (!errorFichero){
+            enviarTramaAceptacion(PuertoCOM, Pantalla);
+            imprimirTrama();
+            pEnvio->cambiarNumTrama();
+            cont++;
+        }
     }
 }
 
 void Enviar::faseCierre(HANDLE &PuertoCOM, HANDLE &Pantalla){
     crearTramaProt(04, PuertoCOM, Pantalla);///enviar trama EOT
-    imprimirTrama(true);
+    imprimirTrama();
     pEnvio->cambiarNumTrama();
     esperarRespuesta(06, PuertoCOM, Pantalla);
     pEnvio->setCerrar(pEnvio->getTCorrecta());
-    imprimirTrama(false);
 }
 
 void Enviar::aceptarCierreComunicacion(HANDLE &PuertoCOM, HANDLE &Pantalla){
     while (!pEnvio->getCerrar()){
-        esperarRespuesta(04, PuertoCOM, Pantalla); ///esperar trama EOT
-        imprimirTrama(false);
-        printf("El esclavo ha solicitado cerrar la comunicacion, ¿quiere cerrarla?\n 1. Si\n 2. No\n");
+        if (!errorFichero)
+            esperarRespuesta(04, PuertoCOM, Pantalla); ///esperar trama EOT
+        else
+            errorFichero = false;
+        pEnvio->escribirCadena("\nEl esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?\n 1. Si\n 2. No");
         char carR = getch();
         bool correcto=false;
         while(!correcto){
             if(carR=='1'){
                 enviarTramaAceptacion(PuertoCOM, Pantalla);
-                imprimirTrama(true);
+                imprimirTrama();
                 correcto = true;
                 pEnvio->setCerrar(true);
             }
@@ -395,11 +441,11 @@ void Enviar::aceptarCierreComunicacion(HANDLE &PuertoCOM, HANDLE &Pantalla){
                 if (carR=='2'){
                     pEnvio->setTCorrecta(false);
                     enviarTramaAceptacion(PuertoCOM, Pantalla);
-                    imprimirTrama(true);
+                    imprimirTrama();
                     correcto=true;
                 }
                 else
-                    printf("Introduzca un valor correcto\n");
+                    pEnvio->escribirCadena("\nIntroduzca un valor correcto\n");
             }
         }
         pEnvio->cambiarNumTrama();
@@ -424,10 +470,8 @@ void Enviar::esperarRespuesta (unsigned char control, HANDLE &PuertoCOM, HANDLE 
 
 void Enviar::enviarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla){
     int vControl;
-    if(pEnvio->getTCorrecta()){
-        printf("Estamos en el envio de la trama de aceptacion\n");
+    if(pEnvio->getTCorrecta())
         vControl=06;
-    }
     else
         vControl=21;
     tEnvio.setAll(22, pEnvio->getTipoOper(), vControl, pEnvio->getNumTrama(), 0, "", 0);
@@ -454,17 +498,78 @@ void Enviar::recibirTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla){
     } while((vControl = recibo->recibir(carR, PuertoCOM, Pantalla)) == 0);
     if(vControl==2)
         pEnvio->setTCorrecta(true);
+    else if (vControl==4){
+        errorFichero = true;
+        pEnvio->setFinTransferencia(true);
+        pEnvio->setTCorrecta(true);
+    }
 }
 
-void Enviar::trocearFicheroProt(){
+void Enviar::trocearFicheroProt(ifstream &fEnt, int &i, int &linFichero, int &cont, HANDLE &PuertoCOM, HANDLE &Pantalla){ ///la i es un iterador
+     if (kbhit()){
+        char car = getch();
+        if(car == '\0'){
+            car = getch();
+            if(car == 65 && pEnvio->getEstacionQueEnvia()){
+                printf("\nSe ha pulsado f7");
+                errorProt = true;
+                contError++;
+            }
+        }
+     }
+    switch (linFichero){
+    case 1:
+        if(i<LINCABECERA){
+            fEnt.getline(texto, 50);
+            if (i==0)
+                strcpy(autores, texto);
+            i++;
+        }
+        if(i==LINCABECERA)
+            linFichero++;
+        break;
+    case 2:
+        pEnvio->setColor(CTRANSFERENCIA2);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
+        if(!fEnt.eof()){
+            fEnt.read(texto, 254);
+            if(!fEnt.eof()){
+                texto[fEnt.gcount()]='\0';
+                cont=cont+strlen(texto);
+            }
+            else
+                linFichero++;
+        }
+        else
+            linFichero++;
+        break;
+    case 3:
+        pEnvio->setColor(CTRANSFERENCIA3);
+        SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
+        EnviarCaracter(PuertoCOM, '}'); //caracter que indica que se ha enviado el fichero completo
+        pEnvio->setFinTransferencia(true);
+        sprintf(texto, "%d", cont);
+
+        break;
+    }
+    tEnvio.setAll(22, pEnvio->getTipoOper(), 2, pEnvio->getNumTrama(), strlen(texto), texto, 0);
+    tEnvio.setBCE(tEnvio.calcularBce());
+    if(errorProt){
+        printf("Se ha enviado un error");
+        texto[0]='ç';
+        contError--;
+        if (contError==0)
+            errorProt = false;
+    }
+    enviarTrama(PuertoCOM, Pantalla);
 
 }
 
-void Enviar::imprimirTrama(bool envio){
+void Enviar::imprimirTrama(){
     unsigned char control, bce;
     if((control=tEnvio.getControl())!=2)
         bce = 0;
     else
         bce=tEnvio.getBCE();
-    pEnvio->imprimirTrama(control, bce, "E");
+    pEnvio->imprimirTrama(control, bce, tEnvio.getDir(), tEnvio.getNumTrama(), "E");
 }

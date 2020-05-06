@@ -120,7 +120,8 @@ int main()
 
         carR = RecibirCaracter(PuertoCOM);
         recibo->recibir(carR, PuertoCOM, Pantalla);
-        if(carR=='M'||carR=='E')
+
+        if((carR=='M'||carR=='E')&&recibo->getEsProt())
             envio.llamaOperacion(PuertoCOM, Pantalla);
 
         if (kbhit()){
@@ -142,5 +143,9 @@ int main()
     if (PuertoCOM!=NULL)
         CerrarPuerto(PuertoCOM);
 
+///***************************************************************************************************
+///INVOCACION A LOS DESTRUCTORES DE ENVIAR Y RECIBIR
+
+///***************************************************************************************************
    return 0;
 }

@@ -9,5 +9,5 @@ Has seleccionado MAESTRO, seleccione la operacion a realizar:
 Ha elegido seleccion 
 
 E R ENQ 0
-E R ENQ 1
-E R ENQ 0
+R R ACK 0
+E R STX 0 52

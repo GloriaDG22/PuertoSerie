@@ -10,6 +10,8 @@ Protocolo::Protocolo(){
     cerrar = false;
     ficheroProt = NULL;
     estacionQueInicia = false;
+    esProt = false;
+    finTransferencia=false;
 }
 
 void Protocolo::createInstance (){
@@ -33,7 +35,7 @@ void Protocolo::cambiarNumTrama(){
         numTrama='0';
 }
 
-void Protocolo::abrirFicherto(){
+void Protocolo::abrirFichero(){
     if(esMaestro)
         ficheroProt = fopen(PROTMAESTRO, "wt");
     else
@@ -67,7 +69,7 @@ void Protocolo::escribirCaracter (char car){
 
 void Protocolo::iniciarProtMaestro(HANDLE &PuertoCOM, HANDLE &Pantalla){
     esMaestro = true;
-    abrirFicherto();
+    abrirFichero();
     if (estacionQueInicia)
         fprintf(ficheroProt, "Seleccione maestro o esclavo: \n 1.Maestro\n 2.Esclavo\n");
     escribirCadena("Has seleccionado MAESTRO, seleccione la operacion a realizar: \n 1.Seleccion\n 2.Sondeo\n");
@@ -92,18 +94,20 @@ void Protocolo::iniciarProtMaestro(HANDLE &PuertoCOM, HANDLE &Pantalla){
             break;
         }
     }
+    setEstacionQueEnvia();
 }
 
 void Protocolo::iniciarProtEsclavo(HANDLE &PuertoCOM, HANDLE &Pantalla){
     esMaestro = false;
-    abrirFicherto();
+    abrirFichero();
     if (estacionQueInicia)
         fprintf(ficheroProt, "Seleccione maestro o esclavo: \n 1.Maestro\n 2.Esclavo\n");
     escribirCadena("Has seleccionado ESCLAVO\n");
-    char carR = RecibirCaracter(PuertoCOM);
+    char carR;
     while (!carR)
         carR = RecibirCaracter(PuertoCOM);
-    tipoOper=carR; ///Guarda el tipo de operacion que haya ele
+    tipoOper=carR; ///Guarda el tipo de operacion que haya elegido
+    setEstacionQueEnvia();
 }
 
 unsigned char Protocolo::getTipoOper(){
@@ -123,23 +127,15 @@ bool Protocolo::getTCorrecta(){
 }
 
 unsigned char Protocolo::getNumTrama(){
-    return tipoOper;
+    return numTrama;
 }
 
-void Protocolo::setCerrar(bool _cerrar){
-    cerrar = _cerrar;
-}
-
-void Protocolo::setTCorrecta(bool _tCorrecta){
-    tCorrecta = _tCorrecta;
-}
-
-void Protocolo::setEstacionQueInicia(bool _estacion){
-    estacionQueInicia = _estacion;
+bool Protocolo::getFinTransferencia(){
+    return finTransferencia;
 }
 
 string Protocolo::getTipoTrama(unsigned char control){
-    string tipoTrama;
+    string tipoTrama=" ";
     switch (control){
     case 05:
         tipoTrama = "ENQ";
@@ -160,13 +156,58 @@ string Protocolo::getTipoTrama(unsigned char control){
     return tipoTrama;
 }
 
-void Protocolo::imprimirTrama(unsigned char control, unsigned char bce, string aux){
+int Protocolo::getColor(){
+    return color;
+}
+
+bool Protocolo::getEsProt (){
+    return esProt;
+}
+
+bool Protocolo::getEstacionQueEnvia(){
+    return estacionQueEnvia;
+}
+
+void Protocolo::setCerrar(bool _cerrar){
+    cerrar = _cerrar;
+}
+
+void Protocolo::setTCorrecta(bool _tCorrecta){
+    tCorrecta = _tCorrecta;
+}
+
+void Protocolo::setEstacionQueInicia(bool _estacion){
+    estacionQueInicia = _estacion;
+}
+
+void Protocolo::setEsProt(bool _esProt){
+    esProt = _esProt;
+}
+
+void Protocolo::setColor(int _color){
+    color = _color;
+}
+
+void Protocolo::setFinTransferencia(bool finT){
+    finTransferencia = finT;
+}
+
+void Protocolo::setEstacionQueEnvia(){
+    if((esMaestro && tipoOper == 'R') || (!esMaestro && tipoOper == 'T'))
+        estacionQueEnvia=true;
+    else
+        estacionQueEnvia=false;
+}
+
+void Protocolo::imprimirTrama(unsigned char control, unsigned char bce, unsigned char dir, unsigned char nTrama, string aux){
     string tOper, numT;
-    tOper=string(1, tipoOper);
-    numT=string(1, numTrama);
+    tOper=string(1, (char)dir);
+    numT=string(1, (char)nTrama);
     string cad = aux + " " + tOper + " " + getTipoTrama(control) + " " + numT ;
     escribirCadena(cad);
     if (control==2){
        escribirEntero((int)bce);
     }
 }
+
+

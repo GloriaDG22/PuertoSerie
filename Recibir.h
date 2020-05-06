@@ -15,6 +15,9 @@
 #include "Funciones.h"
 #include "Protocolo.h"
 
+#define CTRANSFERENCIA3  8 //GRIS OSCURO
+#define CCIERRE 11  //CIAN
+
 class Recibir{
 
     private:
@@ -32,7 +35,6 @@ class Recibir{
         bool finFichero;
         Funciones* fRecibo;
         Protocolo* pRecibo;
-        bool esProt;
 
         ofstream fSal;
 
@@ -58,10 +60,7 @@ class Recibir{
         */
         void procesarFichero (HANDLE Pantalla);
 
-        /**
-        */
-        void setEsProt (bool _prot);
-
+        bool getEsProt();
 };
 
 #endif // RECIBIR_H

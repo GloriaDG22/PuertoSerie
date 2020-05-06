@@ -16,12 +16,12 @@
 #include "Funciones.h"
 
 #define FICHERO "fichero-e.txt"
-#define FICHEROPROT "EProtoc.txt"
+#define FICHEROLECTURA "EProtoc.txt"
 
 ///COLORES PROTOCOLO
 #define CESTABLECIMIENTO 9 //AZUL ELECTRICO
 #define CTRANSFERENCIA1  12 //ROJO
-#define CTRANSFERENCIA2  3 //AZUL VERDOSO
+#define CTRANSFERENCIA2  2 //AZUL VERDOSO
 #define CTRANSFERENCIA3  8 //GRIS OSCURO
 #define CCIERRE 11 //CIAN
 
@@ -44,6 +44,16 @@ class Enviar
         int cont;
         ///Envio: letra azul verdoso (3) y fondo negro (0)
         int colorEnvio;
+        ///
+        char autores[50];
+        ///
+        char texto[255];
+        ///
+        bool errorProt;
+        ///
+        int contError;
+        ///se pone a true si se recibe una EOT durante la fase de transferencia (cuando el que envia no ha podido abrir el fichero)
+        bool errorFichero;
         ///Trama que se va a enviar
         Trama tEnvio;
         ///Clase recibir para no excluir la recepción
@@ -52,11 +62,6 @@ class Enviar
         Funciones* fEnvio;
 
         Protocolo* pEnvio;
-
-        bool esProt;
-
-        FILE* ficheroProt;
-
 
     public:
         ///constructor
@@ -164,9 +169,9 @@ class Enviar
         */
         void recibirTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla);
 
-        void imprimirTrama(bool envio);
+        void imprimirTrama();
 
-        void trocearFicheroProt();
+        void trocearFicheroProt(ifstream &fEnt, int &i, int &linFichero, int &cont, HANDLE &PuertoCOM, HANDLE &Pantalla);
 };
 
 #endif // ENVIAR_H
