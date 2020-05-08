@@ -24,7 +24,6 @@ class Recibir{
         static Recibir* obj;
         Trama tRecibida;
         int campoT;
-
         char autores [50];
         char *color;
         char nomFichero [40];
@@ -61,6 +60,8 @@ class Recibir{
         void procesarFichero (HANDLE Pantalla);
 
         bool getEsProt();
+
+        virtual ~Recibir();
 };
 
 #endif // RECIBIR_H

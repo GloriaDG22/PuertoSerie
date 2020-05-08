@@ -16,7 +16,9 @@ E R STX 1 55
 R R ACK 1
 E R STX 0 14
 R R ACK 0
+
 Enviando fichero por Belinda Soto & Mario Borrego.
+
 E R STX 1 37
 R R ACK 1
 E R STX 0 51

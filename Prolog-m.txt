@@ -6,6 +6,8 @@ Has seleccionado MAESTRO, seleccione la operacion a realizar:
  1.Seleccion
  2.Sondeo
 
+Ha introducido un valor erroneo, intentelo de nuevo 
+
 Ha elegido sondeo 
 
 E T ENQ 0
@@ -222,6 +224,276 @@ El fichero recibido tiene un tamaño de 24892 bytes.
 
 R T STX 0 53 53
 E T ACK 0
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+
+Introduzca un valor correcto
+
+
+Introduzca un valor correcto
+
+
+Introduzca un valor correcto
+
+
+Introduzca un valor correcto
+
+
+Introduzca un valor correcto
+
+
+Introduzca un valor correcto
+
+
+Introduzca un valor correcto
+
+
+Introduzca un valor correcto
+
+
+Introduzca un valor correcto
+
+
+Introduzca un valor correcto
+
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
+R T EOT 0
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 0
+R T EOT 1
+
+El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?
+ 1. Si
+ 2. No
+E T NACK 1
 R T EOT 0
 
 El esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?

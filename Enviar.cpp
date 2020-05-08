@@ -16,9 +16,6 @@ Enviar::Enviar(){
     pEnvio=pEnvio->getInstance();
 }
 
-Enviar::~Enviar(){
-}
-
 int Enviar::getCont(){
     return cont;
 }
@@ -56,11 +53,9 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
             break;
         case 64: //F6
             fEnvio->cerrarFlujo(); //cerramos el fichero log de F5
-            pEnvio->setEsProt(true);
-            pEnvio->setCerrar(false);
-            errorFichero = false;
-            correcto=false;
-            pEnvio->setFinTransferencia(false);
+            pEnvio->iniciarVariables();
+            errorProt = false;
+            correcto = false;
             SetConsoleTextAttribute(Pantalla, 5);
             printf("Seleccione maestro o esclavo: \n 1.Maestro\n 2.Esclavo\n");
             pEnvio->setEstacionQueInicia(true);
@@ -245,8 +240,10 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
     else{
         if(!teclaESC)
             fEnvio->escribirCadena("ERROR: el fichero no existe.\n");
-        else
+        else{
             fEnvio->escribirCadena("Se ha cancelado el envio del fichero.\n");
+            fEnt.close();
+        }
     }
 }
 
@@ -338,7 +335,7 @@ void Enviar::seleccion(HANDLE &PuertoCOM, HANDLE &Pantalla){
         ///empieza fase cierre
         pEnvio->setColor(CCIERRE);
         SetConsoleTextAttribute(Pantalla, pEnvio->getColor());
-        if (!errorFichero)
+        if (!pEnvio->getErrorFichero())
             esperarRespuesta(04, PuertoCOM, Pantalla); ///esperar trama EOT
         enviarTramaAceptacion(PuertoCOM, Pantalla); ///envia una trama ACK para cerrar la comunicacion
         imprimirTrama();
@@ -375,7 +372,11 @@ void Enviar::faseTransferenciaEnvio(HANDLE &PuertoCOM, HANDLE &Pantalla){
         trocearFicheroProt(fEnt, i, linFichero, cont, PuertoCOM, Pantalla);
             imprimirTrama();
             pEnvio->cambiarNumTrama();
-            esperarTramaAceptacion(PuertoCOM, Pantalla);
+            if(!esperarTramaAceptacion(PuertoCOM, Pantalla)){
+                retransmision(PuertoCOM, Pantalla);
+                imprimirTrama();
+                esperarTramaAceptacion(PuertoCOM, Pantalla);
+            }
             if(i==LINCABECERA){
                 string cad = "\nEnviando fichero por " + (string)autores + ".\n";
                 pEnvio->escribirCadena(cad);
@@ -393,8 +394,6 @@ void Enviar::faseTransferenciaEnvio(HANDLE &PuertoCOM, HANDLE &Pantalla){
         pEnvio->setFinTransferencia(true);
         if(!teclaESC)
             fEnvio->escribirCadena("\nERROR: el fichero no existe.\n");
-        else
-            fEnvio->escribirCadena("\nSe ha cancelado el envio del fichero.\n");
     }
 }
 
@@ -404,9 +403,14 @@ void Enviar::faseTransferenciaRecibo(HANDLE &PuertoCOM, HANDLE &Pantalla){
         if(cont>=LINCABECERA)
             pEnvio->setColor(CTRANSFERENCIA2);
         recibirTramaDatos(PuertoCOM, Pantalla);
-        if (!errorFichero){
+        if (!pEnvio->getErrorFichero()){
             enviarTramaAceptacion(PuertoCOM, Pantalla);
             imprimirTrama();
+            if(!pEnvio->getTCorrecta()){
+                recibirTramaDatos(PuertoCOM, Pantalla);
+                enviarTramaAceptacion(PuertoCOM, Pantalla);
+                imprimirTrama();
+            }
             pEnvio->cambiarNumTrama();
             cont++;
         }
@@ -423,14 +427,15 @@ void Enviar::faseCierre(HANDLE &PuertoCOM, HANDLE &Pantalla){
 
 void Enviar::aceptarCierreComunicacion(HANDLE &PuertoCOM, HANDLE &Pantalla){
     while (!pEnvio->getCerrar()){
-        if (!errorFichero)
+        if (!pEnvio->getErrorFichero())
             esperarRespuesta(04, PuertoCOM, Pantalla); ///esperar trama EOT
         else
-            errorFichero = false;
+            pEnvio->setErrorFichero(false);
         pEnvio->escribirCadena("\nEl esclavo ha solicitado cerrar la comunicacion, quiere cerrarla?\n 1. Si\n 2. No");
-        char carR = getch();
+        char carR;
         bool correcto=false;
         while(!correcto){
+            carR = getch();
             if(carR=='1'){
                 enviarTramaAceptacion(PuertoCOM, Pantalla);
                 imprimirTrama();
@@ -475,18 +480,20 @@ void Enviar::enviarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla){
     else
         vControl=21;
     tEnvio.setAll(22, pEnvio->getTipoOper(), vControl, pEnvio->getNumTrama(), 0, "", 0);
-    enviarTrama(PuertoCOM, Pantalla); ///cambiar la exclusion
+    enviarTrama(PuertoCOM, Pantalla);
 }
 
-void Enviar::esperarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla){
+bool Enviar::esperarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla){
     unsigned char vControl;
     pEnvio->setTCorrecta(false);
     char carR;
+    bool esTramaACK = true;
     do{
         carR = RecibirCaracter(PuertoCOM);
     } while((vControl = recibo->recibir(carR, PuertoCOM, Pantalla))==0); ///espera nack o ack
-    if (vControl == 06 || vControl == 21)
-        pEnvio->setTCorrecta(true);
+    if(vControl == 21)
+        esTramaACK = false;
+    return esTramaACK;
 }
 
 void Enviar::recibirTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla){
@@ -496,26 +503,24 @@ void Enviar::recibirTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla){
     do {
         carR = RecibirCaracter(PuertoCOM);
     } while((vControl = recibo->recibir(carR, PuertoCOM, Pantalla)) == 0);
-    if(vControl==2)
-        pEnvio->setTCorrecta(true);
-    else if (vControl==4){
-        errorFichero = true;
+    if (vControl==4){
+        pEnvio->setErrorFichero(true);
         pEnvio->setFinTransferencia(true);
         pEnvio->setTCorrecta(true);
     }
 }
 
 void Enviar::trocearFicheroProt(ifstream &fEnt, int &i, int &linFichero, int &cont, HANDLE &PuertoCOM, HANDLE &Pantalla){ ///la i es un iterador
+     char car;
      if (kbhit()){
-        char car = getch();
-        if(car == '\0'){
+        //car = getch();
+        //if(car == '\0'){
             car = getch();
-            if(car == 65 && pEnvio->getEstacionQueEnvia()){
-                printf("\nSe ha pulsado f7");
+            if(car == 65){
                 errorProt = true;
                 contError++;
             }
-        }
+        //}
      }
     switch (linFichero){
     case 1:
@@ -555,14 +560,15 @@ void Enviar::trocearFicheroProt(ifstream &fEnt, int &i, int &linFichero, int &co
     tEnvio.setAll(22, pEnvio->getTipoOper(), 2, pEnvio->getNumTrama(), strlen(texto), texto, 0);
     tEnvio.setBCE(tEnvio.calcularBce());
     if(errorProt){
-        printf("Se ha enviado un error");
-        texto[0]='ç';
+        char textoAux [255];
+        strcpy(textoAux, texto);
+        textoAux[0]='ç';
+        tEnvio.setDatos(textoAux);
         contError--;
         if (contError==0)
             errorProt = false;
     }
     enviarTrama(PuertoCOM, Pantalla);
-
 }
 
 void Enviar::imprimirTrama(){
@@ -572,4 +578,16 @@ void Enviar::imprimirTrama(){
     else
         bce=tEnvio.getBCE();
     pEnvio->imprimirTrama(control, bce, tEnvio.getDir(), tEnvio.getNumTrama(), "E");
+}
+
+void Enviar::retransmision(HANDLE &PuertoCOM, HANDLE &Pantalla){
+    tEnvio.setDatos(texto);
+    enviarTrama(PuertoCOM, Pantalla);
+}
+
+Enviar::~Enviar(){
+    if(fEnvio!=0)
+        delete fEnvio;
+    if(pEnvio!=0)
+        delete pEnvio;
 }

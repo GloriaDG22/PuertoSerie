@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1588793359 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.cpp
+1588968208 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.cpp
 	"Enviar.h"
 
-1588792858 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.h
+1588967570 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
@@ -40,7 +40,7 @@
 	<fstream>
 	"PuertoSerie.h"
 
-1588792272 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.h
+1588968148 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
@@ -52,17 +52,17 @@
 	"Funciones.h"
 	"Protocolo.h"
 
-1588792858 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\protocolo.h
+1588872200 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\protocolo.h
 	"PuertoSerie.h"
 
 1588785816 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\funciones.cpp
 	"Funciones.h"
 
-1588785738 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\main.cpp
+1588968292 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\main.cpp
 	"Enviar.h"
 	"Recibir.h"
 
-1588792874 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\protocolo.cpp
+1588872314 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\protocolo.cpp
 	"Protocolo.h"
 
 1587731023 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\puertoserie.cpp
@@ -70,7 +70,7 @@
 	<stdio.h>
 	<iostream>
 
-1588792858 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.cpp
+1588968206 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\recibir.cpp
 	"Recibir.h"
 
 1587820641 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\trama.cpp

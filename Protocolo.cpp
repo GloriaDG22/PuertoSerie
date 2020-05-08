@@ -8,10 +8,10 @@ Protocolo* Protocolo::obj=0;
 
 Protocolo::Protocolo(){
     cerrar = false;
-    ficheroProt = NULL;
     estacionQueInicia = false;
     esProt = false;
     finTransferencia=false;
+    ficheroProt = NULL;
 }
 
 void Protocolo::createInstance (){
@@ -73,9 +73,10 @@ void Protocolo::iniciarProtMaestro(HANDLE &PuertoCOM, HANDLE &Pantalla){
     if (estacionQueInicia)
         fprintf(ficheroProt, "Seleccione maestro o esclavo: \n 1.Maestro\n 2.Esclavo\n");
     escribirCadena("Has seleccionado MAESTRO, seleccione la operacion a realizar: \n 1.Seleccion\n 2.Sondeo\n");
-    char sel = getch();
+    char sel;
     bool correcto = false;
     while (!correcto){///seleccion
+        sel = getch();
         switch(sel){
         case '1':
             escribirCadena("Ha elegido seleccion \n");
@@ -94,7 +95,6 @@ void Protocolo::iniciarProtMaestro(HANDLE &PuertoCOM, HANDLE &Pantalla){
             break;
         }
     }
-    setEstacionQueEnvia();
 }
 
 void Protocolo::iniciarProtEsclavo(HANDLE &PuertoCOM, HANDLE &Pantalla){
@@ -107,7 +107,6 @@ void Protocolo::iniciarProtEsclavo(HANDLE &PuertoCOM, HANDLE &Pantalla){
     while (!carR)
         carR = RecibirCaracter(PuertoCOM);
     tipoOper=carR; ///Guarda el tipo de operacion que haya elegido
-    setEstacionQueEnvia();
 }
 
 unsigned char Protocolo::getTipoOper(){
@@ -164,8 +163,8 @@ bool Protocolo::getEsProt (){
     return esProt;
 }
 
-bool Protocolo::getEstacionQueEnvia(){
-    return estacionQueEnvia;
+bool Protocolo::getErrorFichero(){
+    return errorFichero;
 }
 
 void Protocolo::setCerrar(bool _cerrar){
@@ -192,11 +191,8 @@ void Protocolo::setFinTransferencia(bool finT){
     finTransferencia = finT;
 }
 
-void Protocolo::setEstacionQueEnvia(){
-    if((esMaestro && tipoOper == 'R') || (!esMaestro && tipoOper == 'T'))
-        estacionQueEnvia=true;
-    else
-        estacionQueEnvia=false;
+void Protocolo::setErrorFichero(bool _errorFichero){
+    errorFichero = _errorFichero;
 }
 
 void Protocolo::imprimirTrama(unsigned char control, unsigned char bce, unsigned char dir, unsigned char nTrama, string aux){
@@ -210,4 +206,11 @@ void Protocolo::imprimirTrama(unsigned char control, unsigned char bce, unsigned
     }
 }
 
-
+void Protocolo::iniciarVariables(){
+    cerrar = false;
+    esProt = true;
+    finTransferencia = false;
+    tCorrecta = false;
+    estacionQueInicia = false;
+    errorFichero = false;
+}

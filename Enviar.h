@@ -48,9 +48,9 @@ class Enviar
         char autores[50];
         ///
         char texto[255];
-        ///
+        /// variable que indica si se ha pulsado F7
         bool errorProt;
-        ///
+        /// contador del numero de veces que se ha pulsado F7
         int contError;
         ///se pone a true si se recibe una EOT durante la fase de transferencia (cuando el que envia no ha podido abrir el fichero)
         bool errorFichero;
@@ -159,7 +159,7 @@ class Enviar
 
         /**
         */
-        void esperarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla);
+        bool esperarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla);
 
         /**
         */
@@ -172,6 +172,8 @@ class Enviar
         void imprimirTrama();
 
         void trocearFicheroProt(ifstream &fEnt, int &i, int &linFichero, int &cont, HANDLE &PuertoCOM, HANDLE &Pantalla);
+
+        void retransmision(HANDLE &PuertoCOM, HANDLE &Pantalla);
 };
 
 #endif // ENVIAR_H

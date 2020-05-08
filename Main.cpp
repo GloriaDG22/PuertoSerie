@@ -142,10 +142,9 @@ int main()
 // Cerramos el puerto:
     if (PuertoCOM!=NULL)
         CerrarPuerto(PuertoCOM);
-
-///***************************************************************************************************
-///INVOCACION A LOS DESTRUCTORES DE ENVIAR Y RECIBIR
-
-///***************************************************************************************************
+    envio.~Enviar();
+    recibo->~Recibir();
+    if (recibo!=0)
+        delete recibo;
    return 0;
 }

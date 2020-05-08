@@ -24,7 +24,7 @@ class Protocolo
         bool esProt;
         int color;
         bool finTransferencia;
-        bool estacionQueEnvia;
+        bool errorFichero;
 
         Protocolo();
         static Protocolo* obj;
@@ -61,6 +61,7 @@ class Protocolo
         int getColor();
         bool getFinTransferencia();
         bool getEstacionQueEnvia();
+        bool getErrorFichero();
 
         void setCerrar(bool _cerrar);
         void setTCorrecta (bool _tCorrecta);
@@ -69,9 +70,11 @@ class Protocolo
         void setColor (int _color);
         void setFinTransferencia(bool finT);
         void setEstacionQueEnvia();
+        void setErrorFichero(bool _errorFichero);
 
 
         void imprimirTrama(unsigned char control, unsigned char bce, unsigned char dir, unsigned char nTrama, string aux);
+        void iniciarVariables();
 };
 
 #endif // PROTOCOLO_H

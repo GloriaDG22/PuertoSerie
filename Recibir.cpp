@@ -51,17 +51,13 @@ unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
                 break;
             case 'M':
                 fRecibo->cerrarFlujo(); //cerramos el fichero log de F5
-                pRecibo->setCerrar(false);
-                pRecibo->setEsProt(true);
-                pRecibo->setFinTransferencia(false);
+                pRecibo->iniciarVariables();
                 SetConsoleTextAttribute(Pantalla, 14);
                 pRecibo->iniciarProtMaestro(PuertoCOM, Pantalla);
                 break;
             case 'E':
                 fRecibo->cerrarFlujo(); //cerramos el fichero log de F5
-                pRecibo->setCerrar(false);
-                pRecibo->setEsProt(true);
-                pRecibo->setFinTransferencia(false);
+                pRecibo->iniciarVariables();
                 SetConsoleTextAttribute(Pantalla, 14);
                 pRecibo->iniciarProtEsclavo(PuertoCOM, Pantalla);
             }
@@ -109,7 +105,7 @@ unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
             SetConsoleTextAttribute(Pantalla, colorFichero);
             unsigned char bce;
             if((bce=tRecibida.calcularBce())==(unsigned char)carR){
-                tipoTrama=tRecibida.getControl();
+                pRecibo->setTCorrecta(true);
                 if (esFichero){
                     procesarFichero(Pantalla);
                 }
@@ -135,19 +131,22 @@ unsigned char Recibir::recibir(char carR, HANDLE &PuertoCOM, HANDLE &Pantalla){
                         tRecibida.mostrarTrama();
                     }
                 }
-                if (pRecibo->getEsProt()){
-                    SetConsoleTextAttribute(Pantalla, pRecibo->getColor());
-                    pRecibo->imprimirTrama(tRecibida.getControl(), tRecibida.getBCE(), tRecibida.getDir(), tRecibida.getNumTrama(), "R");
-                    pRecibo->escribirEntero((int)bce);
-                }
             }
             else{
-                if (esFichero)
-                fRecibo->escribirCadena ("Error en la recepción de la trama del fichero.\n");
-                else{
-                    SetConsoleTextAttribute(Pantalla, colorRecibo);
-                    fRecibo->escribirCadena ("Error en la trama recibida.\n");
+                if (!pRecibo->getEsProt()){
+                    if (esFichero)
+                        fRecibo->escribirCadena ("Error en la recepcion de la trama del fichero.\n");
+                    else{
+                        SetConsoleTextAttribute(Pantalla, colorRecibo);
+                        fRecibo->escribirCadena ("Error en la trama recibida.\n");
+                    }
                 }
+            }
+            tipoTrama=tRecibida.getControl();
+            if (pRecibo->getEsProt()){
+                SetConsoleTextAttribute(Pantalla, pRecibo->getColor());
+                pRecibo->imprimirTrama(tRecibida.getControl(), tRecibida.getBCE(), tRecibida.getDir(), tRecibida.getNumTrama(), "R");
+                pRecibo->escribirEntero((int)bce);
             }
             break;
         }
@@ -191,4 +190,13 @@ void Recibir::procesarFichero(HANDLE Pantalla){
 
 bool Recibir::getEsProt(){
     return pRecibo->getEsProt();
+}
+
+Recibir::~Recibir(){
+    if(fRecibo!=0)
+        delete fRecibo;
+    if(pRecibo!=0)
+        delete pRecibo;
+    if(color!=NULL)
+        delete color;
 }
