@@ -38,6 +38,7 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
             addChar('\n');
             addChar('\0');
             crearTramaDatos(PuertoCOM, Pantalla);
+            fEnvio->cerrarFlujo();
             cont=0;
             break;
         case 60: //F2
@@ -94,22 +95,24 @@ void Enviar::enviarCadena (char carE, HANDLE &Pantalla){
     switch (carE){
     case 8: //Borrar
         if(cadena[cont-1]!='\n'){
-            fEnvio->escribirCaracter(carE);
-            fEnvio->escribirCaracter(' ');
-            fEnvio->escribirCaracter(carE);
+            //fEnvio->escribirCaracter(carE);
+            //fEnvio->escribirCadena(" ");
+            //fEnvio->escribirCaracter(carE);
+            printf("%c %c", carE, carE);
             cont--;
         }
         break;
     case 13: //Enter
         if(cont < MAX){
-            fEnvio->escribirCaracter('\n');
+            //fEnvio->escribirCaracter('\n');
+            printf("%c", '\n');
             cadena[cont] = '\n';
             cont++;
         }
         break;
     default: //Cualquier otra tecla
         if(cont < MAX){
-            fEnvio->escribirCaracter(carE);
+            printf("%c", carE);
             cadena[cont]=carE;
             cont++;
         }
@@ -171,6 +174,7 @@ void Enviar::crearTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla){
         tEnvio.setBCE(tEnvio.calcularBce());
         enviarTrama(PuertoCOM, Pantalla);
     }
+    fEnvio->escribirCadenaSoloEnFichero(cadena);
     fEnvio->escribirCadena("MENSAJE ENVIADO.\n");
 }
 

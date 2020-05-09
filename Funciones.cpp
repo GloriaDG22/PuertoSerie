@@ -58,6 +58,11 @@ void Funciones::escribirCadena(string cadena){
         fprintf(fSal, "%s", cadena.c_str());
 }
 
+void Funciones::escribirCadenaSoloEnFichero(string cadena){
+    if (escribir && fSal!=NULL)
+        fprintf(fSal, "%s", cadena.c_str());
+}
+
 void Funciones::escribirCaracter(char caracter){
     printf("%c", caracter);
     if (escribir && fSal!=NULL)

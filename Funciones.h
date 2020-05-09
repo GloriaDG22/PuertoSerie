@@ -61,6 +61,8 @@ class Funciones
         */
         void escribirCadena(string cadena);
 
+        void escribirCadenaSoloEnFichero(string cadena);
+
         /** Escribe un caracter por pantalla y si el valor de la variable escribir es true
         *   escribe ese mismo caracter en el fichero log.txt
         *   \param caracter Lo que vamos a escribir por pantalla, y en el fichero si procede
