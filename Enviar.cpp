@@ -364,11 +364,11 @@ void Enviar::faseTransferenciaEnvio(HANDLE &PuertoCOM, HANDLE &Pantalla){
     ifstream fEnt;
     int linFichero=1, i=0, cont=0;
     fEnt.open(FICHEROLECTURA);
-    bool teclaESC = false;
     EnviarCaracter(PuertoCOM, '{'); //caracter que indica que se empieza a enviar el fichero
     if(fEnt.is_open()){
-        while(!pEnvio->getFinTransferencia()&&fEnvio->comprobarTecla()!=NUM_ESC){
-            if (trocearFicheroProt(fEnt, i, linFichero, cont, PuertoCOM, Pantalla)){
+        while(!pEnvio->getFinTransferencia()&& fEnvio->getTecla()!=NUM_ESC){
+            fEnvio->comprobarTecla();
+            if (!trocearFicheroProt(fEnt, i, linFichero, cont, PuertoCOM, Pantalla)){
                 imprimirTrama();
                 pEnvio->cambiarNumTrama();
                 if(!esperarTramaAceptacion(PuertoCOM, Pantalla)){
@@ -383,17 +383,15 @@ void Enviar::faseTransferenciaEnvio(HANDLE &PuertoCOM, HANDLE &Pantalla){
                 }
             }
         }
-        pEnvio->setFinTransferencia(true);
-        if (!teclaESC)
-            fEnvio->escribirCadena("\nFichero enviado.");
-        else
+        if(fEnvio->getTecla()==NUM_ESC)
             fEnvio->escribirCadena("\nSe ha cancelado el envio del fichero.\n");
+        pEnvio->setFinTransferencia(true);
+        fEnvio->escribirCadena("\nFichero enviado.");
         fEnt.close();
     }
     else{
         pEnvio->setFinTransferencia(true);
-        if(!teclaESC)
-            fEnvio->escribirCadena("\nERROR: el fichero no existe.\n");
+        fEnvio->escribirCadena("\nERROR: el fichero no existe.\n");
     }
 }
 
@@ -491,9 +489,7 @@ bool Enviar::esperarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla){
     do{
         carR = RecibirCaracter(PuertoCOM);
     } while((vControl = recibo->recibir(carR, PuertoCOM, Pantalla))==0); ///espera nack o ack
-    if(vControl == 21)
-            printf("\n Se ha recibido una trama NACK");
-    else if (vControl == 6)
+    if (vControl == 6)
         esTramaACK = true;
     return esTramaACK;
 }
@@ -515,8 +511,10 @@ void Enviar::recibirTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla){
 bool Enviar::trocearFicheroProt(ifstream &fEnt, int &i, int &linFichero, int &cont, HANDLE &PuertoCOM, HANDLE &Pantalla){ ///la i es un iterador
     bool finFichero = false;
     char car;
-    if(fEnvio->comprobarTecla()==NUM_F7)
+    if(fEnvio->getTecla()==NUM_F7){
         errorProt = true;
+        fEnvio->setTecla(3);
+    }
     switch (linFichero){
     case 1:
         if(i<LINCABECERA){

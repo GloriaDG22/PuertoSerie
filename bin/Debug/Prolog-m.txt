@@ -10,29 +10,7 @@ Ha elegido seleccion
 
 E R ENQ 0
 R R ACK 0
-E R STX 0 80
+E R EOT 0
 R R ACK 0
-E R STX 1 55
-R R ACK 1
-E R STX 0 14
-R R ACK 0
+FIN PROTOCOLO
 
-Enviando fichero por Belinda Soto & Mario Borrego.
-
-E R STX 1 37
-R R ACK 1
-E R STX 0 51
-R R ACK 0
-E R STX 1 107
-R R ACK 1
-E R STX 0 46
-R R ACK 0
-E R STX 1 6
-R R ACK 1
-E R STX 0 120
-R R ACK 0
-E R STX 1 87
-R R ACK 1
-E R STX 0 33
-R R ACK 0
-E R STX 1 80

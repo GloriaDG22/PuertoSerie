@@ -9,6 +9,8 @@ Funciones* Funciones::obj=0;
 Funciones::Funciones(){
     fSal = NULL;
     escribir = false;
+    tipoTecla = 3;
+    cont=0;
 }
 
 void Funciones::createInstance (){
@@ -69,20 +71,30 @@ void Funciones::escribirCaracter(char caracter){
         fprintf(fSal, "%c", caracter);
 }
 
-int Funciones::comprobarTecla(){
-    int tipoTecla = 3;
+bool Funciones::comprobarTecla(){
+    bool hayTecla = false;
     if(kbhit()){
         char carR = getch();
         switch (carR){
         case 27:
             tipoTecla = 1;
+            hayTecla = true;
             break;
         case '\0':
             carR = getch();
             if(carR == 65)
                 tipoTecla = 2;
+                hayTecla = true;
             break;
         }
     }
+    return hayTecla;
+}
+
+int Funciones::getTecla(){
     return tipoTecla;
+}
+
+void Funciones::setTecla(int tecla){
+    tipoTecla = tecla;
 }

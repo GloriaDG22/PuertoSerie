@@ -22,6 +22,8 @@ class Funciones
         FILE *fSal;
         //variable que se pone a true si la tecla F5 esta activada y false en caso contrario
         bool escribir;
+        int tipoTecla;
+        int cont;
 
         ///variable y métodos para el Singleton
         static Funciones* obj;
@@ -90,7 +92,11 @@ class Funciones
         *   \param tipoTecla Devolverá 1 si la tecla leida es la tecla de escape, 2 si es F7 y
         *   3 en cualquier otro caso
         */
-        int comprobarTecla();
+        bool comprobarTecla();
+
+        int getTecla();
+
+        void setTecla(int tecla);
 };
 
 #endif // FUNCIONES_H
