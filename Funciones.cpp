@@ -69,11 +69,20 @@ void Funciones::escribirCaracter(char caracter){
         fprintf(fSal, "%c", caracter);
 }
 
-bool Funciones::comprobarESC(bool &teclaESC){
+int Funciones::comprobarTecla(){
+    int tipoTecla = 3;
     if(kbhit()){
         char carR = getch();
-        if(carR == 27)
-            teclaESC = true;
+        switch (carR){
+        case 27:
+            tipoTecla = 1;
+            break;
+        case '\0':
+            carR = getch();
+            if(carR == 65)
+                tipoTecla = 2;
+            break;
+        }
     }
-    return teclaESC;
+    return tipoTecla;
 }

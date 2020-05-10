@@ -1,0 +1,21 @@
+Seleccione maestro o esclavo: 
+ 1.Maestro
+ 2.Esclavo
+
+Has seleccionado MAESTRO, seleccione la operacion a realizar: 
+ 1.Seleccion
+ 2.Sondeo
+
+Ha elegido seleccion 
+
+E R ENQ 0
+R R ACK 0
+E R STX 0 26
+R R ACK 0
+
+Enviando fichero por Belinda Soto & Mario Borrego.
+
+E R EOT 0
+R R ACK 1
+FIN PROTOCOLO
+

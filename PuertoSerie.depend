@@ -76,3 +76,80 @@
 1587820641 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\trama.cpp
 	"Trama.h"
 
+1589095192 source:c:\users\glori\documents\puertoserie\funciones.cpp
+	"Funciones.h"
+
+1589093710 c:\users\glori\documents\puertoserie\funciones.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	<fstream>
+	"PuertoSerie.h"
+
+1589049245 c:\users\glori\documents\puertoserie\puertoserie.h
+	<conio.h>
+	<windows.h>
+	<string.h>
+	<stdio.h>
+	<fstream>
+	<iostream>
+
+1589055208 source:c:\users\glori\documents\puertoserie\main.cpp
+	"Enviar.h"
+	"Recibir.h"
+
+1589099651 c:\users\glori\documents\puertoserie\enviar.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	<fstream>
+	"PuertoSerie.h"
+	"Trama.h"
+	"Recibir.h"
+	"Funciones.h"
+
+1589095106 c:\users\glori\documents\puertoserie\trama.h
+	<conio.h>
+	<windows.h>
+	<string.h>
+	<stdio.h>
+	<iostream>
+	"PuertoSerie.h"
+	"Funciones.h"
+
+1589055160 c:\users\glori\documents\puertoserie\recibir.h
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<string.h>
+	<fstream>
+	"PuertoSerie.h"
+	"Trama.h"
+	"Funciones.h"
+	"Protocolo.h"
+
+1589049245 c:\users\glori\documents\puertoserie\protocolo.h
+	"PuertoSerie.h"
+
+1589049245 source:c:\users\glori\documents\puertoserie\protocolo.cpp
+	"Protocolo.h"
+
+1589049245 source:c:\users\glori\documents\puertoserie\puertoserie.cpp
+	"PuertoSerie.h"
+	<stdio.h>
+	<iostream>
+
+1589095115 source:c:\users\glori\documents\puertoserie\trama.cpp
+	"Trama.h"
+
+1589098561 source:c:\users\glori\documents\puertoserie\enviar.cpp
+	"Enviar.h"
+
+1589055161 source:c:\users\glori\documents\puertoserie\recibir.cpp
+	"Recibir.h"
+

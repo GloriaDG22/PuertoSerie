@@ -9,7 +9,6 @@ Enviar::Enviar(){
     cont = 0;
     colorEnvio=3+0*16;
     errorProt=false;
-    contError=0;
     tEnvio=Trama();
     recibo=recibo->getInstance();
     fEnvio=fEnvio->getInstance();
@@ -95,16 +94,12 @@ void Enviar::enviarCadena (char carE, HANDLE &Pantalla){
     switch (carE){
     case 8: //Borrar
         if(cadena[cont-1]!='\n'){
-            //fEnvio->escribirCaracter(carE);
-            //fEnvio->escribirCadena(" ");
-            //fEnvio->escribirCaracter(carE);
             printf("%c %c", carE, carE);
             cont--;
         }
         break;
     case 13: //Enter
         if(cont < MAX){
-            //fEnvio->escribirCaracter('\n');
             printf("%c", '\n');
             cadena[cont] = '\n';
             cont++;
@@ -193,7 +188,7 @@ void Enviar::enviarTrama(HANDLE &PuertoCOM, HANDLE &Pantalla){
             fEnvio->escribirCadena("Se ha enviado una trama de tipo ");
             tEnvio.imprimirTipoTrama();
         }
-        //Recibir para no excluirlo en el envío
+        //Llamamos al método recibir para no excluir envío y recepción
         char carR = RecibirCaracter(PuertoCOM);
         recibo->recibir(carR, PuertoCOM, Pantalla);
         SetConsoleTextAttribute(Pantalla, colorEnvio);
@@ -206,9 +201,9 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
     bool teclaESC = false;
     ifstream fEnt;
     fEnt.open(FICHERO);
-    if(!fEnvio->comprobarESC(teclaESC) && fEnt.is_open()){
+    if(fEnvio->comprobarTecla()!=NUM_ESC && fEnt.is_open()){
         EnviarCaracter(PuertoCOM, '{'); //caracter que indica que se va a enviar un fichero
-        for(int i=0;i<LINCABECERA && !fEnvio->comprobarESC(teclaESC);i++){
+        for(int i=0;i<LINCABECERA && fEnvio->comprobarTecla()!=NUM_ESC;i++){
             fEnt.getline(texto, 50);
             if (i==0)
                 strcpy(autores, texto);
@@ -220,7 +215,7 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
             string cad = "Enviando fichero por " + (string)autores + ". \n";
             fEnvio->escribirCadena(cad);
         }
-        while(!fEnt.eof() && !fEnvio->comprobarESC(teclaESC)){
+        while(!fEnt.eof() && fEnvio->comprobarTecla()!=NUM_ESC){
             fEnt.read(texto, 254);
             if(!fEnt.eof()){
                 texto[fEnt.gcount()]='\0';
@@ -372,19 +367,20 @@ void Enviar::faseTransferenciaEnvio(HANDLE &PuertoCOM, HANDLE &Pantalla){
     bool teclaESC = false;
     EnviarCaracter(PuertoCOM, '{'); //caracter que indica que se empieza a enviar el fichero
     if(fEnt.is_open()){
-        while(!pEnvio->getFinTransferencia()&&!fEnvio->comprobarESC(teclaESC)){
-        trocearFicheroProt(fEnt, i, linFichero, cont, PuertoCOM, Pantalla);
-            imprimirTrama();
-            pEnvio->cambiarNumTrama();
-            if(!esperarTramaAceptacion(PuertoCOM, Pantalla)){
-                retransmision(PuertoCOM, Pantalla);
+        while(!pEnvio->getFinTransferencia()&&fEnvio->comprobarTecla()!=NUM_ESC){
+            if (trocearFicheroProt(fEnt, i, linFichero, cont, PuertoCOM, Pantalla)){
                 imprimirTrama();
-                esperarTramaAceptacion(PuertoCOM, Pantalla);
-            }
-            if(i==LINCABECERA){
-                string cad = "\nEnviando fichero por " + (string)autores + ".\n";
-                pEnvio->escribirCadena(cad);
-                i++;
+                pEnvio->cambiarNumTrama();
+                if(!esperarTramaAceptacion(PuertoCOM, Pantalla)){
+                    retransmision(PuertoCOM, Pantalla);
+                    imprimirTrama();
+                    esperarTramaAceptacion(PuertoCOM, Pantalla);
+                }
+                if(i==LINCABECERA){
+                    string cad = "\nEnviando fichero por " + (string)autores + ".\n";
+                    pEnvio->escribirCadena(cad);
+                    i++;
+                }
             }
         }
         pEnvio->setFinTransferencia(true);
@@ -491,12 +487,14 @@ bool Enviar::esperarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla){
     unsigned char vControl;
     pEnvio->setTCorrecta(false);
     char carR;
-    bool esTramaACK = true;
+    bool esTramaACK;
     do{
         carR = RecibirCaracter(PuertoCOM);
     } while((vControl = recibo->recibir(carR, PuertoCOM, Pantalla))==0); ///espera nack o ack
     if(vControl == 21)
-        esTramaACK = false;
+            printf("\n Se ha recibido una trama NACK");
+    else if (vControl == 6)
+        esTramaACK = true;
     return esTramaACK;
 }
 
@@ -514,18 +512,11 @@ void Enviar::recibirTramaDatos(HANDLE &PuertoCOM, HANDLE &Pantalla){
     }
 }
 
-void Enviar::trocearFicheroProt(ifstream &fEnt, int &i, int &linFichero, int &cont, HANDLE &PuertoCOM, HANDLE &Pantalla){ ///la i es un iterador
-     char car;
-     if (kbhit()){
-        //car = getch();
-        //if(car == '\0'){
-            car = getch();
-            if(car == 65){
-                errorProt = true;
-                contError++;
-            }
-        //}
-     }
+bool Enviar::trocearFicheroProt(ifstream &fEnt, int &i, int &linFichero, int &cont, HANDLE &PuertoCOM, HANDLE &Pantalla){ ///la i es un iterador
+    bool finFichero = false;
+    char car;
+    if(fEnvio->comprobarTecla()==NUM_F7)
+        errorProt = true;
     switch (linFichero){
     case 1:
         if(i<LINCABECERA){
@@ -546,11 +537,15 @@ void Enviar::trocearFicheroProt(ifstream &fEnt, int &i, int &linFichero, int &co
                 texto[fEnt.gcount()]='\0';
                 cont=cont+strlen(texto);
             }
-            else
+            else{
                 linFichero++;
+                finFichero = true;
+            }
         }
-        else
+        else{
             linFichero++;
+            finFichero = true;
+        }
         break;
     case 3:
         pEnvio->setColor(CTRANSFERENCIA3);
@@ -558,21 +553,21 @@ void Enviar::trocearFicheroProt(ifstream &fEnt, int &i, int &linFichero, int &co
         EnviarCaracter(PuertoCOM, '}'); //caracter que indica que se ha enviado el fichero completo
         pEnvio->setFinTransferencia(true);
         sprintf(texto, "%d", cont);
-
         break;
     }
-    tEnvio.setAll(22, pEnvio->getTipoOper(), 2, pEnvio->getNumTrama(), strlen(texto), texto, 0);
-    tEnvio.setBCE(tEnvio.calcularBce());
-    if(errorProt){
-        char textoAux [255];
-        strcpy(textoAux, texto);
-        textoAux[0]='ç';
-        tEnvio.setDatos(textoAux);
-        contError--;
-        if (contError==0)
+    if (!finFichero){
+        tEnvio.setAll(22, pEnvio->getTipoOper(), 2, pEnvio->getNumTrama(), strlen(texto), texto, 0);
+        tEnvio.setBCE(tEnvio.calcularBce());
+        if(errorProt){
+            char textoAux [255];
+            strcpy(textoAux, texto);
+            textoAux[0]='ç';
+            tEnvio.setDatos(textoAux);
             errorProt = false;
+        }
+        enviarTrama(PuertoCOM, Pantalla);
     }
-    enviarTrama(PuertoCOM, Pantalla);
+    return finFichero;
 }
 
 void Enviar::imprimirTrama(){

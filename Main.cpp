@@ -20,20 +20,11 @@ int main()
     Enviar envio=Enviar();
     Recibir* recibo=recibo->getInstance();
 
-
-    //Encabezado
     printf("============================================================================\n");
     printf("----------- PRACTICAS DE FUNDAMENTOS DE REDES DE COMUNICACIONES ------------\n");
     printf("---------------------------- CURSO 2019/20 ---------------------------------\n");
     printf("----------------------------- SESION1.CPP ----------------------------------\n");
     printf("============================================================================\n\n");
-
-    //Abrimos el puerto. Para ello necesitamos indicar los siguientes parámetros:
-    // - Nombre del puerto a abrir: ("COM1", "COM2", "COM3", ...).
-    // - Velocidad: (1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200).
-    // - Número de bits en cada byte enviado o recibido: (4, 5, 6, 7, 8).
-    // - Paridad: (0=sin paridad, 1=impar, 2=par, 3=marca, 4=espacio).
-    // - Bits de stop: (0=1 bit, 1=1.5 bits, 2=2 bits).
 
     char PSerie[5] = {'C', 'O', 'M', ' ', '\0'};
     char opcion;
@@ -105,7 +96,6 @@ int main()
    }
 
     PuertoCOM = AbrirPuerto(PSerie, velocidad, 8, 0, 0);
-    ///Abrimos el puerto COM1 (en la sala siempre abrimos el COM1)
     if(PuertoCOM == NULL)
     {
         printf("Error al abrir el puerto %s con velocidad %d \n", PSerie, velocidad);
@@ -115,7 +105,7 @@ int main()
     else
         printf("Puerto %s abierto correctamente con velocidad %d \n", PSerie, velocidad);
 
-    /// Lectura y escritura simultánea de caracteres:
+    // Lectura y escritura simultánea de caracteres
     while(carE != 27){
 
         carR = RecibirCaracter(PuertoCOM);

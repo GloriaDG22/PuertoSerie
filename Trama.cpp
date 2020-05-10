@@ -15,29 +15,6 @@ Trama::Trama(){
     fTrama=fTrama->getInstance();
 }
 
-/*Trama::Trama(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol, unsigned char CnumTrama,
-             unsigned char Clongit, char Cdatos[], unsigned char Cbce){
-    sincr=Csincr;
-    dir=Cdir;
-    control=Ccontrol;
-    numTrama=CnumTrama;
-    longit=Clongit;
-    strcpy(Datos, Cdatos);
-    BCE=Cbce;
-    fTrama=fTrama->getInstance();
-}*/
-
-void Trama::setAll(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol, unsigned char CnumTrama,
-             unsigned char Clongit, char Cdatos[], unsigned char Cbce){
-    sincr=Csincr;
-    dir=Cdir;
-    control=Ccontrol;
-    numTrama=CnumTrama;
-    longit=Clongit;
-    strcpy(Datos, Cdatos);
-    BCE=Cbce;
-}
-
 void Trama::setSincr (unsigned char Csincr){
     sincr=Csincr;
 }
@@ -63,6 +40,17 @@ void Trama::setDatos (char cadena[]){
 }
 
 void Trama::setBCE (unsigned char Cbce){
+    BCE=Cbce;
+}
+
+void Trama::setAll(unsigned char Csincr, unsigned char Cdir, unsigned char Ccontrol, unsigned char CnumTrama,
+             unsigned char Clongit, char Cdatos[], unsigned char Cbce){
+    sincr=Csincr;
+    dir=Cdir;
+    control=Ccontrol;
+    numTrama=CnumTrama;
+    longit=Clongit;
+    strcpy(Datos, Cdatos);
     BCE=Cbce;
 }
 
