@@ -22,8 +22,8 @@ class Funciones
         FILE *fSal;
         //variable que se pone a true si la tecla F5 esta activada y false en caso contrario
         bool escribir;
+        //guarda un valor dependiendo de la tecla que se lee: 1 si es ESC y 2 si es F7
         int tipoTecla;
-        int cont;
 
         ///variable y métodos para el Singleton
         static Funciones* obj;
@@ -88,14 +88,21 @@ class Funciones
 
         /*
         * Comprueba si hay pulsación de tecla y, en caso de haberla comprueba que tecla es y
-        * devuelve un valor en función de la tecla que sea
-        *   \param tipoTecla Devolverá 1 si la tecla leida es la tecla de escape, 2 si es F7 y
-        *   3 en cualquier otro caso
+        * guarda un valor en tipoTecla, dependiendo de la tecla que se haya pulsado
+        *   \return hayTecla Devuelve true si se ha pulsado alguna tecla y false en caso contrario
         */
         bool comprobarTecla();
 
+        ///GETTERS
+        /*
+        * \return tipoTecla Devuelve el valor del atributo tipoTecla de la clase
+        */
         int getTecla();
 
+        /*
+         * Cambia el valor de la variable tipoTecla
+        *   \param tecla Nuevo valor que va a guardarse en el atributo tipoTecla de la clase
+        */
         void setTecla(int tecla);
 };
 

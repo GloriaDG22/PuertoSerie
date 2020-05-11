@@ -352,7 +352,6 @@ void Enviar::faseEstablecimiento(HANDLE &PuertoCOM, HANDLE &Pantalla){
         esperarTramaAceptacion(PuertoCOM, Pantalla);
     }
     else{
-        ///poner color establecimiento: azul
         esperarRespuesta(05, PuertoCOM, Pantalla); ///Esperamos una trama ENQ
         enviarTramaAceptacion(PuertoCOM, Pantalla);
         imprimirTrama();

@@ -79,7 +79,7 @@
 1589095192 source:c:\users\glori\documents\puertoserie\funciones.cpp
 	"Funciones.h"
 
-1589093710 c:\users\glori\documents\puertoserie\funciones.h
+1589215619 c:\users\glori\documents\puertoserie\funciones.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
@@ -100,7 +100,7 @@
 	"Enviar.h"
 	"Recibir.h"
 
-1589099651 c:\users\glori\documents\puertoserie\enviar.h
+1589214820 c:\users\glori\documents\puertoserie\enviar.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
@@ -133,7 +133,7 @@
 	"Funciones.h"
 	"Protocolo.h"
 
-1589049245 c:\users\glori\documents\puertoserie\protocolo.h
+1589217368 c:\users\glori\documents\puertoserie\protocolo.h
 	"PuertoSerie.h"
 
 1589049245 source:c:\users\glori\documents\puertoserie\protocolo.cpp

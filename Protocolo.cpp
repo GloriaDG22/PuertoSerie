@@ -129,8 +129,8 @@ unsigned char Protocolo::getNumTrama(){
     return numTrama;
 }
 
-bool Protocolo::getFinTransferencia(){
-    return finTransferencia;
+bool Protocolo::getEsProt (){
+    return esProt;
 }
 
 string Protocolo::getTipoTrama(unsigned char control){
@@ -159,8 +159,8 @@ int Protocolo::getColor(){
     return color;
 }
 
-bool Protocolo::getEsProt (){
-    return esProt;
+bool Protocolo::getFinTransferencia(){
+    return finTransferencia;
 }
 
 bool Protocolo::getErrorFichero(){

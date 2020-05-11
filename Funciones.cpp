@@ -10,7 +10,6 @@ Funciones::Funciones(){
     fSal = NULL;
     escribir = false;
     tipoTecla = 3;
-    cont=0;
 }
 
 void Funciones::createInstance (){
