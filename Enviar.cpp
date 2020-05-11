@@ -383,8 +383,10 @@ void Enviar::faseTransferenciaEnvio(HANDLE &PuertoCOM, HANDLE &Pantalla){
                 }
             }
         }
-        if(fEnvio->getTecla()==NUM_ESC)
+        if(fEnvio->getTecla()==NUM_ESC){
             fEnvio->escribirCadena("\nSe ha cancelado el envio del fichero.\n");
+            fEnvio->setTecla(SIN_NUM);
+        }
         pEnvio->setFinTransferencia(true);
         fEnvio->escribirCadena("\nFichero enviado.");
         fEnt.close();
@@ -491,6 +493,8 @@ bool Enviar::esperarTramaAceptacion(HANDLE &PuertoCOM, HANDLE &Pantalla){
     } while((vControl = recibo->recibir(carR, PuertoCOM, Pantalla))==0); ///espera nack o ack
     if (vControl == 6)
         esTramaACK = true;
+    else
+        esTramaACK = false;
     return esTramaACK;
 }
 
@@ -513,7 +517,7 @@ bool Enviar::trocearFicheroProt(ifstream &fEnt, int &i, int &linFichero, int &co
     char car;
     if(fEnvio->getTecla()==NUM_F7){
         errorProt = true;
-        fEnvio->setTecla(3);
+        fEnvio->setTecla(SIN_NUM);
     }
     switch (linFichero){
     case 1:

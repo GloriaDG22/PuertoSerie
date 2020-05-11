@@ -82,9 +82,10 @@ bool Funciones::comprobarTecla(){
             break;
         case '\0':
             carR = getch();
-            if(carR == 65)
+            if(carR == 65){
                 tipoTecla = 2;
                 hayTecla = true;
+            }
             break;
         }
     }

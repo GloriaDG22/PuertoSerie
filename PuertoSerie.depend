@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1589141548 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.cpp
+1589196905 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.cpp
 	"Enviar.h"
 
-1589132094 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.h
+1589196620 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\enviar.h
 	<stdio.h>
 	<conio.h>
 	<windows.h>
@@ -55,7 +55,7 @@
 1588872200 c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\protocolo.h
 	"PuertoSerie.h"
 
-1589141464 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\funciones.cpp
+1589197085 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\funciones.cpp
 	"Funciones.h"
 
 1589132094 source:c:\users\gloria\documents\aauniversidad\semestre6\frc\practicas\sesion1\puertoserie\main.cpp

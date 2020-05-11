@@ -20,6 +20,7 @@
 
 #define NUM_ESC 1
 #define NUM_F7 2
+#define SIN_NUM 3
 
 ///COLORES PROTOCOLO
 #define CESTABLECIMIENTO 9 //AZUL ELECTRICO
