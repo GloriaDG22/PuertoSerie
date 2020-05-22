@@ -168,9 +168,8 @@ void Recibir::procesarFichero(HANDLE Pantalla){
         break;
     case 3:
         strcpy(nomFichero, tRecibida.getDatos());
-        if(!pRecibo->getEsProt())
-            fSal.open(nomFichero);
-        if(!fSal.is_open()&&!pRecibo->getEsProt())
+        fSal.open(nomFichero);
+        if(!fSal.is_open())
             fRecibo->escribirCadena("Error al abrir el fichero de escritura.\n");
         else{
             string cadena = "Recibiendo fichero por " + (string)autores + ".";
@@ -182,7 +181,7 @@ void Recibir::procesarFichero(HANDLE Pantalla){
         lineaFichero++;
         break;
     default:
-        if(fSal.is_open()&&!pRecibo->getEsProt())
+        if(fSal.is_open())
             fSal.write(tRecibida.getDatos(), tRecibida.getLong());
         break;
     }

@@ -1,4 +1,17 @@
 Se ha pulsado la tecla F5
 
-1oudhaksjkdjsgakgkhj
+hola
 MENSAJE ENVIADO.
+
+Elija el tipo de trama que quiere enviar:
+ 1: Trama ENQ 
+ 2: Trama EOT 
+ 3: Trama ACK 
+ 4: Trama NACK 
+Se ha enviado una trama de tipo EOT 
+Enviando fichero por Sara Arroyo & Marina Cerro. 
+Fichero enviado. 
+Recibiendo fichero por Sara Arroyo & Marina Cerro.
+Fichero recibido.
+El fichero recibido tiene un tamaño de 1500 bytes.
+Se ha recibido una trama de tipo EOT 

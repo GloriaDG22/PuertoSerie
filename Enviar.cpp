@@ -37,7 +37,6 @@ void Enviar::comprobarTeclaFuncion(char carE, HANDLE &PuertoCOM, HANDLE &Pantall
             addChar('\n');
             addChar('\0');
             crearTramaDatos(PuertoCOM, Pantalla);
-            fEnvio->cerrarFlujo();
             cont=0;
             break;
         case 60: //F2
@@ -217,12 +216,14 @@ void Enviar::enviarFichero(HANDLE &PuertoCOM, HANDLE &Pantalla){
         }
         while(!fEnt.eof() && fEnvio->comprobarTecla()!=NUM_ESC){
             fEnt.read(texto, 254);
-            if(!fEnt.eof()){
+            if(fEnt.gcount() != 0){
                 texto[fEnt.gcount()]='\0';
                 tEnvio.setAll(22, 'T', 2, '0', strlen(texto), texto, 0);
                 tEnvio.setBCE(tEnvio.calcularBce());
                 enviarTrama(PuertoCOM, Pantalla);
                 cont=cont+tEnvio.getLong();
+            }else{
+                printf("fin de linea %d", fEnt.gcount() );
             }
         }
         fEnt.close();
